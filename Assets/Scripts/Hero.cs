@@ -7,6 +7,7 @@ public class Hero : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private int lives = 5;
     [SerializeField] private float jumpForce = 10f;
+    [SerializeField] GameObject ghost;
     private bool isGrounded = false;
 
     private Rigidbody2D rb;
@@ -51,7 +52,8 @@ public class Hero : MonoBehaviour
             Jump();
         if (Input.GetButton("Horizontal"))
             Run();
-        
+        if (transform.position.y <= -10)
+            ghost.SetActive(true);
     }
 
     private void FixedUpdate()
