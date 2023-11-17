@@ -29,13 +29,6 @@ public class NewBehaviourScript : MonoBehaviour
         IsHeroInArea = false;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -43,13 +36,9 @@ public class NewBehaviourScript : MonoBehaviour
         {
             sprite.flipX = !sprite.flipX;
             foreach (var collider in Platform_collider)
-            {
                 Destroy(collider);
-            }
             //foreach (var renderer in Platform_render)
-            //{
             //    Destroy(renderer);
-            //}
         }
     }
 }
