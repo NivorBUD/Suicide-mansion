@@ -5,18 +5,13 @@ using UnityEngine.U2D;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    [SerializeField] GameObject LeverPlatform;
     private SpriteRenderer sprite;
     private bool IsHeroInArea = false;
-    private SpriteRenderer[] Platform_render;
-    private BoxCollider2D[] Platform_collider;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        Platform_render = GetComponentsInChildren<SpriteRenderer>();
-        Platform_collider = GetComponentsInChildren<BoxCollider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,10 +30,7 @@ public class NewBehaviourScript : MonoBehaviour
         if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))
         {
             sprite.flipX = !sprite.flipX;
-            foreach (var collider in Platform_collider)
-                Destroy(collider);
-            //foreach (var renderer in Platform_render)
-            //    Destroy(renderer);
+            LeverPlatform.GetComponent<BoxCollider2D>().enabled = false;
         }
     }
 }

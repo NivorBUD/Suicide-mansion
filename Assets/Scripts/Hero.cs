@@ -1,23 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
-    [SerializeField] private int lives = 5;
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] GameObject ghost;
     private bool isGrounded = false;
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private SpriteRenderer sprite;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     private void Awake()
     {
@@ -28,9 +22,7 @@ public class Hero : MonoBehaviour
     private void Run()
     {
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
-
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
-
         sprite.flipX = dir.x < 0.0f;
     }
 
@@ -45,19 +37,25 @@ public class Hero : MonoBehaviour
         isGrounded = collider.Length > 1;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (isGrounded && Input.GetButtonDown("Jump"))
-            Jump();
         if (Input.GetButton("Horizontal"))
             Run();
-        if (transform.position.y <= -10)
-            ghost.SetActive(true);
     }
 
     private void FixedUpdate()
     {
         CheckGround();
+    }
+
+    public void Death()
+    {
+        gameObject.SetActive(false);
+        Invoke("Respawn", 3);
+    }
+
+    public void Respawn()
+    {
+        gameObject.SetActive(true);
     }
 }
