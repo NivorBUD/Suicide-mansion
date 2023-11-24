@@ -69,11 +69,17 @@ public class Ghost : MonoBehaviour
                 res = Button3.transform.position;
                 res.x += 0.55f;
             }
-            else
+            else if (Button4)
             {
                 res = Button4.transform.position;
                 res.x -= 0.7f;
                 res.y -= 0.4f;
+            }
+            else
+            {
+                res = player.position;
+                res.x += 1.5f;
+                res.y += 1.5f;
             }
         }
         else

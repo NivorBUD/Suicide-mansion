@@ -7,6 +7,9 @@ TagManager:
   - Basement
   - Ghost
   - Player Sprite
+  - Bullet Start Place
+  - Shoot Target
+  - Chandelier
   layers:
   - Default
   - TransparentFX

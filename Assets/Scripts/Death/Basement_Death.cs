@@ -9,6 +9,7 @@ public class Basement_Death : DeathClass
     public GameObject leftWall;
     public GameObject rightWall;
     public GameObject ghost;
+    public GameObject exit;
     public static float speed = 0.0f;
     public bool isStart = false;
     public bool isEnd = false;
@@ -51,8 +52,9 @@ public class Basement_Death : DeathClass
         var heroScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         heroScript.Death();
         isEnd = true;
+        exit.GetComponent<BoxCollider2D>().enabled = false;
         isStart = false;
-        Invoke("MoveWallToStart", 1);
+        Invoke(nameof(MoveWallToStart), 1f);
     }
 
     private void MoveWallToStart()
