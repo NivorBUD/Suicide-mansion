@@ -13,7 +13,7 @@ public class Hero : MonoBehaviour
     
     public Rigidbody2D rb;
 
-
+    private Animator anim;
     private SpriteRenderer sprite;
     private bool isInShootPlace = false;
     private Transform bulletPlace;
@@ -23,6 +23,7 @@ public class Hero : MonoBehaviour
 
     private void Awake()
     {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         bulletPlace = GameObject.FindWithTag("Bullet Start Place").GetComponent<Transform>();
@@ -30,6 +31,8 @@ public class Hero : MonoBehaviour
 
     private void Run()
     {
+        State = States.walk;
+
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
@@ -51,10 +54,11 @@ public class Hero : MonoBehaviour
         isInShootPlace = false;
     }
 
-    
-
     void Update()
     {
+        State = States.idle;
+        anim = gameObject.GetComponent<Animator>();
+
         if (Input.GetButton("Horizontal"))
             Run();
         if (!isShoot && isInShootPlace && Input.GetKeyUp(KeyCode.F))
@@ -89,6 +93,12 @@ public class Hero : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    private States State
+    {
+        get { return (States)anim.GetInteger("state"); }
+        set { anim.SetInteger("state", (int)value); }
+    }
+
     //private void CheckGround()
     //{
     //    Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.3f);
@@ -99,4 +109,9 @@ public class Hero : MonoBehaviour
     //{
     //    rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     //}
+}
+
+public enum States {
+    idle,
+    walk
 }
