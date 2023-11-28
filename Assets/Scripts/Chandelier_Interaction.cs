@@ -8,12 +8,14 @@ public class Chandelier_Interaction : MonoBehaviour
     public GameObject candle;
 
     private Hero player_script;
+    private GameObject player;
     private bool isPlayerFall = false;
     private bool isDrop = false;
 
     private void Start()
     {
-        player_script = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        player = GameObject.FindWithTag("Player");
+        player_script = player.GetComponent<Hero>();
     }
 
     public void Fall()
@@ -29,7 +31,7 @@ public class Chandelier_Interaction : MonoBehaviour
         candle.transform.position = pos;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!isPlayerFall && gameObject.transform.position.y <= -1.5)
         {
@@ -42,7 +44,7 @@ public class Chandelier_Interaction : MonoBehaviour
             isDrop = true;
             gameObject.GetComponent<Rigidbody2D>().simulated = false;
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            Invoke(nameof(SpawnCandle), 0.5f);
+            Invoke(nameof(SpawnCandle), 0.25f);
         }
     }
 }

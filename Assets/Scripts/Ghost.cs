@@ -50,6 +50,9 @@ public class Ghost : MonoBehaviour
     private Vector3 GetPos()
     {
         Vector3 res;
+        res = player.position;
+        res.x += 1.5f;
+        res.y += 1.5f;
         if (isCutScene)
         {
             if (0 <= phraseIndex && phraseIndex <= 3)
@@ -75,18 +78,6 @@ public class Ghost : MonoBehaviour
                 res.x -= 0.7f;
                 res.y -= 0.4f;
             }
-            else
-            {
-                res = player.position;
-                res.x += 1.5f;
-                res.y += 1.5f;
-            }
-        }
-        else
-        {
-            res = player.position;
-            res.x += 1.5f;
-            res.y += 1.5f;
         }
         return res;
     }

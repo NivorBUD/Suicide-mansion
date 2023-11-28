@@ -78,4 +78,9 @@ public class Basement_Death : DeathClass
         if (isEnd && player)
             MoveWallToStart();
     }
+
+    public override bool ReadyToDeath()
+    {
+        throw new System.NotImplementedException();
+    }
 }

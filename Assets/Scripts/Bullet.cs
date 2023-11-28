@@ -1,11 +1,15 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public bool isStart = false;
+
     private Vector3[] targets;
     private Chandelier_Interaction chandelier_interaction;
     private int targetindex = 0;
+    
 
     void Start()
     {
@@ -17,16 +21,22 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, targets[targetindex], 50f * Time.deltaTime);
-        
-        if (gameObject.transform.position == targets[targetindex])
-        {
-            if (targetindex == targets.Length - 1)
+        if (isStart) {
+            var deltaY = gameObject.transform.position.y - targets[targetindex].y;
+            var deltaX = gameObject.transform.position.x - targets[targetindex].x;
+            float angle = (float)(Math.Atan2(deltaY, deltaX) * 180 / Math.PI) + 90;
+            gameObject.transform.SetPositionAndRotation(Vector3.MoveTowards(gameObject.transform.position, targets[targetindex], 20f * Time.deltaTime), Quaternion.Euler(0, 0, angle));
+
+            if (gameObject.transform.position == targets[targetindex])
             {
-                chandelier_interaction.Fall();
-                Destroy(gameObject);
+                if (targetindex == targets.Length - 1)
+                {
+                    chandelier_interaction.Fall();
+                    Destroy(gameObject);
+                    GameObject.FindWithTag("Player").GetComponent<Hero>().EndCutScene();
+                }
+                targetindex++;
             }
-            targetindex++;
         }
     }
 }

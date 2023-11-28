@@ -13,11 +13,11 @@ public class ShootPlace_Logic : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        player.EnterShootPlace();
+        ChandelierDeath.EnterShootPlace();
     }
     
     private void OnTriggerExit2D(Collider2D collision)
     {
-        player.ExitShootPlace();
+        ChandelierDeath.ExitShootPlace();
     }
 }
