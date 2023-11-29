@@ -10,6 +10,7 @@ TagManager:
   - Bullet Start Place
   - Shoot Target
   - Chandelier
+  - Mirror
   layers:
   - Default
   - TransparentFX

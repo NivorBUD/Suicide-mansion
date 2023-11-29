@@ -81,10 +81,14 @@ public class Hero : MonoBehaviour
         {
             case 0:
                 death = death != null ? death : GameObject.FindWithTag("Chandelier").GetComponent<ChandelierDeath>();
-                if (Input.GetKeyUp(KeyCode.F) && death.ReadyToDeath())
-                    death.StartDeath();
+                break;
+            case 1:
+                death = death != null ? death : GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>();
                 break;
         }
+
+        if (death != null && Input.GetKeyUp(KeyCode.F) && death.ReadyToDeath())
+            death.StartDeath();
     }
 
     public void EndCutScene()
@@ -97,6 +101,11 @@ public class Hero : MonoBehaviour
     public void FallOnBack()
     {
         needToFall = true;
+    }
+
+    public void DeadlyScare()
+    {
+
     }
 
     public void Death()
