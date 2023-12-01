@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CameraController : MonoBehaviour
 {
@@ -8,6 +10,10 @@ public class CameraController : MonoBehaviour
     private Vector3 pos;
     private float speed = 1.0f;
     private bool isAimPlayer = true;
+    private Camera camera;
+    private float newCamSize;
+    private bool needToZoom;
+
     public GameObject player;
 
     public void ChangeAim(Transform aim)
@@ -29,16 +35,24 @@ public class CameraController : MonoBehaviour
         speed = 1.0f;
     }
 
+    public void ZoomIn(float size)
+    {
+        needToZoom = true;
+        newCamSize = size;
+    }
+
     private void Awake()
     {
         if (!aim)
-        {
             aim = FindObjectOfType<Hero>().transform;
-        }
+        camera = gameObject.GetComponent<Camera>();
     }
 
     void Update()
     {
+        if (needToZoom)
+            camera.orthographicSize = Mathf.MoveTowards(camera.orthographicSize, newCamSize, 5.0f * Time.deltaTime);
+
         if (!aim)
             ChangeAimToPlayer();
         pos = aim.position;

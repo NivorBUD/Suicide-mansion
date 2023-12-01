@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
                 {
                     chandelier_interaction.Fall();
                     Destroy(gameObject);
-                    GameObject.FindWithTag("Player").GetComponent<Hero>().EndCutScene();
+                    GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ChangeAim(GameObject.FindWithTag("Chandelier").transform);
                 }
                 targetindex++;
             }

@@ -37,6 +37,7 @@ public class ChandelierDeath : DeathClass
         isShoot = true;
         bullet.transform.position = player.bulletPlace.position;
         bullet.GetComponent<Bullet>().isStart = true;
+        GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ZoomIn(2);
         player.isCutScene = true;
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ChangeAim(bullet.transform);
     }
