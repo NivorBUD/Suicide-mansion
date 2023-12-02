@@ -6,6 +6,7 @@ public class MirrorDeath : DeathClass
 {
     public GameObject mary;
     public GameObject drawing;
+    public GameObject button;
 
     private GameObject mainCamera;
     private CameraController cameraController;
@@ -71,13 +72,14 @@ public class MirrorDeath : DeathClass
         mary.transform.position = maryNewPos;
         player.DeadlyScare();
         mary.GetComponent<Mary>().StartDialog();
+        button.SetActive(false);
     }
 
     private void Update()
     {
         if (!isEnd && DrawingLogic.paintedPartsCount == 36)
         {
-            SpawnMary();
+            button.SetActive(true);
             isEnd = true;
         }
     }
