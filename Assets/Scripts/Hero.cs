@@ -14,10 +14,9 @@ public class Hero : MonoBehaviour
     public GameObject bullet;
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
-    public int cutSceneIndex = 0;
+    public int cutSceneIndex;
     public Transform bulletPlace;
     public bool isCutScene = false;
-    public double z;
 
     private Animator anim;
     private SpriteRenderer sprite;
@@ -33,6 +32,7 @@ public class Hero : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         bulletPlace = GameObject.FindWithTag("Bullet Start Place").GetComponent<Transform>();
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
+        PrepareCutScene();
     }
 
     private void Run()
@@ -44,12 +44,12 @@ public class Hero : MonoBehaviour
         sprite.flipX = dir.x < 0.0f;
     }
 
-    public void addToInventiry([SerializeField] GameObject InventoryObject)
+    public void AddToInventiry([SerializeField] GameObject InventoryObject)
     {
         inventory[InventoryObject.name] = InventoryObject;
     }
 
-    public void delFromInventiry([SerializeField] GameObject InventoryObject)
+    public void DelFromInventiry([SerializeField] GameObject InventoryObject)
     {
         inventory.Remove(InventoryObject.name);
     }
@@ -75,6 +75,12 @@ public class Hero : MonoBehaviour
         CheckToCutScene();
     }
 
+    private void PrepareCutScene()
+    {
+        if (cutSceneIndex == 1)
+            GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
+    }
+
     private void CheckToCutScene()
     {
         switch (cutSceneIndex)
@@ -96,6 +102,8 @@ public class Hero : MonoBehaviour
         isCutScene = false;
         cutSceneIndex++;
         death = null;
+        mainCamera.ZoomIn(5);
+        PrepareCutScene();
     }
 
     public void FallOnBack()
@@ -105,14 +113,24 @@ public class Hero : MonoBehaviour
 
     public void DeadlyScare()
     {
-
+        // Тут добавь смену спрайта на испуганное
+        sprite.flipX = !sprite.flipX;
+        Invoke(nameof(Death), 1);
+        EndCutScene();
     }
 
     public void Death()
     {
         gameObject.SetActive(false);
-        Invoke(nameof(Respawn), 3);
+        Invoke(nameof(Respawn), 2);
         mainCamera.ChangeAimToPlayer();
+
+        if (gameObject.transform.localScale.y != 1.23)
+        {
+            var sc = gameObject.transform.localScale;
+            sc.y = 1.23f;
+            gameObject.transform.localScale = sc;
+        }
     }
 
     public void Respawn()

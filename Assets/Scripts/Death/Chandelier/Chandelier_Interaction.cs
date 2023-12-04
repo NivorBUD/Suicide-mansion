@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Chandelier_Interaction : MonoBehaviour
@@ -9,7 +8,6 @@ public class Chandelier_Interaction : MonoBehaviour
 
     private Hero player_script;
     private GameObject player;
-    private bool isPlayerFall = false;
     private bool isDrop = false;
 
     private void Start()
@@ -33,17 +31,20 @@ public class Chandelier_Interaction : MonoBehaviour
 
     private void Update()
     {
-        if (!isPlayerFall && gameObject.transform.position.y <= -1.5)
+        if (gameObject.transform.position.y <= -1.5 && gameObject.transform.position.y > -3.1)
         {
-            isPlayerFall = true;
-            player_script.FallOnBack();
+            var sc = player.transform.localScale;
+            sc.y = Math.Abs(-3.1f - gameObject.transform.position.y);
+            player.transform.localScale = sc;
         }
 
-        if (!isDrop && gameObject.transform.position.y < -3.2)
+        if (!isDrop && gameObject.transform.position.y < -3.1)
         {
             isDrop = true;
             gameObject.GetComponent<Rigidbody2D>().simulated = false;
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            GameObject.FindWithTag("Player").GetComponent<Hero>().EndCutScene();
+            GameObject.FindWithTag("Player").GetComponent<Hero>().Death();
             Invoke(nameof(SpawnCandle), 0.25f);
         }
     }

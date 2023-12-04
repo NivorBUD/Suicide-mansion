@@ -20,7 +20,7 @@ public class InventoryLogic : MonoBehaviour
 
     public static void TakeItem([SerializeField] GameObject InventoryObject)
     {
-        GameObject.FindWithTag("Player").GetComponent<Hero>().addToInventiry(InventoryObject);
+        GameObject.FindWithTag("Player").GetComponent<Hero>().AddToInventiry(InventoryObject);
         InventoryObject.SetActive(true);
         InventoryItems++;
     }
@@ -54,7 +54,7 @@ public class InventoryLogic : MonoBehaviour
 
     public static void UseItem([SerializeField] GameObject InventoryObject)
     {
-        GameObject.FindWithTag("Player").GetComponent<Hero>().delFromInventiry(InventoryObject);
+        GameObject.FindWithTag("Player").GetComponent<Hero>().DelFromInventiry(InventoryObject);
         InventoryObject.SetActive(false);
         InventoryItems--;
     }
