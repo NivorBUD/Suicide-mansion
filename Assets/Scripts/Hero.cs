@@ -9,8 +9,6 @@ using UnityEngine;
 public class Hero : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 8f;
-    [SerializeField] private float jumpCooldown = 1f;
-    private float lastJumpTime = 0f;
     [SerializeField] private float speed = 3f;
     [SerializeField] GameObject ghost;
     public GameObject bullet;
@@ -155,10 +153,9 @@ public class Hero : MonoBehaviour
 
     private void Jump()
     {
-        if (Time.time - lastJumpTime >= jumpCooldown)
+        if (rb.velocity.y == 0)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-            lastJumpTime = Time.time;
+            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);        
         }
     }
 }
