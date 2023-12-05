@@ -5,12 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Basement
-  - Ghost
   - Player Sprite
   - Bullet Start Place
   - Shoot Target
   - Chandelier
   - Mirror
+  - Ghost
+  - Main Ladder
   layers:
   - Default
   - TransparentFX

@@ -1,30 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class LadderHorizontal_Interaction : MonoBehaviour
+public class LadderHorizontalInteraction : MonoBehaviour
 {
-    [SerializeField] Hero player;
-    float speed = 5;
+    public GameObject anotherLadderPlace;
+    public GameObject midLadderPos;
+    public static bool isUseMidPos;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private Hero playerScript;
+    private GameObject player;
+    private bool isPlayerInArea;
+
+
+
+    private void Start()
     {
-        player.rb.gravityScale = 0;
-        if (Input.GetKey(KeyCode.W))
-            player.rb.velocity = new Vector2(speed, speed);
-        else if (Input.GetKey(KeyCode.S))
-            player.rb.velocity = new Vector2(-speed, -speed);
-        else
-            player.rb.velocity = new Vector2(0, 0);
+        isUseMidPos = true;
+        player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<Hero>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        isPlayerInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        player.rb.gravityScale = 3;
+        isPlayerInArea = false;
+    }
+
+    public static void StopUsingMidPos()
+    {
+        isUseMidPos = false;
     }
 
     void Update()
     {
-        
+        if (isPlayerInArea && Input.GetKeyDown(KeyCode.F))
+        {
+            var pos = isUseMidPos ? midLadderPos.transform.position : anotherLadderPlace.transform.position;
+            pos.z = player.transform.position.z;
+            player.transform.position = pos;
+        }
     }
 }

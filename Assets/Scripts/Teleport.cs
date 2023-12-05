@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    [SerializeField] Hero hero;
-    [SerializeField] GameObject ghost;
     [SerializeField] GameObject tpPlace;
 
+    private Hero hero;
+    public GameObject ghost;
+
+    private void Start()
+    {
+        hero = GameObject.FindWithTag("Player").GetComponent<Hero>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        Vector3 pos = tpPlace.transform.position;
-        hero.gameObject.transform.position = pos;
-        ghost.SetActive(true);
+        hero.gameObject.transform.position = tpPlace.transform.position;
+        ghost.GetComponent<Ghost>().ChangeAimToPlayer();
     }
 }

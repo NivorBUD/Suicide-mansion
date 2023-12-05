@@ -20,19 +20,22 @@ public class Hero : MonoBehaviour
 
     private Animator anim;
     private SpriteRenderer sprite;
-    private bool needToFall = false;
     private CameraController mainCamera;
     private DeathClass death;
+    private Ghost ghostScript;
 
 
-    private void Awake()
+    private void Start()
     {
+        cutSceneIndex = 1;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         bulletPlace = GameObject.FindWithTag("Bullet Start Place").GetComponent<Transform>();
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
+        ChangeDeath();
         PrepareCutScene();
+        ghostScript = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
     }
 
     private void Run()
@@ -62,17 +65,11 @@ public class Hero : MonoBehaviour
         if (!isCutScene && Input.GetButton("Horizontal"))
             Run();
 
-        if (needToFall)
-            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.Euler(0, 0, 90), 10f * Time.deltaTime);
-
-
-        if (Math.Round(gameObject.transform.rotation.eulerAngles.z, 1) == 90)
+        if (death != null && Input.GetKeyDown(KeyCode.F) && death.ReadyToDeath())
         {
-            needToFall = false;
-            Death();
+            ghostScript.canChangePhraseByButton = false;
+            death.StartDeath();
         }
-        
-        CheckToCutScene();
     }
 
     private void PrepareCutScene()
@@ -81,20 +78,25 @@ public class Hero : MonoBehaviour
             GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
     }
 
-    private void CheckToCutScene()
+    private void ChangeDeath()
     {
         switch (cutSceneIndex)
         {
             case 0:
-                death = death != null ? death : GameObject.FindWithTag("Chandelier").GetComponent<ChandelierDeath>();
+                death = GameObject.FindWithTag("Basement").GetComponent<BasementDeath>();
                 break;
             case 1:
-                death = death != null ? death : GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>();
+                death = GameObject.FindWithTag("Main Ladder").GetComponent<PianoDeath>();
+                break;
+            case 2:
+                death = GameObject.FindWithTag("Chandelier").GetComponent<ChandelierDeath>();
+                break;
+            case 3:
+                death = GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>();
                 break;
         }
-
-        if (death != null && Input.GetKeyUp(KeyCode.F) && death.ReadyToDeath())
-            death.StartDeath();
+        if (death)
+            death.enabled = true;
     }
 
     public void EndCutScene()
@@ -103,12 +105,9 @@ public class Hero : MonoBehaviour
         cutSceneIndex++;
         death = null;
         mainCamera.ZoomIn(5);
+        ChangeDeath();
         PrepareCutScene();
-    }
-
-    public void FallOnBack()
-    {
-        needToFall = true;
+        ghostScript.canChangePhraseByButton = true;
     }
 
     public void DeadlyScare()
@@ -125,10 +124,11 @@ public class Hero : MonoBehaviour
         Invoke(nameof(Respawn), 2);
         mainCamera.ChangeAimToPlayer();
 
-        if (gameObject.transform.localScale.y != 1.23)
+        if (transform.localScale.y != 1.23 || transform.localScale.x != 1.23)
         {
             var sc = gameObject.transform.localScale;
             sc.y = 1.23f;
+            sc.x = 1.23f;
             gameObject.transform.localScale = sc;
         }
     }
@@ -137,6 +137,7 @@ public class Hero : MonoBehaviour
     {
         var rot = gameObject.transform.rotation;
         rot.z = 0;
+        rb.freezeRotation = true;
         gameObject.transform.rotation = rot;
         gameObject.SetActive(true);
     }
