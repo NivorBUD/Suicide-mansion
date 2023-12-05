@@ -8,7 +8,9 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
-    //[SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpCooldown = 1f;
+    private float lastJumpTime = 0f;
     [SerializeField] private float speed = 3f;
     [SerializeField] GameObject ghost;
     public GameObject bullet;
@@ -62,6 +64,9 @@ public class Hero : MonoBehaviour
         State = States.idle;
         anim = gameObject.GetComponent<Animator>();
 
+        if (Input.GetButtonDown("Jump"))
+            Jump();
+
         if (!isCutScene && Input.GetButton("Horizontal"))
             Run();
 
@@ -112,7 +117,7 @@ public class Hero : MonoBehaviour
 
     public void DeadlyScare()
     {
-        // Тут добавь смену спрайта на испуганное
+        // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         sprite.flipX = !sprite.flipX;
         Invoke(nameof(Death), 1);
         EndCutScene();
@@ -148,16 +153,14 @@ public class Hero : MonoBehaviour
         set { anim.SetInteger("state", (int)value); }
     }
 
-    //private void CheckGround()
-    //{
-    //    Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.3f);
-    //    isGrounded = collider.Length > 1;
-    //}
-
-    //private void Jump()
-    //{
-    //    rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-    //}
+    private void Jump()
+    {
+        if (Time.time - lastJumpTime >= jumpCooldown)
+        {
+            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            lastJumpTime = Time.time;
+        }
+    }
 }
 
 public enum States {
