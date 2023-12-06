@@ -3,7 +3,7 @@ using UnityEngine;
 public class TriggerScript : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private Renderer renderer;
+    [SerializeField] private Renderer render;
     private bool hasTriggered = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -17,9 +17,9 @@ public class TriggerScript : MonoBehaviour
             }
 
             // Делаем объект невидимым
-            if (renderer != null)
+            if (render != null)
             {
-                renderer.enabled = false;
+                render.enabled = false;
             }
 
             hasTriggered = true;

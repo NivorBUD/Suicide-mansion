@@ -21,13 +21,13 @@ public class PianoDeath : DeathClass
         Destroy(prop);
         LadderHorizontalInteraction.StopUsingMidPos();
         col.enabled = true;
-        InventoryLogic.UseItem(playerScript.inventory["Shovel Inv"]);
+        InventoryLogic.UseItem(playerScript.inventory["Shovel"]);
         piano.GetComponent<Rigidbody2D>().simulated = true;
         midPos.SetActive(false);
     }
 
     public override bool ReadyToDeath(){
-        return isPlayerInPlace && playerScript.inventory.ContainsKey("Shovel Inv");
+        return isPlayerInPlace && playerScript.inventory.ContainsKey("Shovel");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

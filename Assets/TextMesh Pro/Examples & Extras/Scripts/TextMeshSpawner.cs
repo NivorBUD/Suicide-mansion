@@ -33,8 +33,8 @@ namespace TMPro.Examples
                     go.transform.position = new Vector3(Random.Range(-95f, 95f), 0.5f, Random.Range(-95f, 95f));
 
                     //go.transform.position = new Vector3(0, 1.01f, 0);
-                    //go.renderer.castShadows = false;
-                    //go.renderer.receiveShadows = false;
+                    //go.render.castShadows = false;
+                    //go.render.receiveShadows = false;
                     //go.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
 
                     TextMeshPro textMeshPro = go.AddComponent<TextMeshPro>();

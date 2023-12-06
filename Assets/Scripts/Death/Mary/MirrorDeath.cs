@@ -31,13 +31,13 @@ public class MirrorDeath : DeathClass
 
     public override bool ReadyToDeath()
     {
-        return isPlayerInArea && !isPlay && player.inventory.ContainsKey("Marker Inv") && player.inventory.ContainsKey("Candle Inv");
+        return isPlayerInArea && !isPlay && player.inventory.ContainsKey("Marker") && player.inventory.ContainsKey("Candle");
     }
 
     public override void StartDeath()
     {
-        InventoryLogic.UseItem(player.inventory["Marker Inv"]);
-        InventoryLogic.UseItem(player.inventory["Candle Inv"]);
+        InventoryLogic.UseItem(player.inventory["Marker"]);
+        InventoryLogic.UseItem(player.inventory["Candle"]);
         isPlay = true;
         player.isCutScene = true;
         StartDraw();

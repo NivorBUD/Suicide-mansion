@@ -68,7 +68,7 @@ namespace TMPro.Examples
                                        
                     TextMesh textMesh = go.AddComponent<TextMesh>();
                     textMesh.font = Resources.Load("Fonts/ARIAL", typeof(Font)) as Font;
-                    textMesh.renderer.sharedMaterial = textMesh.font.material;
+                    textMesh.render.sharedMaterial = textMesh.font.material;
                     textMesh.anchor = TextAnchor.MiddleLeft;
                     textMesh.fontSize = i * 10;
 

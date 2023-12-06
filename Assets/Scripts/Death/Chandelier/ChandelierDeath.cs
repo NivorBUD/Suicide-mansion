@@ -16,8 +16,8 @@ public class ChandelierDeath : DeathClass
 
     public override bool ReadyToDeath()
     {
-        return (!isShoot && isPlayerInShootPlace && player.inventory.ContainsKey("Keys Inv") 
-            && player.inventory.ContainsKey("Slingshot Inv"));
+        return (!isShoot && isPlayerInShootPlace && player.inventory.ContainsKey("Keys") 
+            && player.inventory.ContainsKey("Slingshot"));
     }
 
     public static void EnterShootPlace()
@@ -32,8 +32,8 @@ public class ChandelierDeath : DeathClass
 
     public override void StartDeath()
     {
-        InventoryLogic.UseItem(player.inventory["Keys Inv"]);
-        InventoryLogic.UseItem(player.inventory["Slingshot Inv"]);
+        InventoryLogic.UseItem(player.inventory["Keys"]);
+        InventoryLogic.UseItem(player.inventory["Slingshot"]);
         isShoot = true;
         bullet.transform.position = player.bulletPlace.position;
         bullet.GetComponent<Bullet>().isStart = true;

@@ -77,12 +77,12 @@ namespace TMPro.Examples
                 if (TextMeshFont != null)
                 {
                     m_textMesh.font = TextMeshFont;
-                    //m_textMesh.renderer.sharedMaterial = m_textMesh.font.material;
+                    //m_textMesh.render.sharedMaterial = m_textMesh.font.material;
                 }
                 else
                 {
                     //m_textMesh.font = Resources.Load("Fonts/ARIAL", typeof(Font)) as Font;
-                    //m_textMesh.renderer.sharedMaterial = m_textMesh.font.material;
+                    //m_textMesh.render.sharedMaterial = m_textMesh.font.material;
                 }
 
                 m_textMesh.fontSize = 48;

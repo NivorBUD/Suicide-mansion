@@ -6,7 +6,6 @@ public class BathroomDoor : MonoBehaviour
 {
     [SerializeField] private BathroomDoorTrigger trig;
     [SerializeField] private GameObject openedDoor;
-    private bool isOpen = false;
     private Hero playerScript;
 
     private void Start()
@@ -16,10 +15,9 @@ public class BathroomDoor : MonoBehaviour
 
     private void Update()
     {
-        if (trig.isPlayerInArea && Input.GetKeyUp(KeyCode.F) && playerScript.inventory.ContainsKey("Bathroom key Inv"))
+        if (trig.isPlayerInArea && Input.GetKeyUp(KeyCode.F) && playerScript.inventory.ContainsKey("Bathroom key"))
         {
-            InventoryLogic.UseItem(playerScript.inventory["Bathroom key Inv"]);
-            isOpen = true;
+            InventoryLogic.UseItem(playerScript.inventory["Bathroom key"]);
             openedDoor.SetActive(true);
             gameObject.SetActive(false);
         }
