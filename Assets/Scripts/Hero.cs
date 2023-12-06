@@ -27,7 +27,7 @@ public class Hero : MonoBehaviour
 
     private void Start()
     {
-        cutSceneIndex = 1;
+        cutSceneIndex = 0;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();

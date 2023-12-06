@@ -10,6 +10,7 @@ public class Piano : MonoBehaviour
     public GameObject key;
     public PianoDeath pd;
     public bool isEnd;
+    public BoxCollider2D floorCollider;
 
     private Hero playerScript;
     private GameObject player;
@@ -54,7 +55,8 @@ public class Piano : MonoBehaviour
             keypos.z = 1;
             transform.position = keypos;
             keypos.z = -1;
-            keypos.y = -4.1f;
+            keypos.y = -4f;
+            floorCollider.enabled = true;
             key.transform.position = keypos;
             key.SetActive(true);
             isEnd = true;
