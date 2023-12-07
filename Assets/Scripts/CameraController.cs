@@ -33,6 +33,7 @@ public class CameraController : MonoBehaviour
         aim = player.transform;
         isAimPlayer = true;
         speed = 1.0f;
+        ZoomIn(5);
     }
 
     public void ZoomIn(float size)
