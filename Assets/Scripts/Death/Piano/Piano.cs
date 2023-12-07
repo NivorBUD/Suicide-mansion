@@ -15,7 +15,7 @@ public class Piano : MonoBehaviour
     private Hero playerScript;
     private GameObject player;
     private Rigidbody2D rb;
-    private BoxCollider2D bc;
+    private PolygonCollider2D bc;
 
 
     void Start()
@@ -23,7 +23,7 @@ public class Piano : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        bc = gameObject.GetComponent<BoxCollider2D>();
+        bc = gameObject.GetComponent<PolygonCollider2D>();
     }
 
     void Update()
