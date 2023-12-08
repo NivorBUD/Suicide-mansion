@@ -9,6 +9,8 @@ public class Plant : MonoBehaviour
     [SerializeField] private LineRenderer liana1;
     [SerializeField] private LineRenderer liana2;
     [SerializeField] private Wardrobe wardrobe;
+    [SerializeField] private GameObject smoke;
+    [SerializeField] private GameObject door;
     
     private Acid acidScript;
     private Flamethrower flamethrowerScript;
@@ -19,6 +21,7 @@ public class Plant : MonoBehaviour
     private bool needToMoveAcid;
 
     [SerializeField] private Transform upPos;
+    [SerializeField] private Transform cutscenePos;
     private Vector3 pos1;
     private Vector3 pos2;
     private Vector3 endPos1;
@@ -59,7 +62,7 @@ public class Plant : MonoBehaviour
 
     void Update()
     {
-        if (!playerScript.isCutScene && ReadyToStart() && Input.GetKeyUp(KeyCode.F))
+        if (!playerScript.isCutScene && ReadyToStart())
             StartDeath();
 
         if (!playerScript.isCutScene && ReadyToKillThePlant() && Input.GetKeyUp(KeyCode.F))
@@ -83,8 +86,8 @@ public class Plant : MonoBehaviour
 
     IEnumerator CutScene1()
     {
-        cameraController.ZoomIn(1);
-        cameraController.ChangeAim(acid.transform);
+        cameraController.ZoomIn(2);
+        cameraController.ChangeAim(cutscenePos);
         acidScript.GetAndMoveToHand();
         yield return new WaitForSeconds(1f);
 
@@ -128,11 +131,24 @@ public class Plant : MonoBehaviour
 
     IEnumerator CutScene2()
     {
-        cameraController.ZoomIn(1);
-        cameraController.ChangeAim(flamethrower.transform);
+        cameraController.ZoomIn(2);
+        cameraController.ChangeAim(cutscenePos);
         flamethrowerScript.GetAndMoveToHand();
         yield return new WaitForSeconds(1f);
 
+        while (!flamethrowerScript.isReady)
+            yield return new WaitForSeconds(0.1f);
 
+        flamethrowerScript.Fire();
+        yield return new WaitForSeconds(1f);
+
+        smoke.SetActive(true);
+        yield return new WaitForSeconds(3f);
+
+        gameObject.SetActive(false);
+        door.SetActive(false);
+        flamethrower.SetActive(false);
+        playerScript.EndCutScene();
+        InventoryLogic.UseItem(playerScript.inventory["Flamethrower"]);
     }
 }

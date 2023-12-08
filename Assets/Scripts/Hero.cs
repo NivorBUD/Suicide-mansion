@@ -108,6 +108,7 @@ public class Hero : MonoBehaviour
         cutSceneIndex++;
         death = null;
         mainCamera.ZoomIn(5);
+        mainCamera.ChangeAimToPlayer();
         ChangeDeath();
         PrepareCutScene();
         ghostScript.canChangePhraseByButton = true;
