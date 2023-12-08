@@ -8,6 +8,7 @@ public class GameLogic : MonoBehaviour
     public GameObject activeBall;
     public SpriteRenderer activeBallRenderer;
     [SerializeField] GameObject acid;
+    [SerializeField] ParticleSystem poof;
 
     [SerializeField] private Bottle bottle1;
     [SerializeField] private Bottle bottle2;
@@ -40,20 +41,18 @@ public class GameLogic : MonoBehaviour
     private void EndGame()
     {
         isEnd = true;
-        gameObject.SetActive(false);
 
         cameraController.ChangeAimToPlayer();
         playerScript.isCutScene = false;
-
+        
         acid.SetActive(true);
     }
 
-    public void SetActiveBall(Color color)
+    public void SetActiveBall(Sprite sprite)
     {
-        if (color == Color.black)
+        if (sprite == null)
             return;
-        activeBall.SetActive(true);
-        activeBallRenderer.color = color;
+        activeBallRenderer.sprite = sprite;
     }
 
     public void ReadyBottle()
@@ -64,6 +63,11 @@ public class GameLogic : MonoBehaviour
     void Update()
     {
         if (!isEnd && readyBottlesCount == 3)
-            EndGame();
+        {
+            gameObject.SetActive(false);
+            poof.Play();
+            Invoke(nameof(EndGame), 1f);
+        }
+            
     }
 }

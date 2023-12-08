@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Wardrobe : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Sprite brakeSprite;
+    [SerializeField] GameObject flammenwerfer;
+    public void ChangeSprite()
     {
-        
+        //gameObject.GetComponent<SpriteRenderer>().sprite = brakeSprite;
+        gameObject.GetComponent<SpriteRenderer>().color = Color.black;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DropFlammenwerfer()
     {
-        
+        flammenwerfer.SetActive(true);
     }
 }

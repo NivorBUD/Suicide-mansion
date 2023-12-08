@@ -5,40 +5,42 @@ using UnityEngine;
 
 public class Bottle : MonoBehaviour
 {
-    [SerializeField] private GameObject[] balls = new GameObject[3];
+    [SerializeField] private SpriteRenderer[] items = new SpriteRenderer[3];
     [SerializeField] private GameLogic gameLogic;
     private bool isReady;
+    public bool isClick;
 
     private void OnMouseDown()
     {
+        isClick = !isClick;
         if (isReady)
             return;
-        if (gameLogic.activeBall.activeSelf)
+        if (gameLogic.activeBallRenderer.sprite != null)
             SetBall();
         else
             gameLogic.SetActiveBall(GetBall());
     }
 
-    private Color GetBall()
+    private Sprite GetBall()
     {
-        for (int i = 0; i < balls.Length; i++)
-            if (balls[i].activeSelf)
+        for (int i = 0; i < items.Length; i++)
+            if (items[i].sprite != null)
             {
-                balls[i].SetActive(false);
-                return balls[i].GetComponent<SpriteRenderer>().color;
+                var sprite = items[i].sprite;
+                items[i].sprite = null;
+                return sprite;
             }
                 
-        return Color.black;
+        return null;
     }
 
     private void SetBall()
     {
-        for (int i = balls.Length - 1; i > -1; i--)
-            if (!balls[i].activeSelf)
+        for (int i = items.Length - 1; i > -1; i--)
+            if (items[i].sprite == null)
             {
-                balls[i].SetActive(true);
-                balls[i].GetComponent<SpriteRenderer>().color = gameLogic.activeBallRenderer.color;
-                gameLogic.activeBall.SetActive(false);
+                items[i].sprite = gameLogic.activeBallRenderer.sprite;
+                gameLogic.activeBallRenderer.sprite = null;
                 checkReady();
                 return;
             }
@@ -46,16 +48,19 @@ public class Bottle : MonoBehaviour
 
     private void checkReady()
     {
-        Color color = Color.cyan;
-        for (int i = 0; i < balls.Length; i++)
-            if (balls[i].activeSelf)
+        Sprite sprite = null;
+        for (int i = 0; i < items.Length; i++)
+            if (items[i].sprite != null)
             {
-                color = balls[i].GetComponent<SpriteRenderer>().color;
+                sprite = items[i].sprite;
                 break;
             }
 
-        for (int i = 0; i < balls.Length; i++)
-            if (!balls[i].activeSelf || balls[i].GetComponent<SpriteRenderer>().color != color)
+        if (sprite == null)
+            return;
+
+        for (int i = 0; i < items.Length; i++)
+            if (items[i].sprite == null || items[i].sprite != sprite)
                 return;
         isReady = true;
         gameLogic.ReadyBottle();
