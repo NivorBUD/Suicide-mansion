@@ -10,6 +10,9 @@ public class Flamethrower : MonoBehaviour
     [SerializeField] GameObject fire;
     [SerializeField] Transform firePlace;
     private bool needToMove;
+    public bool needToRotate;
+    private float zAngle;
+    public int rotateNum;
 
     void Update()
     {
@@ -21,6 +24,24 @@ public class Flamethrower : MonoBehaviour
 
         if (gameObject.transform.position == holdingPlace.transform.position)
             isReady = true;
+
+        if (needToRotate)
+            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.Euler(0, 0, zAngle), Time.deltaTime);
+
+        if (needToRotate && gameObject.transform.rotation.eulerAngles.z <= 330.3)
+        {
+            zAngle = 30;
+            rotateNum++;
+        }
+            
+
+        if (needToRotate && gameObject.transform.rotation.eulerAngles.z >= 359.7 && rotateNum % 2 == 1)
+        {
+            zAngle = -30;
+            rotateNum++;
+            if (rotateNum == 4)
+                needToRotate = false;
+        }
     }
 
     public void GetAndMoveToHand()
@@ -32,7 +53,15 @@ public class Flamethrower : MonoBehaviour
 
     public void Fire()
     {
+        rotateNum = 0;
+        zAngle = -30;
         fire.transform.position = firePlace.position;
         fire.SetActive(true);
+        Invoke(nameof(Rotate), 2f);
+    }
+
+    private void Rotate()
+    {
+        needToRotate = true;
     }
 }

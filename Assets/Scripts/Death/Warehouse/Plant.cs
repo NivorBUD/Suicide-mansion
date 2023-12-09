@@ -140,11 +140,16 @@ public class Plant : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
         flamethrowerScript.Fire();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         smoke.SetActive(true);
         yield return new WaitForSeconds(3f);
 
+
+        while (flamethrowerScript.needToRotate || flamethrowerScript.rotateNum != 4)
+            yield return new WaitForSeconds(0.1f);
+        
+        yield return new WaitForSeconds(1f);
         gameObject.SetActive(false);
         door.SetActive(false);
         flamethrower.SetActive(false);
