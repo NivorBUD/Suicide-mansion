@@ -12,6 +12,7 @@ TagManager:
   - Mirror
   - Ghost
   - Main Ladder
+  - Liana
   layers:
   - Default
   - TransparentFX

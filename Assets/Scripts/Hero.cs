@@ -62,7 +62,7 @@ public class Hero : MonoBehaviour
         State = States.idle;
         anim = gameObject.GetComponent<Animator>();
 
-        if (Input.GetButtonDown("Jump"))
+        if (!isCutScene && Input.GetButtonDown("Jump"))
             Jump();
 
         if (!isCutScene && Input.GetButton("Horizontal"))
@@ -125,7 +125,7 @@ public class Hero : MonoBehaviour
     public void Death()
     {
         gameObject.SetActive(false);
-        Invoke(nameof(Respawn), 2);
+        Invoke(nameof(Respawn), 3);
         mainCamera.ChangeAimToPlayer();
 
         if (transform.localScale.y != 1.23 || transform.localScale.x != 1.23)

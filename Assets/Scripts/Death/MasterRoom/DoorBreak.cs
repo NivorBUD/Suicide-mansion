@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class DoorBreak : MonoBehaviour
 {
-    public GameObject door;
     public GameObject board;
-    public GameObject object1;
-    public GameObject object2;
     private Hero playerScript;
-    private bool hasTriggered = false;
+    [SerializeField] private Trigger trigger;
+    [SerializeField] private GameObject blackOut;
+    private bool hasTriggered;
+    private ConstantForce2D force;
+    private Rigidbody2D rb;
     private CameraController cameraController;
     private float originalCameraSize;
 
@@ -18,11 +19,13 @@ public class DoorBreak : MonoBehaviour
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         originalCameraSize = cameraController.GetComponent<Camera>().orthographicSize;
+        force = gameObject.GetComponent<ConstantForce2D>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasTriggered && collision.CompareTag("Player"))
+        if (!hasTriggered && collision.CompareTag("Player") && playerScript.inventory.ContainsKey("Axe"))
         {
             StartCoroutine(BreakDoor());
             hasTriggered = true;
@@ -32,38 +35,39 @@ public class DoorBreak : MonoBehaviour
     private IEnumerator BreakDoor()
     {
         // Блок управления перса
-        playerScript.enabled = false;
+        playerScript.isCutScene = true;
 
         // Зум камеры
         cameraController.ZoomIn(originalCameraSize * 0.75f);
 
-        // Поворот двери (чтобы она по физике падала)
-        door.transform.rotation = Quaternion.Euler(0, 0, 100);
-
-        // Отключение затемнений в комнате(во избежании багов)
-        object1.SetActive(false);
-        object2.SetActive(false);
+        // Отключаем затемнение на время катсцены 
+        blackOut.SetActive(false);
 
         // Включение физики у двери
-        Rigidbody2D doorRigidbody = door.GetComponent<Rigidbody2D>();
-        doorRigidbody.constraints = RigidbodyConstraints2D.None;
+        Rigidbody2D doorRigidbody = gameObject.GetComponent<Rigidbody2D>();
+        doorRigidbody.bodyType = RigidbodyType2D.Dynamic;
 
-        yield return new WaitForSeconds(1.5f); // Ожидание 1.5 сек
+        // Топор пропадает из инвентаря
+        InventoryLogic.UseItem(playerScript.inventory["Axe"]);
 
-        // Вкл управление перса
-        playerScript.enabled = true;
-        // Возращение камеры в исходное состояние
-        cameraController.ZoomIn(originalCameraSize);
+        // Добавление силы (чтобы она по физике падала)
+        force.force = new Vector2(-0.5f, 0);
+        yield return new WaitForSeconds(1f);
 
         // Дверь пропадает, появляется доска
-        door.SetActive(false);
+        while (rb.angularVelocity >= 0.01)
+            yield return new WaitForSeconds(0.1f);
+        gameObject.SetActive(false);
         board.SetActive(true);
 
-        yield return new WaitForSeconds(2f); // Ожидание две секунды чтобы не было затемнения в комнатах
+        // Возращение камеры в исходное состояние
+        cameraController.ChangeAimToPlayer();
 
-        // Включаем логику затемнения
-        object1.SetActive(true);
-        object2.SetActive(true);
+        // Вкл управление перса
+        playerScript.isCutScene = false;
 
+        //yield return new WaitForSeconds(1.5f);
+        // Включаем затемнение
+        blackOut.SetActive(true);
     }
 }

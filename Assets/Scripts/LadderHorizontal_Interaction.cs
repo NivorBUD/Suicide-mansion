@@ -13,8 +13,6 @@ public class LadderHorizontalInteraction : MonoBehaviour
     private GameObject player;
     private bool isPlayerInArea;
 
-
-
     private void Start()
     {
         isUseMidPos = true;
@@ -24,12 +22,14 @@ public class LadderHorizontalInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isPlayerInArea = true;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isPlayerInArea = false;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = false;
     }
 
     public static void StopUsingMidPos()

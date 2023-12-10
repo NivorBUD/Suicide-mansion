@@ -3,29 +3,32 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour
 {
-    [SerializeField] private PlantTrigger trigger;
+    [SerializeField] private Trigger trigger;
     [SerializeField] private GameObject acid;
     [SerializeField] private GameObject flamethrower;
-    [SerializeField] private LineRenderer liana1;
-    [SerializeField] private LineRenderer liana2;
-    [SerializeField] private Wardrobe wardrobe;
-    [SerializeField] private GameObject smoke;
-    [SerializeField] private GameObject door;
+    [SerializeField] private GameObject downLiana;
+    [SerializeField] private GameObject upLiana;
+    [SerializeField] private GameObject downLianaWay;
+    [SerializeField] private GameObject upLianaWay;
     
+    [SerializeField] private Wardrobe wardrobe; 
+    [SerializeField] private GameObject door;
+    [SerializeField] private GameObject axe;
+    [SerializeField] private GameObject body;
+    [SerializeField] private GameObject blackOut;
+
+    private ParticleSystem smoke;
     private Acid acidScript;
     private Flamethrower flamethrowerScript;
     private Hero playerScript;
     private GameObject player;
     private CameraController cameraController;
-    private bool needToMoveLianas;
     private bool needToMoveAcid;
+    private LianaHead downLianaScript;
+    private LianaHead upLianaScript;
 
     [SerializeField] private Transform upPos;
     [SerializeField] private Transform cutscenePos;
-    private Vector3 pos1;
-    private Vector3 pos2;
-    private Vector3 endPos1;
-    private Vector3 endPos2;
     private float acidAngle = 0;
 
     private bool ReadyToStart()
@@ -58,6 +61,9 @@ public class Plant : MonoBehaviour
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         acidScript = acid.GetComponent<Acid>();
         flamethrowerScript = flamethrower.GetComponent<Flamethrower>();
+        smoke = gameObject.GetComponent<ParticleSystem>();
+        downLianaScript = downLiana.GetComponent<LianaHead>();
+        upLianaScript = upLiana.GetComponent<LianaHead>();
     }
 
     void Update()
@@ -69,64 +75,84 @@ public class Plant : MonoBehaviour
             KillThePlant();
 
         if (needToMoveAcid)
-            acid.transform.position = Vector3.MoveTowards(acid.transform.position, endPos1, 1f * Time.deltaTime);
-
-        if (needToMoveLianas)
         {
-            pos1 = Vector3.MoveTowards(pos1, endPos1, 1f * Time.deltaTime);
-            liana1.SetPosition(1, pos1);
-
-            pos2 = Vector3.MoveTowards(pos2, endPos2, 1.2f * Time.deltaTime);
-            liana2.SetPosition(1, pos2);
+            var pos = upLianaScript.lianaHead.transform.position;
+            pos.y -= 0.2f;
+            acid.transform.position = pos;
         }
-
+            
         if (acidAngle != 0)
             acid.transform.rotation = Quaternion.Slerp(acid.transform.rotation, Quaternion.Euler(acidAngle, 0, 0), 3f * Time.deltaTime);
     }
 
     IEnumerator CutScene1()
     {
+        door.GetComponent<BoxCollider2D>().isTrigger = true;
+        blackOut.SetActive(false);
+
         cameraController.ZoomIn(2);
         cameraController.ChangeAim(cutscenePos);
         acidScript.GetAndMoveToHand();
         yield return new WaitForSeconds(1f);
 
-        liana1.SetPosition(0, liana1.transform.position);
-        liana2.SetPosition(0, liana2.transform.position);
-        pos1 = liana1.transform.position;
-        pos2 = liana2.transform.position;
-        endPos1 = acid.transform.position;
-        endPos2 = player.transform.position;
-        endPos2.y += 0.5f;
-        endPos2.x += 0.2f;
-        needToMoveLianas = true;
+        playerScript.rb.simulated = false;
+        playerScript.GetComponent<BoxCollider2D>().enabled = false;
+        downLianaWay.SetActive(true);
+        downLiana.SetActive(true);
+        upLianaWay.SetActive(true);
+        upLiana.SetActive(true);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        downLianaScript.StartMove();
+        upLianaScript.StartMove();
+        
+        while (!upLianaScript.trigger.isTriggered) 
+            yield return new WaitForSeconds(0.2f);
+        
 
-        while (pos1 != acid.transform.position)
-            yield return new WaitForSeconds(0.1f);
+        upLianaScript.trigger.isTriggered = false;
+        upLianaScript.trigger.enabled = false;
+        yield return new WaitForEndOfFrame();
 
         needToMoveAcid = true;
         InventoryLogic.UseItem(playerScript.inventory["Acid"]);
-        endPos1 = upPos.position;
-        endPos1.x = player.transform.position.x;
-        while (acid.transform.position != endPos1)
+
+        upLianaScript.MoveUp();
+        upLianaScript.trigger.transform.position = upPos.position;
+        yield return new WaitForSeconds(1f);
+
+        upLianaScript.trigger.enabled = true;
+
+        while (!upLianaScript.trigger.isTriggered)
             yield return new WaitForSeconds(0.1f);
+
 
         acidAngle = 180;
         while (acid.transform.rotation.eulerAngles.z <= 179)
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.02f);
 
         playerScript.Death();
         playerScript.EndCutScene();
+        playerScript.rb.simulated = true;
+        playerScript.GetComponent<BoxCollider2D>().enabled = true;
 
-        endPos1 = liana1.transform.position;
-        endPos2= liana2.transform.position;
-        while (pos1 != endPos1)
-            yield return new WaitForSeconds(0.1f);
+        downLianaScript.StartReverseMove();
+        upLianaScript.StartReverseMove();
+
         acid.SetActive(false);
         wardrobe.ChangeSprite();
         wardrobe.DropFlammenwerfer();
         needToMoveAcid = false;
-        needToMoveLianas = false;
+
+        yield return new WaitForSeconds(2.5f);
+        downLianaWay.SetActive(false);
+        upLianaWay.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+        blackOut.SetActive(true);
+        Destroy(upLiana);
+        Destroy(downLiana);
+        door.GetComponent<BoxCollider2D>().isTrigger = false;
     }
 
     IEnumerator CutScene2()
@@ -142,7 +168,7 @@ public class Plant : MonoBehaviour
         flamethrowerScript.Fire();
         yield return new WaitForSeconds(3f);
 
-        smoke.SetActive(true);
+        smoke.Play();
         yield return new WaitForSeconds(3f);
 
 
@@ -150,9 +176,13 @@ public class Plant : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         
         yield return new WaitForSeconds(1f);
-        gameObject.SetActive(false);
+
+        body.SetActive(false);
         door.SetActive(false);
         flamethrower.SetActive(false);
+        smoke.Stop();
+
+        axe.SetActive(true);
         playerScript.EndCutScene();
         InventoryLogic.UseItem(playerScript.inventory["Flamethrower"]);
     }

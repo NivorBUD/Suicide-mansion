@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlantTrigger : MonoBehaviour
+public class Trigger : MonoBehaviour
 {
     public bool isPlayerInArea;
 
@@ -13,11 +13,13 @@ public class PlantTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isPlayerInArea = true;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isPlayerInArea = false;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = false;
     }
 }

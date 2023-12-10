@@ -29,11 +29,13 @@ public class LadderInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isPlayerInArea = true;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isPlayerInArea = false;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = false;
     }
 }
