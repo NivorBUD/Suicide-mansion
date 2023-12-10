@@ -1,14 +1,11 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Piano : MonoBehaviour
 {
     public BrokenDoorInteraction door;
     public GameObject key;
-    public PianoDeath pd;
+    public PianoDeath deathScript;
     public bool isEnd;
     public BoxCollider2D floorCollider;
 
@@ -37,32 +34,56 @@ public class Piano : MonoBehaviour
 
         if (!door.isBroke && transform.localPosition.x <= -11)
         {
-            door.Break();
-            playerScript.rb.AddForce(new Vector2(-10, 5), ForceMode2D.Impulse);
-            playerScript.rb.freezeRotation = false;
-            playerScript.isCutScene = true;
+            BreakDoor();
         }
 
         if (playerScript.isCutScene && Math.Round(player.transform.rotation.eulerAngles.z, 1) == 90 && playerScript.rb.velocity.x == 0)
         {
             playerScript.Death();
-            playerScript.EndCutScene();
+            Invoke(nameof(TurnOnBlackOut), 3.5f);
         }
+            
 
         if (!isEnd && transform.localPosition.x < -11 && rb.velocity.x == 0)
         {
-            var keypos = transform.position;
-            keypos.z = 1;
-            transform.position = keypos;
-            keypos.z = -1;
-            keypos.y = -4f;
-            floorCollider.enabled = true;
-            key.transform.position = keypos;
-            key.SetActive(true);
-            isEnd = true;
-            rb.simulated = false;
-            bc.enabled = false;
-            pd.col.enabled = false;
+            EndDeath();
         }
+    }
+
+    private void BreakDoor()
+    {
+        var speed = rb.velocity;
+        speed.x /= 2;
+        rb.velocity = speed;
+
+        door.Break();
+
+        playerScript.rb.AddForce(new Vector2(-10, 5), ForceMode2D.Impulse);
+        playerScript.rb.freezeRotation = false;
+        playerScript.isCutScene = true;
+        deathScript.blackOut.SetActive(false);
+    }
+
+    private void EndDeath()
+    {
+        var keypos = transform.position;
+        keypos.z = 1;
+        transform.position = keypos;
+
+        keypos.z = -1;
+        keypos.y = -4f;
+        floorCollider.enabled = true;
+        key.transform.position = keypos;
+        key.SetActive(true);
+        
+        isEnd = true;
+        rb.simulated = false;
+        bc.enabled = false;
+        deathScript.col.enabled = false;
+    }
+
+    private void TurnOnBlackOut()
+    {
+        deathScript.blackOut.SetActive(true);
     }
 }

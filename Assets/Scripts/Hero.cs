@@ -14,7 +14,6 @@ public class Hero : MonoBehaviour
     public GameObject bullet;
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
-    public int cutSceneIndex;
     public Transform bulletPlace;
     public bool isCutScene = false;
 
@@ -27,14 +26,11 @@ public class Hero : MonoBehaviour
 
     private void Start()
     {
-        cutSceneIndex = 1;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         bulletPlace = GameObject.FindWithTag("Bullet Start Place").GetComponent<Transform>();
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        ChangeDeath();
-        PrepareCutScene();
         ghostScript = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
     }
 
@@ -67,50 +63,13 @@ public class Hero : MonoBehaviour
 
         if (!isCutScene && Input.GetButton("Horizontal"))
             Run();
-
-        if (death != null && Input.GetKeyDown(KeyCode.F) && death.ReadyToDeath())
-        {
-            ghostScript.canChangePhraseByButton = false;
-            death.StartDeath();
-        }
-    }
-
-    private void PrepareCutScene()
-    {
-        if (cutSceneIndex == 1)
-            GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
-    }
-
-    private void ChangeDeath()
-    {
-        switch (cutSceneIndex)
-        {
-            case 0:
-                death = GameObject.FindWithTag("Basement").GetComponent<BasementDeath>();
-                break;
-            case 1:
-                death = GameObject.FindWithTag("Main Ladder").GetComponent<PianoDeath>();
-                break;
-            case 2:
-                death = GameObject.FindWithTag("Chandelier").GetComponent<ChandelierDeath>();
-                break;
-            case 3:
-                death = GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>();
-                break;
-        }
-        if (death)
-            death.enabled = true;
     }
 
     public void EndCutScene()
     {
         isCutScene = false;
-        cutSceneIndex++;
-        death = null;
         mainCamera.ZoomIn(5);
         mainCamera.ChangeAimToPlayer();
-        ChangeDeath();
-        PrepareCutScene();
         ghostScript.canChangePhraseByButton = true;
     }
 
@@ -119,14 +78,13 @@ public class Hero : MonoBehaviour
         // ��� ������ ����� ������� �� ����������
         sprite.flipX = !sprite.flipX;
         Invoke(nameof(Death), 1);
-        EndCutScene();
     }
 
     public void Death()
     {
+        EndCutScene();
         gameObject.SetActive(false);
         Invoke(nameof(Respawn), 3);
-        mainCamera.ChangeAimToPlayer();
 
         if (transform.localScale.y != 1.23 || transform.localScale.x != 1.23)
         {
@@ -161,7 +119,8 @@ public class Hero : MonoBehaviour
     }
 }
 
-public enum States {
+public enum States 
+{
     idle,
     walk
 }

@@ -7,6 +7,7 @@ public class MirrorDeath : DeathClass
     public GameObject mary;
     public GameObject drawing;
     public GameObject button;
+    public GameObject blackOut;
 
     private GameObject mainCamera;
     private CameraController cameraController;
@@ -36,6 +37,7 @@ public class MirrorDeath : DeathClass
 
     public override void StartDeath()
     {
+        blackOut.SetActive(false);
         InventoryLogic.UseItem(player.inventory["Marker"]);
         InventoryLogic.UseItem(player.inventory["Candle"]);
         isPlay = true;
@@ -63,8 +65,7 @@ public class MirrorDeath : DeathClass
     public void SpawnMary()
     {
         cameraController.ZoomIn(5);
-        var pl = GameObject.FindWithTag("Player");
-        var playerPos = pl.transform.position;
+        var playerPos = GameObject.FindWithTag("Player").transform.position;
         Vector3 maryNewPos = playerPos;
         maryNewPos.x += 2; 
         maryNewPos.y += 1.5f; 
@@ -73,6 +74,12 @@ public class MirrorDeath : DeathClass
         player.DeadlyScare();
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
+        Invoke(nameof(TurnOnBlackOut), 4.2f);
+    }
+
+    private void TurnOnBlackOut()
+    {
+        blackOut.SetActive(true);
     }
 
     private void Update()
@@ -82,5 +89,8 @@ public class MirrorDeath : DeathClass
             button.SetActive(true);
             isEnd = true;
         }
+
+        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
+            StartDeath();
     }
 }

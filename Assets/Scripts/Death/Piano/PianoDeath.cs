@@ -3,13 +3,14 @@ using UnityEngine;
 public class PianoDeath : DeathClass
 {
     private static bool isPlayerInPlace = false;
+    private Hero playerScript;
+    private GameObject player;
+
+    public GameObject blackOut;
     public GameObject prop;
     public GameObject piano;
     public PolygonCollider2D col;
     public GameObject midPos;
-
-    private Hero playerScript;
-    private GameObject player;
 
     private void Start()
     {
@@ -17,7 +18,8 @@ public class PianoDeath : DeathClass
         playerScript = player.GetComponent<Hero>();
     }
 
-    public override void StartDeath(){
+    public override void StartDeath()
+    {
         Destroy(prop);
         LadderHorizontalInteraction.StopUsingMidPos();
         col.enabled = true;
@@ -26,7 +28,8 @@ public class PianoDeath : DeathClass
         midPos.SetActive(false);
     }
 
-    public override bool ReadyToDeath(){
+    public override bool ReadyToDeath()
+    {
         return isPlayerInPlace && playerScript.inventory.ContainsKey("Shovel");
     }
 
@@ -38,5 +41,11 @@ public class PianoDeath : DeathClass
     private void OnTriggerExit2D(Collider2D collision)
     {
         isPlayerInPlace = false;
+    }
+
+    private void Update()
+    {
+        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F)) 
+            StartDeath();
     }
 }

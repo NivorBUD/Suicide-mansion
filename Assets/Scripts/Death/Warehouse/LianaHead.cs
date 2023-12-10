@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class LianaHead : MonoBehaviour
 {
-    [SerializeField] public LianaTrigger trigger;
-    [SerializeField] public GameObject lianaHead;
+    public LianaTrigger trigger;
+    public GameObject lianaHead;
+    [SerializeField] private GameObject lianaMid;
     [SerializeField] private GameObject lianaEnd;
     
     private float xHeadVelocity;
     private float yHeadVelocity;
     private float xEndVelocity;
     private Rigidbody2D rbHead;
+    private Rigidbody2D rbMid;
     private Rigidbody2D rbEnd;
     private bool needToReturn;
     private bool needToUp;
@@ -23,6 +22,7 @@ public class LianaHead : MonoBehaviour
         yHeadVelocity = 0;
         xEndVelocity = 0;
         rbHead = lianaHead.GetComponent<Rigidbody2D>();
+        rbMid = lianaMid.GetComponent<Rigidbody2D>();
         rbEnd = lianaEnd.GetComponent<Rigidbody2D>();
         needToReturn = false;
     }
@@ -38,14 +38,17 @@ public class LianaHead : MonoBehaviour
         if (!needToUp && !needToReturn && trigger.isTriggered) 
         {
             rbEnd.bodyType = RigidbodyType2D.Static;
+            rbMid.bodyType = RigidbodyType2D.Static;
             xHeadVelocity = 0;
             yHeadVelocity = 0;
         }
 
         if (needToUp && trigger.isTriggered)
         {
-            rbEnd.bodyType = RigidbodyType2D.Static;
+            needToUp = false;
             rbHead.bodyType = RigidbodyType2D.Static;
+            rbMid.bodyType = RigidbodyType2D.Static;
+            rbEnd.bodyType = RigidbodyType2D.Static;
             xHeadVelocity = 0;
             yHeadVelocity = 0;
         }
@@ -60,8 +63,9 @@ public class LianaHead : MonoBehaviour
     {
         xEndVelocity = -6;
         needToReturn = true;
-        rbEnd.bodyType = RigidbodyType2D.Dynamic;
         rbHead.bodyType = RigidbodyType2D.Dynamic;
+        rbMid.bodyType = RigidbodyType2D.Dynamic;
+        rbEnd.bodyType = RigidbodyType2D.Dynamic;
     }
 
     public void MoveUp()
@@ -70,5 +74,6 @@ public class LianaHead : MonoBehaviour
         xHeadVelocity = 3;
         yHeadVelocity = 5;
         rbEnd.bodyType = RigidbodyType2D.Dynamic;
+        rbMid.bodyType = RigidbodyType2D.Dynamic;
     }
 }

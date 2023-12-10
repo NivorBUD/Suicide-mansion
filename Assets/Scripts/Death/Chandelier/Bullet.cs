@@ -7,16 +7,16 @@ public class Bullet : MonoBehaviour
     public bool isStart = false;
 
     private Vector3[] targets;
-    private Chandelier_Interaction chandelier_interaction;
+    private Chandelier_Interaction chandelierInteraction;
     private int targetindex = 0;
     
 
     void Start()
     {
-        chandelier_interaction = GameObject.FindWithTag("Chandelier").GetComponent<Chandelier_Interaction>();
+        chandelierInteraction = GameObject.FindWithTag("Chandelier").GetComponent<Chandelier_Interaction>();
         targets = new Vector3[12];
-        for (int i = 0; i < chandelier_interaction.targets.Length; i++)
-            targets[i] = chandelier_interaction.targets[i].transform.position;
+        for (int i = 0; i < chandelierInteraction.targets.Length; i++)
+            targets[i] = chandelierInteraction.targets[i].transform.position;
     }
 
     private void Update()
@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
             {
                 if (targetindex == targets.Length - 1)
                 {
-                    chandelier_interaction.Fall();
+                    chandelierInteraction.Fall();
                     Destroy(gameObject);
                     GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ChangeAim(GameObject.FindWithTag("Chandelier").transform);
                 }

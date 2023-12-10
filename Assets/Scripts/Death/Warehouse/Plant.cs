@@ -124,7 +124,7 @@ public class Plant : MonoBehaviour
         upLianaScript.trigger.enabled = true;
 
         while (!upLianaScript.trigger.isTriggered)
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.02f);
 
 
         acidAngle = 180;
@@ -132,7 +132,6 @@ public class Plant : MonoBehaviour
             yield return new WaitForSeconds(0.02f);
 
         playerScript.Death();
-        playerScript.EndCutScene();
         playerScript.rb.simulated = true;
         playerScript.GetComponent<BoxCollider2D>().enabled = true;
 
