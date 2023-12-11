@@ -10,12 +10,14 @@ public class Item_Interaction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        IsHeroInArea = true;
+        if (collision.CompareTag("Player"))
+            IsHeroInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        IsHeroInArea = false;
+        if (collision.CompareTag("Player"))
+            IsHeroInArea = false;
     }
 
 
@@ -28,7 +30,6 @@ public class Item_Interaction : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))

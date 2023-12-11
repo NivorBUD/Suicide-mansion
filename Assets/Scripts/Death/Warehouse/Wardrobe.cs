@@ -6,6 +6,8 @@ public class Wardrobe : MonoBehaviour
 {
     [SerializeField] Sprite brakeSprite;
     [SerializeField] GameObject flammenwerfer;
+    [SerializeField] GameObject bathBomb;
+
     public void ChangeSprite()
     {
         //gameObject.GetComponent<SpriteRenderer>().sprite = brakeSprite;
@@ -15,5 +17,13 @@ public class Wardrobe : MonoBehaviour
     public void DropFlammenwerfer()
     {
         flammenwerfer.SetActive(true);
+        bathBomb.SetActive(true);
+        bathBomb.GetComponent<Rigidbody2D>().AddForce(new Vector2(3, 0));
+    }
+
+    private void Update()
+    {
+            
+            
     }
 }

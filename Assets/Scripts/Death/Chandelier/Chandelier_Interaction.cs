@@ -25,6 +25,7 @@ public class Chandelier_Interaction : MonoBehaviour
 
     private void SpawnCandle()
     {
+        candle.SetActive(true);
         var pos = gameObject.transform.position;
         pos.x += 1.5f;
         pos.y -= 0.45f;
