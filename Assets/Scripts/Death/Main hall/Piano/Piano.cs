@@ -25,10 +25,11 @@ public class Piano : MonoBehaviour
 
     void Update()
     {
-        if (transform.localPosition.x <= -10.5f && transform.localPosition.x > -11f)
+        if (transform.localPosition.x <= -10.7f && transform.localPosition.x > -11.35f)
         {
             var sc = player.transform.localScale;
-            sc.x = Math.Abs(-10.5f - transform.localPosition.x);
+            var mult = Math.Max((0.65f - Math.Abs(-10.7f - transform.localPosition.x)) / 0.65f, 0.2f);
+            sc.x = 0.4f * mult;
             player.transform.localScale = sc;
         }
 
@@ -37,7 +38,8 @@ public class Piano : MonoBehaviour
             BreakDoor();
         }
 
-        if (playerScript.isCutScene && Math.Round(player.transform.rotation.eulerAngles.z, 1) == 90 && playerScript.rb.velocity.x == 0)
+        if (playerScript.isCutScene && playerScript.rb.velocity.x == 0 &&
+            (Math.Round(player.transform.rotation.eulerAngles.z, 1) == 90 || Math.Round(player.transform.rotation.eulerAngles.z, 1) == 270))
         {
             playerScript.Death();
             Invoke(nameof(TurnOnBlackOut), 3.5f);

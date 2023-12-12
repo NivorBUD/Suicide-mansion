@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ChandelierDeath : DeathClass
 {
-    public GameObject blackOut;
+    public GameObject blackOut1;
+    public GameObject blackOut2;
     public GameObject bullet;
 
     private Chandelier_Interaction chandelierInteraction;
@@ -35,7 +36,8 @@ public class ChandelierDeath : DeathClass
 
     public override void StartDeath()
     {
-        blackOut.SetActive(false);
+        blackOut1.SetActive(false);
+        blackOut2.SetActive(false);
         player.isCutScene = true;
 
         InventoryLogic.UseItem(player.inventory["Keys"]);
@@ -62,6 +64,7 @@ public class ChandelierDeath : DeathClass
 
     private void TurnOnBlackOut()
     {
-        blackOut.SetActive(true);
+        blackOut1.SetActive(true);
+        blackOut2.SetActive(true);
     }
 }

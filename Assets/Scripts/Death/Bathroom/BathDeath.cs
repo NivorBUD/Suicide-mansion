@@ -20,7 +20,7 @@ public class BathDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return playerScript.inventory.ContainsKey("Bath bomb") && trigger.isPlayerInArea;
+        return playerScript.inventory.ContainsKey("Bath bomb") && trigger.isTriggered;
     }
 
     public void StartDeath()
@@ -85,10 +85,11 @@ public class BathDeath : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
         bubbles.Play();
-        steam.Stop();
+        
 
         yield return new WaitForSeconds(1.5f);
         playerScript.Death();
+        steam.Stop();
         ghostSonScript.StopDrawn();
         player.transform.position = respawnPlace;
     }

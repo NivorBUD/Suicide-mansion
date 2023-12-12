@@ -15,6 +15,7 @@ public class LianaHead : MonoBehaviour
     private Rigidbody2D rbEnd;
     private bool needToReturn;
     private bool needToUp;
+    public bool isUp;
 
     void Start()
     {
@@ -45,6 +46,7 @@ public class LianaHead : MonoBehaviour
 
         if (needToUp && trigger.isTriggered)
         {
+            isUp = true;
             needToUp = false;
             rbHead.bodyType = RigidbodyType2D.Static;
             rbMid.bodyType = RigidbodyType2D.Static;

@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class Trigger : MonoBehaviour
 {
-    public bool isPlayerInArea;
+    public bool isTriggered;
 
     void Start()
     {
-        isPlayerInArea = false;
+        isTriggered = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-            isPlayerInArea = true;
+            isTriggered = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-            isPlayerInArea = false;
+            isTriggered = false;
     }
 }

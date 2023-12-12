@@ -15,7 +15,7 @@ public class SettingNewDesk : MonoBehaviour
 
     void Update()
     {
-        if (trigger.isPlayerInArea && !desk.activeSelf && playerScript.inventory.ContainsKey("Board"))
+        if (trigger.isTriggered && !desk.activeSelf && playerScript.inventory.ContainsKey("Board"))
         {
             InventoryLogic.UseItem(playerScript.inventory["Board"]);
             desk.SetActive(true);

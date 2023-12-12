@@ -11,12 +11,18 @@ public class Hero : MonoBehaviour
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
     [SerializeField] GameObject ghost;
+    [SerializeField] GameObject getPlace;
+    [SerializeField] GameObject holdingPlace;
     public GameObject bullet;
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
     public Transform bulletPlace;
     public bool isCutScene = false;
+    
 
+    private Vector3 liftPos;
+    private bool isLift;
+    private bool isHorizontalLift;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
@@ -41,6 +47,26 @@ public class Hero : MonoBehaviour
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
+        getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
+        holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
+    }
+
+    public void StartLift(bool isHorizontalLadder, Vector3 anotherLadderPos)
+    {
+        rb.velocity = Vector3.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        this.isHorizontalLift = isHorizontalLadder;
+        isLift = !isHorizontalLadder;
+        liftPos = anotherLadderPos;
+        isCutScene = true;
+    }
+
+    public void StopLift()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        isLift = false;
+        isHorizontalLift = false;
+        isCutScene = false;
     }
 
     public void AddToInventiry([SerializeField] GameObject InventoryObject)
@@ -56,13 +82,21 @@ public class Hero : MonoBehaviour
     void Update()
     {
         State = States.idle;
-        anim = gameObject.GetComponent<Animator>();
+        anim = GetComponent<Animator>();
 
         if (!isCutScene && Input.GetButtonDown("Jump"))
             Jump();
 
         if (!isCutScene && Input.GetButton("Horizontal"))
             Run();
+
+        if (isLift || isHorizontalLift)
+        {
+            State = isHorizontalLift ? States.walk : States.lift;
+            transform.position = Vector3.MoveTowards(transform.position, liftPos, speed * Time.deltaTime);
+            if (transform.position == liftPos)
+                StopLift();
+        }
     }
 
     public void EndCutScene()
@@ -86,12 +120,12 @@ public class Hero : MonoBehaviour
         gameObject.SetActive(false);
         Invoke(nameof(Respawn), 3);
 
-        if (transform.localScale.y != 1.23 || transform.localScale.x != 1.23)
+        if (transform.localScale.y != 0.4 || transform.localScale.x != 0.4)
         {
-            var sc = gameObject.transform.localScale;
-            sc.y = 1.23f;
-            sc.x = 1.23f;
-            gameObject.transform.localScale = sc;
+            var sc = transform.localScale;
+            sc.y = 0.4f;
+            sc.x = 0.4f;
+            transform.localScale = sc;
         }
     }
 
@@ -100,11 +134,11 @@ public class Hero : MonoBehaviour
         var rot = gameObject.transform.rotation;
         rot.z = 0;
         rb.freezeRotation = true;
-        gameObject.transform.rotation = rot;
+        transform.rotation = rot;
         gameObject.SetActive(true);
     }
 
-    private States State
+    public States State
     {
         get { return (States)anim.GetInteger("state"); }
         set { anim.SetInteger("state", (int)value); }
@@ -113,14 +147,13 @@ public class Hero : MonoBehaviour
     private void Jump()
     {
         if (rb.velocity.y == 0)
-        {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);        
-        }
     }
 }
 
 public enum States 
 {
     idle,
-    walk
+    walk,
+    lift
 }

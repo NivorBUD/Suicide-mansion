@@ -17,7 +17,7 @@ public class RottenFloor : MonoBehaviour
 
     private void Update()
     {
-        if (!hasTriggered && trigger.isPlayerInArea)
+        if (!hasTriggered && trigger.isTriggered)
         {
             // Включаем звук
             if (audioSource != null)

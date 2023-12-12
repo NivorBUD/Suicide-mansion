@@ -23,7 +23,6 @@ public class Wardrobe : MonoBehaviour
 
     private void Update()
     {
-            
-            
+        
     }
 }

@@ -33,7 +33,7 @@ public class Plant : MonoBehaviour
 
     private bool ReadyToStart()
     {
-        return trigger.isPlayerInArea && playerScript.inventory.ContainsKey("Acid");
+        return trigger.isTriggered && playerScript.inventory.ContainsKey("Acid");
     }
 
     private void StartDeath()
@@ -45,7 +45,7 @@ public class Plant : MonoBehaviour
     
     private bool ReadyToKillThePlant()
     {
-        return trigger.isPlayerInArea && playerScript.inventory.ContainsKey("Flamethrower");
+        return trigger.isTriggered && playerScript.inventory.ContainsKey("Flamethrower");
     }
 
     private void KillThePlant()
@@ -123,7 +123,7 @@ public class Plant : MonoBehaviour
 
         upLianaScript.trigger.enabled = true;
 
-        while (!upLianaScript.trigger.isTriggered)
+        while (!upLianaScript.isUp)
             yield return new WaitForSeconds(0.02f);
 
 

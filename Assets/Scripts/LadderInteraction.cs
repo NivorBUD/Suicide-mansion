@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LadderInteraction : MonoBehaviour
 {
     [SerializeField] GameObject anotherLadderPlace;
-    public static bool canUseLadders;
+    public static bool canUseLadders = true;
 
+    private Hero playerScript;
     private GameObject player;
     private bool isPlayerInArea;
 
@@ -14,6 +13,7 @@ public class LadderInteraction : MonoBehaviour
     {
         isPlayerInArea = false;
         player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<Hero>();
     }
 
     private void Update()
@@ -22,7 +22,8 @@ public class LadderInteraction : MonoBehaviour
         {
             var pos = anotherLadderPlace.transform.position;
             pos.z = player.transform.position.z;
-            player.transform.position = pos;
+            pos.x = player.transform.position.x;
+            playerScript.StartLift(false, pos);
         }
     }
 

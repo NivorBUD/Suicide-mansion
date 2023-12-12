@@ -26,7 +26,7 @@ public class Chandelier_Interaction : MonoBehaviour
     private void SpawnCandle()
     {
         candle.SetActive(true);
-        var pos = gameObject.transform.position;
+        var pos = transform.position;
         pos.x += 1.5f;
         pos.y -= 0.45f;
         candle.transform.position = pos;
@@ -34,18 +34,20 @@ public class Chandelier_Interaction : MonoBehaviour
 
     private void Update()
     {
-        if (gameObject.transform.position.y <= -1.5 && gameObject.transform.position.y > -3.1)
+        if (rb.simulated && transform.position.y <= -1.8 && transform.position.y > -3.6)
         {
-            var scale = player.transform.localScale;
-            scale.y = Math.Abs(-3.1f - gameObject.transform.position.y);
-            player.transform.localScale = scale;
+            var sc = player.transform.localScale;
+            var mult = (1.8f - Math.Abs(-1.8f - transform.localPosition.y)) / 1.8f;
+            sc.y = 0.4f * mult;
+            player.transform.localScale = sc;
+            player.transform.localScale = sc;
         }
 
-        if (rb.simulated && !isDrop && gameObject.transform.position.y < -3.1)
+        if (rb.simulated && !isDrop && transform.position.y < -3.1)
         {
             isDrop = true;
             rb.simulated = false;
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;
             playerScript.Death();
             GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
             Invoke(nameof(SpawnCandle), 0.25f);

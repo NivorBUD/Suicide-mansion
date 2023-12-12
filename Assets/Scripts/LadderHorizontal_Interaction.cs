@@ -43,7 +43,7 @@ public class LadderHorizontalInteraction : MonoBehaviour
         {
             var pos = isUseMidPos ? midLadderPos.transform.position : anotherLadderPlace.transform.position;
             pos.z = player.transform.position.z;
-            player.transform.position = pos;
+            playerScript.StartLift(true, pos);
         }
     }
 }
