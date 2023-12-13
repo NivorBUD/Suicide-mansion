@@ -10,6 +10,7 @@ public class BathDeath : MonoBehaviour
     [SerializeField] private ParticleSystem steam;
     [SerializeField] private ParticleSystem bubbles;
     [SerializeField] private GameObject blackOut;
+    [SerializeField] private GameObject downPosAtticLadder;
 
     private Ghost ghostScript;
     private GhostSon ghostSonScript;
@@ -92,5 +93,8 @@ public class BathDeath : MonoBehaviour
         steam.Stop();
         ghostSonScript.StopDrawn();
         player.transform.position = respawnPlace;
+
+        downPosAtticLadder.GetComponent<BoxCollider2D>().enabled = true;
+        blackOut.SetActive(true);
     }
 }

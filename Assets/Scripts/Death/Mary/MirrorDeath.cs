@@ -68,7 +68,7 @@ public class MirrorDeath : DeathClass
         var playerPos = GameObject.FindWithTag("Player").transform.position;
         Vector3 maryNewPos = playerPos;
         maryNewPos.x += 2; 
-        maryNewPos.y += 1.5f; 
+        maryNewPos.y += 0.4f; 
         mary.SetActive(true);
         mary.transform.position = maryNewPos;
         player.DeadlyScare();

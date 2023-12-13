@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEditor.Tilemaps;
 using UnityEngine;
-
+using UnityEngine.U2D;
+using UnityEngine.UIElements;
 
 public class Hero : MonoBehaviour
 {
@@ -59,6 +60,7 @@ public class Hero : MonoBehaviour
         isLift = !isHorizontalLadder;
         liftPos = anotherLadderPos;
         isCutScene = true;
+        sprite.flipX = transform.position.x > anotherLadderPos.x;
     }
 
     public void StopLift()
@@ -136,6 +138,19 @@ public class Hero : MonoBehaviour
         rb.freezeRotation = true;
         transform.rotation = rot;
         gameObject.SetActive(true);
+    }
+
+    public void Up()
+    {
+        sprite.flipX = true;
+        rb.AddForce(transform.right * jumpForce, ForceMode2D.Impulse);
+        Invoke(nameof(TurnUp), 0.05f);
+    }
+
+    private void TurnUp()
+    {
+        transform.eulerAngles = new Vector3(0, 0, 0);
+        isCutScene = false;
     }
 
     public States State

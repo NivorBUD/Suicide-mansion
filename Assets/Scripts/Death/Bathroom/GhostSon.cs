@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostSon : MonoBehaviour
@@ -57,7 +55,7 @@ public class GhostSon : MonoBehaviour
             needToMoveToPlayer = true;
             var pos = player.transform.position;
             pos.x -= 0.5f;
-            pos.y += 0.6f;
+            pos.y -= 0.1f;
             pos1.position = pos;
         }
 
@@ -73,7 +71,7 @@ public class GhostSon : MonoBehaviour
         if (needToDrawn)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos.position, speed * Time.deltaTime);
-            player.transform.position = new Vector3(gameObject.transform.position.x + 0.5f, gameObject.transform.position.y - 0.6f, gameObject.transform.position.z);
+            player.transform.position = new Vector3(gameObject.transform.position.x + 0.5f, gameObject.transform.position.y + 0.1f, 0);
         }
 
         if (gameObject.transform.position == endPos.position)

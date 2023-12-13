@@ -5,6 +5,7 @@ public class Piano : MonoBehaviour
 {
     public BrokenDoorInteraction door;
     public GameObject key;
+    public Transform keyPos;
     public PianoDeath deathScript;
     public bool isEnd;
     public BoxCollider2D floorCollider;
@@ -21,6 +22,8 @@ public class Piano : MonoBehaviour
         playerScript = player.GetComponent<Hero>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bc = gameObject.GetComponent<PolygonCollider2D>();
+
+        rb.centerOfMass = new Vector2(0, -1.5f);
     }
 
     void Update()
@@ -38,8 +41,8 @@ public class Piano : MonoBehaviour
             BreakDoor();
         }
 
-        if (playerScript.isCutScene && playerScript.rb.velocity.x == 0 &&
-            (Math.Round(player.transform.rotation.eulerAngles.z, 1) == 90 || Math.Round(player.transform.rotation.eulerAngles.z, 1) == 270))
+        if (!isEnd && playerScript.isCutScene && playerScript.rb.velocity.x == 0 &&
+            (Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 90) < 0.1f || Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 270) < 0.1f))
         {
             playerScript.Death();
             Invoke(nameof(TurnOnBlackOut), 3.5f);
@@ -68,14 +71,8 @@ public class Piano : MonoBehaviour
 
     private void EndDeath()
     {
-        var keypos = transform.position;
-        keypos.z = 1;
-        transform.position = keypos;
-
-        keypos.z = -1;
-        keypos.y = -4f;
         floorCollider.enabled = true;
-        key.transform.position = keypos;
+        key.transform.position = keyPos.position;
         key.SetActive(true);
         
         isEnd = true;

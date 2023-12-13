@@ -1,9 +1,6 @@
-using System.Collections;
+using System;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Ghost : MonoBehaviour
 {
@@ -57,7 +54,7 @@ public class Ghost : MonoBehaviour
     public void ChangeAimToPlayer()
     {
         aimXDelta = 1.5f;
-        aimYDelta = 1.5f;
+        aimYDelta = 0.4f;
         aim = player.transform;
     }
 
@@ -84,7 +81,7 @@ public class Ghost : MonoBehaviour
 
     public bool CheckIsNearThePlayer()
     {
-        return gameObject && transform.position.x == player.transform.position.x + 1.5f && transform.position.y == player.transform.position.y + 1.5f;
+        return gameObject && Math.Abs(transform.position.x - (player.transform.position.x + 1.5f)) <= 0.1f && Math.Abs(transform.position.y - (player.transform.position.y + 0.4f)) <= 0.1f;
     }
 
     private void ChangeDialog()

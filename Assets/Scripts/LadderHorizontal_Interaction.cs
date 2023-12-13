@@ -11,13 +11,14 @@ public class LadderHorizontalInteraction : MonoBehaviour
 
     private Hero playerScript;
     private GameObject player;
-    private bool isPlayerInArea;
+    public bool isPlayerInArea;
 
     private void Start()
     {
         isUseMidPos = true;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
