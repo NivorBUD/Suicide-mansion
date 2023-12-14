@@ -4,6 +4,8 @@ public class Shield : MonoBehaviour
 {
     public Trigger trigger;
     public ElectricMinigameLogic gameLogic;
+    public TerraceDoor terraceDoor;
+    public BoxCollider2D ropeCollider, pantaloonsCollider;
 
     private CameraController mainCamera;
     private GameObject player;
@@ -21,7 +23,6 @@ public class Shield : MonoBehaviour
         if (trigger.isTriggered && Input.GetKeyDown(KeyCode.F))
         {
             playerScript.isCutScene = true;
-            //gameLogic.gameObject.SetActive(true);
             gameLogic.StartGame();
             mainCamera.ZoomIn(1);
             mainCamera.ChangeAim(gameLogic.gameObject.transform);
@@ -30,6 +31,13 @@ public class Shield : MonoBehaviour
 
     public void StartDeath()
     {
-        mainCamera.ChangeAimToPlayer();
+        mainCamera.ChangeAim(player.transform);
+
+        terraceDoor.Open();
+
+        playerScript.EndCutScene();
+
+        pantaloonsCollider.enabled = true;
+        ropeCollider.enabled = true;
     }
 }

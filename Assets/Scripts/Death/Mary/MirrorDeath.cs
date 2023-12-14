@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MirrorDeath : DeathClass
+public class MirrorDeath : MonoBehaviour
 {
     public GameObject mary;
     public GameObject drawing;
@@ -30,12 +30,12 @@ public class MirrorDeath : DeathClass
         cameraController = mainCamera.GetComponent<CameraController>();
     }
 
-    public override bool ReadyToDeath()
+    public bool ReadyToDeath()
     {
         return isPlayerInArea && !isPlay && player.inventory.ContainsKey("Marker") && player.inventory.ContainsKey("Candle");
     }
 
-    public override void StartDeath()
+    public void StartDeath()
     {
         blackOut.SetActive(false);
         InventoryLogic.UseItem(player.inventory["Marker"]);

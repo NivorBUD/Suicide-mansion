@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UI.unity
     guid: b7cbedbfe08924fc1b93a51a49cb31e5
+  - enabled: 1
+    path: Assets/Scenes/Terrace and backyard.unity
+    guid: 386f9b0eed1a81f4eb838e6eff730942
   m_configObjects: {}

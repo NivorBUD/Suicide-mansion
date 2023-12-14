@@ -19,7 +19,7 @@ public class Hero : MonoBehaviour
     public Dictionary<string, GameObject> inventory = new();
     public Transform bulletPlace;
     public bool isCutScene = false;
-    
+    public int sceneIndex;
 
     private Vector3 liftPos;
     private bool isLift;
@@ -27,9 +27,7 @@ public class Hero : MonoBehaviour
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
-    private DeathClass death;
     private Ghost ghostScript;
-
 
     private void Start()
     {
@@ -38,7 +36,8 @@ public class Hero : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         bulletPlace = GameObject.FindWithTag("Bullet Start Place").GetComponent<Transform>();
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        ghostScript = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
+        ghost = GameObject.FindWithTag("Ghost");
+        ghostScript = ghost.GetComponent<Ghost>();
     }
 
     private void Run()

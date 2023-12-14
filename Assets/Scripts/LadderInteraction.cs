@@ -3,7 +3,7 @@ using UnityEngine;
 public class LadderInteraction : MonoBehaviour
 {
     [SerializeField] GameObject anotherLadderPlace;
-    public static bool canUseLadders = true;
+    public static bool canUseLadders = false;
 
     private Hero playerScript;
     private GameObject player;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PianoDeath : DeathClass
+public class PianoDeath : MonoBehaviour
 {
     private static bool isPlayerInPlace = false;
     private Hero playerScript;
@@ -18,7 +18,7 @@ public class PianoDeath : DeathClass
         playerScript = player.GetComponent<Hero>();
     }
 
-    public override void StartDeath()
+    public void StartDeath()
     {
         Destroy(prop);
         LadderHorizontalInteraction.StopUsingMidPos();
@@ -28,7 +28,7 @@ public class PianoDeath : DeathClass
         midPos.SetActive(false);
     }
 
-    public override bool ReadyToDeath()
+    public bool ReadyToDeath()
     {
         return isPlayerInPlace && playerScript.inventory.ContainsKey("Shovel");
     }

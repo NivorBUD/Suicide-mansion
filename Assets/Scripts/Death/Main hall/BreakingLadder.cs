@@ -46,7 +46,7 @@ public class BreakingLadder : MonoBehaviour
             if (!isEnd)
             {
                 if (downTrigger.isTriggered && !floorCollider.enabled)
-                    if (Math.Abs(player.transform.localEulerAngles.z - 90) <= 5f)
+                    if (Math.Abs(player.transform.localEulerAngles.z - 90) <= 8f)
                         EndDeath();
                 
                 if (upTrigger.isTriggered && floorCollider.enabled)

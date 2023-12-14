@@ -5,7 +5,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BasementDeath : DeathClass
+public class BasementDeath : MonoBehaviour
 {
     public GameObject leftWall;
     public GameObject rightWall;
@@ -37,7 +37,7 @@ public class BasementDeath : DeathClass
     }
 
 
-    public override void StartDeath()
+    public void StartDeath()
     {
         blackOut.SetActive(false);
         ghostScript.canChangePhraseByButton = false;
@@ -91,7 +91,7 @@ public class BasementDeath : DeathClass
             MoveWallToStart();
     }
 
-    public override bool ReadyToDeath()
+    public bool ReadyToDeath()
     {
         return !isStart && gameObject && ghostScript.isDialog;
     }

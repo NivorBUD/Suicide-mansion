@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChandelierDeath : DeathClass
+public class ChandelierDeath : MonoBehaviour
 {
     public GameObject blackOut1;
     public GameObject blackOut2;
@@ -19,7 +19,7 @@ public class ChandelierDeath : DeathClass
         chandelierInteraction = gameObject.GetComponent<Chandelier_Interaction>();
     }
 
-    public override bool ReadyToDeath()
+    public bool ReadyToDeath()
     {
         return (!isShoot && isPlayerInShootPlace && player.inventory.ContainsKey("Keys") && player.inventory.ContainsKey("Slingshot"));
     }
@@ -34,7 +34,7 @@ public class ChandelierDeath : DeathClass
         isPlayerInShootPlace = false;
     }
 
-    public override void StartDeath()
+    public void StartDeath()
     {
         blackOut1.SetActive(false);
         blackOut2.SetActive(false);

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour
 {
+    public BoxCollider2D axeCollider;
+
     [SerializeField] private Trigger trigger;
     [SerializeField] private GameObject acid;
     [SerializeField] private GameObject flamethrower;
@@ -184,5 +186,6 @@ public class Plant : MonoBehaviour
         axe.SetActive(true);
         playerScript.EndCutScene();
         InventoryLogic.UseItem(playerScript.inventory["Flamethrower"]);
+        axeCollider.enabled = true;
     }
 }
