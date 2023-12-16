@@ -25,9 +25,15 @@ public class Item_Interaction : MonoBehaviour
     {
         if (InventoryLogic.InventoryItems < 3)
         {
+            PlayGetSound(); // звук подбора предмета
             InventoryLogic.TakeItem(InventoryObject);
             Destroy(gameObject);
         }
+    }
+
+    private void PlayGetSound()
+    {
+
     }
 
     void Update()

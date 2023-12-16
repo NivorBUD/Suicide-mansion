@@ -20,8 +20,12 @@ public class BathroomDoor : MonoBehaviour
             InventoryLogic.UseItem(playerScript.inventory["Bathroom key"]);
             openedDoor.SetActive(true);
             gameObject.SetActive(false);
+            PlayOpenSound(); // звук открытия двери
         }
     }
 
+    private void PlayOpenSound()
+    {
 
+    }
 }

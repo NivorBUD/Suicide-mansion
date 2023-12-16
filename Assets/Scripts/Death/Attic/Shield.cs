@@ -31,6 +31,7 @@ public class Shield : MonoBehaviour
 
     public void StartDeath()
     {
+        PlayElectricShockSound(); // звук удара током
         mainCamera.ChangeAim(player.transform);
 
         terraceDoor.Open();
@@ -39,5 +40,10 @@ public class Shield : MonoBehaviour
 
         pantaloonsCollider.enabled = true;
         ropeCollider.enabled = true;
+    }
+
+    private void PlayElectricShockSound()
+    {
+
     }
 }

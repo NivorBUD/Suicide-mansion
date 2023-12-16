@@ -45,7 +45,7 @@ public class PianoDeath : MonoBehaviour
 
     private void Update()
     {
-        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F)) 
+        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F) && !playerScript.isCutScene) 
             StartDeath();
     }
 }

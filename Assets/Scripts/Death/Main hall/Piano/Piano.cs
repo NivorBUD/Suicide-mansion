@@ -39,6 +39,7 @@ public class Piano : MonoBehaviour
         if (!door.isBroke && transform.localPosition.x <= -11)
         {
             BreakDoor();
+            PlayBreakPianoSound(); //звук ломания пианино
         }
 
         if (!isEnd && playerScript.isCutScene && playerScript.rb.velocity.x == 0 &&
@@ -53,6 +54,11 @@ public class Piano : MonoBehaviour
         {
             EndDeath();
         }
+    }
+
+    private void PlayBreakPianoSound()
+    {
+
     }
 
     private void BreakDoor()

@@ -5,10 +5,10 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public bool isStart = false;
+    public int targetindex = 0;
 
     private Vector3[] targets;
     private Chandelier_Interaction chandelierInteraction;
-    private int targetindex = 0;
     
 
     void Start()
@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour
 
             if (gameObject.transform.position == targets[targetindex])
             {
+                PlayRicochetSound(); // звук рикошета
                 if (targetindex == targets.Length - 1)
                 {
                     chandelierInteraction.Fall();
@@ -38,5 +39,10 @@ public class Bullet : MonoBehaviour
                 targetindex++;
             }
         }
+    }
+
+    private void PlayRicochetSound()
+    {
+
     }
 }

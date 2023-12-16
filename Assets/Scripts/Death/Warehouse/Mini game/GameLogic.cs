@@ -44,8 +44,14 @@ public class GameLogic : MonoBehaviour
 
         cameraController.ChangeAimToPlayer();
         playerScript.isCutScene = false;
-        
+
+        PlayPuffSound(); // звук пуф при создании кислоты
         acid.SetActive(true);
+    }
+
+    private void PlayPuffSound()
+    {
+        
     }
 
     public void SetActiveBall(Sprite sprite)

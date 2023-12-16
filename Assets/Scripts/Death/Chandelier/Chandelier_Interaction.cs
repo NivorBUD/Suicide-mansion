@@ -48,9 +48,15 @@ public class Chandelier_Interaction : MonoBehaviour
             isDrop = true;
             rb.simulated = false;
             GetComponent<BoxCollider2D>().enabled = false;
+            PlayBreakSound(); // звук ломания люстры
             playerScript.Death();
             GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
             Invoke(nameof(SpawnCandle), 0.25f);
         }
+    }
+
+    private void PlayBreakSound() 
+    { 
+
     }
 }

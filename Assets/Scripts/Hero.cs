@@ -110,9 +110,14 @@ public class Hero : MonoBehaviour
 
     public void DeadlyScare()
     {
-        // ��� ������ ����� ������� �� ����������
+        PlayScareSound(); // звук испуга
         sprite.flipX = !sprite.flipX;
         Invoke(nameof(Death), 1);
+    }
+
+    private void PlayScareSound()
+    {
+
     }
 
     public void Death()

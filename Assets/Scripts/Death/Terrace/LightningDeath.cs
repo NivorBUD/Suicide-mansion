@@ -6,12 +6,10 @@ public class LightningDeath : MonoBehaviour
 {
     [SerializeField] private GameObject pantaloons;
     [SerializeField] private GameObject rope;
-    [SerializeField] private GameObject clouds;
-    [SerializeField] private TriggerByName cloudsTrigger;
+    [SerializeField] private Clouds cloudsScript;
 
     private Hero playerScript;
     private Pantaloons pantaloonsScript;
-    private Clouds cloudsScript;
     private CameraController cameraController;
 
     public void StartDeath()
@@ -25,7 +23,6 @@ public class LightningDeath : MonoBehaviour
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         pantaloonsScript = pantaloons.GetComponent<Pantaloons>();
-        cloudsScript = clouds.GetComponent<Clouds>();
     }
 
     IEnumerator CutScene()
@@ -51,8 +48,13 @@ public class LightningDeath : MonoBehaviour
         while (!pantaloonsScript.isReadyToLightning)
             yield return new WaitForSeconds(0.1f);
 
+        cameraController.ZoomIn(10);
+        cameraController.ChangeAim(cloudsScript.gameObject.transform);
+        cloudsScript.Move();
 
+        while (!cloudsScript.isReady)
+            yield return new WaitForSeconds(0.1f);
 
-
+        cloudsScript.StartRain();
     }
 }

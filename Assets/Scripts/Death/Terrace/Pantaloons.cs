@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class Pantaloons : MonoBehaviour
 {
-    [SerializeField] private GameObject getPlace;
-    [SerializeField] private GameObject holdingPlace;
-    [SerializeField] private GameObject flagPoleDownPos;
-    [SerializeField] private GameObject flagPoleUpPos;
+    [SerializeField] private GameObject getPlace, holdingPlace, flagPoleDownPos, flagPoleUpPos;
 
-    private bool needToMove;
-    private bool needToMoveToDownPos;
-    private bool needToMoveToUpPos;
-    public bool isReady;
-    public bool isReadyToLightning;
+    private bool needToMove, needToMoveToDownPos, needToMoveToUpPos;
+    public bool isReady, isReadyToLightning;
 
     void Start()
     {
@@ -25,10 +19,10 @@ public class Pantaloons : MonoBehaviour
         if (!isReady && needToMove)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, holdingPlace.transform.position, Time.deltaTime);
-            gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(1, 1, 1), Time.deltaTime);
+            gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(0.7f, 0.7f, 0.7f), 2 * Time.deltaTime);
         }
 
-        if (gameObject.transform.position == holdingPlace.transform.position && gameObject.transform.localScale.x == 1)
+        if (gameObject.transform.position == holdingPlace.transform.position && gameObject.transform.localScale.x == 0.7f)
             isReady = true;
 
         if (needToMoveToDownPos)

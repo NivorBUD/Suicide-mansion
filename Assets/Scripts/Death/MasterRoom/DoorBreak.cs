@@ -8,6 +8,7 @@ public class DoorBreak : MonoBehaviour
     private Hero playerScript;
     [SerializeField] private Trigger trigger;
     [SerializeField] private GameObject blackOut;
+    [SerializeField] private Axe axe;
     private bool hasTriggered;
     private ConstantForce2D force;
     private Rigidbody2D rb;
@@ -25,11 +26,30 @@ public class DoorBreak : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasTriggered && collision.CompareTag("Player") && playerScript.inventory.ContainsKey("Axe"))
-        {
-            StartCoroutine(BreakDoor());
+        if (collision.CompareTag("Player"))
             hasTriggered = true;
-        }
+    } 
+    
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+            hasTriggered = false;
+    }
+
+    private void Update()
+    {
+        if (hasTriggered && playerScript.inventory.ContainsKey("Axe") && Input.GetKeyUp(KeyCode.F))
+            StartCoroutine(BreakDoor());
+    }
+
+    private void PlayBreakSound()
+    {
+
+    }
+
+    private void PlayHitSound()
+    {
+
     }
 
     private IEnumerator BreakDoor()
@@ -38,17 +58,35 @@ public class DoorBreak : MonoBehaviour
         playerScript.isCutScene = true;
 
         // Зум камеры
-        cameraController.ZoomIn(originalCameraSize * 0.75f);
+        cameraController.ChangeAim(playerScript.gameObject.transform);
+        cameraController.ZoomIn(3);
 
         // Отключаем затемнение на время катсцены 
         blackOut.SetActive(false);
 
+        // Топор пропадает из инвентаря
+        InventoryLogic.UseItem(playerScript.inventory["Axe"]);
+
+        // достаем топор
+        axe.GetAndMoveToHand();
+        while (!axe.isReady)
+            yield return new WaitForSeconds(0.1f);
+
+        //делаем 3 удара топором
+        for (int i = 0; i < 3; i++)
+        {
+            axe.Hit();
+            while (!axe.isReady)
+                yield return new WaitForSeconds(0.1f);
+            PlayHitSound(); //звук удара топора
+        }
+        
         // Включение физики у двери
         Rigidbody2D doorRigidbody = gameObject.GetComponent<Rigidbody2D>();
         doorRigidbody.bodyType = RigidbodyType2D.Dynamic;
+        axe.gameObject.SetActive(false);
 
-        // Топор пропадает из инвентаря
-        InventoryLogic.UseItem(playerScript.inventory["Axe"]);
+        PlayBreakSound(); //звук удара топором по двери
 
         // Добавление силы (чтобы она по физике падала)
         force.force = new Vector2(-0.5f, 0);
@@ -57,8 +95,10 @@ public class DoorBreak : MonoBehaviour
         // Дверь пропадает, появляется доска
         while (rb.angularVelocity >= 0.01)
             yield return new WaitForSeconds(0.1f);
-        gameObject.SetActive(false);
+        
         board.SetActive(true);
+        GetComponent<BoxCollider2D>().isTrigger = true;
+        rb.simulated = false;
 
         // Возращение камеры в исходное состояние
         cameraController.ChangeAimToPlayer();
@@ -66,7 +106,8 @@ public class DoorBreak : MonoBehaviour
         // Вкл управление перса
         playerScript.isCutScene = false;
 
-        //yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
+
         // Включаем затемнение
         blackOut.SetActive(true);
     }

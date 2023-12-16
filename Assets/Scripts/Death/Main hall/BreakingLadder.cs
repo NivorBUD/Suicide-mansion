@@ -72,6 +72,7 @@ public class BreakingLadder : MonoBehaviour
 
     private void Break()
     {
+        PlayBreakSound(); // звук поломки лестницы
         playerScript.StopLift();
         playerScript.isCutScene = true;
         cameraController.ZoomIn(2);
@@ -79,6 +80,11 @@ public class BreakingLadder : MonoBehaviour
         playerScript.rb.freezeRotation = false;
         GetComponent<SpriteRenderer>().sprite = brokenLadder;
         ladderInteraction.enabled = false;
+    }
+
+    private void PlayBreakSound()
+    {
+
     }
 
     private void EndDeath()

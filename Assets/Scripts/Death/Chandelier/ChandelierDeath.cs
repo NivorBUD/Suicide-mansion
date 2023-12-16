@@ -58,7 +58,7 @@ public class ChandelierDeath : MonoBehaviour
         if (chandelierInteraction.isDrop)
         {
             chandelierInteraction.isDrop = false;
-            Invoke(nameof(TurnOnBlackOut), 4f);
+            Invoke(nameof(TurnOnBlackOut), 3f);
         }
     }
 
