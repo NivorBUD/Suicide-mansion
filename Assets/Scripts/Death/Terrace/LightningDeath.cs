@@ -56,5 +56,9 @@ public class LightningDeath : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
         cloudsScript.StartRain();
+
+        playerScript.EndCutScene();
     }
+
+    
 }

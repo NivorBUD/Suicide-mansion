@@ -21,23 +21,23 @@ public class Axe : MonoBehaviour
     {
         if (!isReady && needToMove)
         {
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, holdingPlace.transform.position, Time.deltaTime);
-            gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(0.48f, 0.48f, 0.48f), 3 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, holdingPlace.transform.position, Time.deltaTime);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.48f, 0.48f, 0.48f), 3 * Time.deltaTime);
         }
 
-        if (needToMove && gameObject.transform.position == holdingPlace.transform.position && gameObject.transform.localScale.x == 0.48f)
+        if (needToMove && transform.position == holdingPlace.transform.position && transform.localScale.x == 0.48f)
         {
             isReady = true;
             needToMove = false;
         }
 
         if (needToHit)
-            gameObject.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, zAngle), 5 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, zAngle), 5 * Time.deltaTime);
 
-        if (needToHit && Math.Abs(gameObject.transform.rotation.eulerAngles.z - 330) <= 0.5f)
+        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 330) <= 0.5f)
             zAngle = 40;
 
-        if (needToHit && Math.Abs(gameObject.transform.rotation.eulerAngles.z - 30) <= 0.5f)
+        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 30) <= 0.5f)
         {
             isReady = true;
             needToHit = false;

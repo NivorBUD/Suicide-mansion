@@ -13,13 +13,11 @@ public class DoorBreak : MonoBehaviour
     private ConstantForce2D force;
     private Rigidbody2D rb;
     private CameraController cameraController;
-    private float originalCameraSize;
 
     private void Start()
     {
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        originalCameraSize = cameraController.GetComponent<Camera>().orthographicSize;
         force = gameObject.GetComponent<ConstantForce2D>();
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
