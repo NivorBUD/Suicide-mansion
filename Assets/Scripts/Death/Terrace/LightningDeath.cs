@@ -1,16 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class LightningDeath : MonoBehaviour
 {
-    [SerializeField] private GameObject pantaloons;
-    [SerializeField] private GameObject rope;
+    [SerializeField] private GameObject pantaloons, rope, treasureKey;
     [SerializeField] private Clouds cloudsScript;
 
     private Hero playerScript;
     private Pantaloons pantaloonsScript;
     private CameraController cameraController;
+    private BoxCollider2D keyCollider;
+    private Rigidbody2D keyrb;
 
     public void StartDeath()
     {
@@ -23,6 +24,17 @@ public class LightningDeath : MonoBehaviour
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         pantaloonsScript = pantaloons.GetComponent<Pantaloons>();
+        keyCollider = treasureKey.GetComponent<BoxCollider2D>();
+        keyrb = treasureKey.GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if (treasureKey != null && treasureKey.transform.localPosition.y <= -3 && keyrb.velocity.y == 0)
+        {
+            keyCollider.isTrigger = true;
+            keyrb.bodyType = RigidbodyType2D.Static;
+        }
     }
 
     IEnumerator CutScene()
@@ -56,9 +68,17 @@ public class LightningDeath : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
         cloudsScript.StartRain();
+        cloudsScript.StartLightning();
 
-        playerScript.EndCutScene();
+        yield return new WaitForSeconds(3);
+
+        cameraController.ChangeAimToPlayer();
+
+        playerScript.Death();
+
+        cloudsScript.StopRain();
+        cloudsScript.StopLightning();
+
+        treasureKey.SetActive(true);
     }
-
-    
 }

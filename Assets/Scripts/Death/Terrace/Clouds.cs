@@ -7,7 +7,7 @@ public class Clouds : MonoBehaviour
     public Transform hitPosition;
     public bool isReady;
 
-    [SerializeField] private ParticleSystem rain;
+    [SerializeField] private ParticleSystem rain, lightnings;
 
     private bool needToMove = false;
 
@@ -39,8 +39,13 @@ public class Clouds : MonoBehaviour
         rain.Stop();
     }
 
-    public void Lightning()
+    public void StartLightning()
     {
+        lightnings.Play();
+    }
 
+    public void StopLightning()
+    {
+        lightnings.Stop();
     }
 }
