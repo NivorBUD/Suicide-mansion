@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LadderInteraction : MonoBehaviour
 {
     [SerializeField] GameObject anotherLadderPlace;
+    public static bool canUseLadders = true;
 
-    private GameObject player;
     private Hero playerScript;
+    private GameObject player;
     private bool isPlayerInArea;
 
     private void Start()
@@ -19,21 +18,24 @@ public class LadderInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerInArea && playerScript.cutSceneIndex != 0 && Input.GetKeyDown(KeyCode.F))
+        if (isPlayerInArea && canUseLadders && Input.GetKeyDown(KeyCode.F))
         {
             var pos = anotherLadderPlace.transform.position;
             pos.z = player.transform.position.z;
-            player.transform.position = pos;
+            pos.x = player.transform.position.x;
+            playerScript.StartLift(false, pos);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isPlayerInArea = true;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isPlayerInArea = false;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = false;
     }
 }

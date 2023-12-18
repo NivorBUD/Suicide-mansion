@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MirrorDeath : DeathClass
+public class MirrorDeath : MonoBehaviour
 {
     public GameObject mary;
     public GameObject drawing;
     public GameObject button;
+    public GameObject blackOut;
 
     private GameObject mainCamera;
     private CameraController cameraController;
@@ -29,13 +30,14 @@ public class MirrorDeath : DeathClass
         cameraController = mainCamera.GetComponent<CameraController>();
     }
 
-    public override bool ReadyToDeath()
+    public bool ReadyToDeath()
     {
         return isPlayerInArea && !isPlay && player.inventory.ContainsKey("Marker") && player.inventory.ContainsKey("Candle");
     }
 
-    public override void StartDeath()
+    public void StartDeath()
     {
+        blackOut.SetActive(false);
         InventoryLogic.UseItem(player.inventory["Marker"]);
         InventoryLogic.UseItem(player.inventory["Candle"]);
         isPlay = true;
@@ -63,16 +65,21 @@ public class MirrorDeath : DeathClass
     public void SpawnMary()
     {
         cameraController.ZoomIn(5);
-        var pl = GameObject.FindWithTag("Player");
-        var playerPos = pl.transform.position;
+        var playerPos = GameObject.FindWithTag("Player").transform.position;
         Vector3 maryNewPos = playerPos;
         maryNewPos.x += 2; 
-        maryNewPos.y += 1.5f; 
+        maryNewPos.y += 0.4f; 
         mary.SetActive(true);
         mary.transform.position = maryNewPos;
         player.DeadlyScare();
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
+        Invoke(nameof(TurnOnBlackOut), 4.2f);
+    }
+
+    private void TurnOnBlackOut()
+    {
+        blackOut.SetActive(true);
     }
 
     private void Update()
@@ -82,5 +89,8 @@ public class MirrorDeath : DeathClass
             button.SetActive(true);
             isEnd = true;
         }
+
+        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
+            StartDeath();
     }
 }

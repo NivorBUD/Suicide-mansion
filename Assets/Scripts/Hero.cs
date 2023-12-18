@@ -4,38 +4,40 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEditor.Tilemaps;
 using UnityEngine;
-
+using UnityEngine.U2D;
+using UnityEngine.UIElements;
 
 public class Hero : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
     [SerializeField] GameObject ghost;
+    [SerializeField] GameObject getPlace;
+    [SerializeField] GameObject holdingPlace;
     public GameObject bullet;
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
-    public int cutSceneIndex;
     public Transform bulletPlace;
     public bool isCutScene = false;
+    public int sceneIndex;
 
+    private Vector3 liftPos;
+    private bool isLift;
+    private bool isHorizontalLift;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
-    private DeathClass death;
     private Ghost ghostScript;
-
 
     private void Start()
     {
-        cutSceneIndex = 1;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         bulletPlace = GameObject.FindWithTag("Bullet Start Place").GetComponent<Transform>();
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        ChangeDeath();
-        PrepareCutScene();
-        ghostScript = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
+        ghost = GameObject.FindWithTag("Ghost");
+        ghostScript = ghost.GetComponent<Ghost>();
     }
 
     private void Run()
@@ -45,6 +47,27 @@ public class Hero : MonoBehaviour
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
+        getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
+        holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
+    }
+
+    public void StartLift(bool isHorizontalLadder, Vector3 anotherLadderPos)
+    {
+        rb.velocity = Vector3.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        this.isHorizontalLift = isHorizontalLadder;
+        isLift = !isHorizontalLadder;
+        liftPos = anotherLadderPos;
+        isCutScene = true;
+        sprite.flipX = transform.position.x > anotherLadderPos.x;
+    }
+
+    public void StopLift()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        isLift = false;
+        isHorizontalLift = false;
+        isCutScene = false;
     }
 
     public void AddToInventiry([SerializeField] GameObject InventoryObject)
@@ -60,79 +83,55 @@ public class Hero : MonoBehaviour
     void Update()
     {
         State = States.idle;
-        anim = gameObject.GetComponent<Animator>();
+        anim = GetComponent<Animator>();
 
-        if (Input.GetButtonDown("Jump"))
+        if (!isCutScene && Input.GetButtonDown("Jump"))
             Jump();
 
         if (!isCutScene && Input.GetButton("Horizontal"))
             Run();
 
-        if (death != null && Input.GetKeyDown(KeyCode.F) && death.ReadyToDeath())
+        if (isLift || isHorizontalLift)
         {
-            ghostScript.canChangePhraseByButton = false;
-            death.StartDeath();
+            State = isHorizontalLift ? States.walk : States.lift;
+            transform.position = Vector3.MoveTowards(transform.position, liftPos, speed * Time.deltaTime);
+            if (transform.position == liftPos)
+                StopLift();
         }
-    }
-
-    private void PrepareCutScene()
-    {
-        if (cutSceneIndex == 1)
-            GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
-    }
-
-    private void ChangeDeath()
-    {
-        switch (cutSceneIndex)
-        {
-            case 0:
-                death = GameObject.FindWithTag("Basement").GetComponent<BasementDeath>();
-                break;
-            case 1:
-                death = GameObject.FindWithTag("Main Ladder").GetComponent<PianoDeath>();
-                break;
-            case 2:
-                death = GameObject.FindWithTag("Chandelier").GetComponent<ChandelierDeath>();
-                break;
-            case 3:
-                death = GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>();
-                break;
-        }
-        if (death)
-            death.enabled = true;
     }
 
     public void EndCutScene()
     {
         isCutScene = false;
-        cutSceneIndex++;
-        death = null;
         mainCamera.ZoomIn(5);
-        ChangeDeath();
-        PrepareCutScene();
+        mainCamera.ChangeAimToPlayer();
         ghostScript.canChangePhraseByButton = true;
     }
 
     public void DeadlyScare()
     {
-        // ��� ������ ����� ������� �� ����������
+        PlayScareSound(); // звук испуга
         sprite.flipX = !sprite.flipX;
         Invoke(nameof(Death), 1);
-        EndCutScene();
+    }
+
+    private void PlayScareSound()
+    {
+
     }
 
     public void Death()
     {
+        EndCutScene();
         gameObject.SetActive(false);
-        Invoke(nameof(Respawn), 2);
-        mainCamera.ChangeAimToPlayer();
+        Invoke(nameof(Respawn), 3);
 
-        if (transform.localScale.y != 1.23 || transform.localScale.x != 1.23)
+        if (transform.localScale.y != 0.4 || transform.localScale.x != 0.4)
         {
-            var sc = gameObject.transform.localScale;
-            sc.y = 1.23f;
-            sc.x = 1.23f;
-            gameObject.transform.localScale = sc;
+            var sc = transform.localScale;
+            sc.y = 0.4f;
+            sc.x = 0.4f;
+            transform.localScale = sc;
         }
     }
 
@@ -141,11 +140,24 @@ public class Hero : MonoBehaviour
         var rot = gameObject.transform.rotation;
         rot.z = 0;
         rb.freezeRotation = true;
-        gameObject.transform.rotation = rot;
+        transform.rotation = rot;
         gameObject.SetActive(true);
     }
 
-    private States State
+    public void Up()
+    {
+        sprite.flipX = true;
+        rb.AddForce(transform.right * jumpForce, ForceMode2D.Impulse);
+        Invoke(nameof(TurnUp), 0.05f);
+    }
+
+    private void TurnUp()
+    {
+        transform.eulerAngles = new Vector3(0, 0, 0);
+        isCutScene = false;
+    }
+
+    public States State
     {
         get { return (States)anim.GetInteger("state"); }
         set { anim.SetInteger("state", (int)value); }
@@ -154,13 +166,13 @@ public class Hero : MonoBehaviour
     private void Jump()
     {
         if (rb.velocity.y == 0)
-        {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);        
-        }
     }
 }
 
-public enum States {
+public enum States 
+{
     idle,
-    walk
+    walk,
+    lift
 }

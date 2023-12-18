@@ -11,25 +11,26 @@ public class LadderHorizontalInteraction : MonoBehaviour
 
     private Hero playerScript;
     private GameObject player;
-    private bool isPlayerInArea;
-
-
+    public bool isPlayerInArea;
 
     private void Start()
     {
         isUseMidPos = true;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isPlayerInArea = true;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isPlayerInArea = false;
+        if (collision.CompareTag("Player"))
+            isPlayerInArea = false;
     }
 
     public static void StopUsingMidPos()
@@ -43,7 +44,7 @@ public class LadderHorizontalInteraction : MonoBehaviour
         {
             var pos = isUseMidPos ? midLadderPos.transform.position : anotherLadderPlace.transform.position;
             pos.z = player.transform.position.z;
-            player.transform.position = pos;
+            playerScript.StartLift(true, pos);
         }
     }
 }
