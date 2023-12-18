@@ -8,14 +8,12 @@ public class Chandelier_Interaction : MonoBehaviour
 
     private Hero playerScript;
     private GameObject player;
-    private Rigidbody2D rb;
-    public bool isDrop = false;
+    private bool isDrop = false;
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
-        rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
     public void Fall()
@@ -25,8 +23,7 @@ public class Chandelier_Interaction : MonoBehaviour
 
     private void SpawnCandle()
     {
-        candle.SetActive(true);
-        var pos = transform.position;
+        var pos = gameObject.transform.position;
         pos.x += 1.5f;
         pos.y -= 0.45f;
         candle.transform.position = pos;
@@ -34,29 +31,21 @@ public class Chandelier_Interaction : MonoBehaviour
 
     private void Update()
     {
-        if (rb.simulated && transform.position.y <= -1.8 && transform.position.y > -3.6)
+        if (gameObject.transform.position.y <= -1.5 && gameObject.transform.position.y > -3.1)
         {
             var sc = player.transform.localScale;
-            var mult = (1.8f - Math.Abs(-1.8f - transform.localPosition.y)) / 1.8f;
-            sc.y = 0.4f * mult;
-            player.transform.localScale = sc;
+            sc.y = Math.Abs(-3.1f - gameObject.transform.position.y);
             player.transform.localScale = sc;
         }
 
-        if (rb.simulated && !isDrop && transform.position.y < -3.1)
+        if (playerScript.rb.freezeRotation && !isDrop && gameObject.transform.position.y < -3.1)
         {
             isDrop = true;
-            rb.simulated = false;
-            GetComponent<BoxCollider2D>().enabled = false;
-            PlayBreakSound(); // звук ломания люстры
+            gameObject.GetComponent<Rigidbody2D>().simulated = false;
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            playerScript.EndCutScene();
             playerScript.Death();
-            GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
             Invoke(nameof(SpawnCandle), 0.25f);
         }
-    }
-
-    private void PlayBreakSound() 
-    { 
-
     }
 }

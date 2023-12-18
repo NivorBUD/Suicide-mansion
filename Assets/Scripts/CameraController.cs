@@ -57,9 +57,8 @@ public class CameraController : MonoBehaviour
         if (!aim)
             ChangeAimToPlayer();
         pos = aim.position;
-        
         if (isAimPlayer) 
-            pos.y += 2.4f;
+            pos.y += 3f;
         pos.z = -10f;
 
         transform.position = Vector3.Lerp(transform.position, pos, speed * Time.deltaTime);

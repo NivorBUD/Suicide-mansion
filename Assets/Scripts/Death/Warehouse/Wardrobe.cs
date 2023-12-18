@@ -4,24 +4,14 @@ using UnityEngine;
 
 public class Wardrobe : MonoBehaviour
 {
-    [SerializeField] Sprite brakeSprite;
-    [SerializeField] GameObject flammenwerfer;
-    [SerializeField] GameObject bathBomb;
-
-    public void ChangeSprite()
+    // Start is called before the first frame update
+    void Start()
     {
-        //gameObject.GetComponent<SpriteRenderer>().sprite = brakeSprite;
-        gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+        
     }
 
-    public void DropFlammenwerfer()
-    {
-        flammenwerfer.SetActive(true);
-        bathBomb.SetActive(true);
-        bathBomb.GetComponent<Rigidbody2D>().AddForce(new Vector2(3, 0));
-    }
-
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
         
     }

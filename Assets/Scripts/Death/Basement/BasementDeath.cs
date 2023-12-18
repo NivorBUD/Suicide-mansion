@@ -5,7 +5,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BasementDeath : MonoBehaviour
+public class BasementDeath : DeathClass
 {
     public GameObject leftWall;
     public GameObject rightWall;
@@ -13,11 +13,10 @@ public class BasementDeath : MonoBehaviour
     public static float speed = 0.0f;
     public bool isStart = false;
     public bool isEnd = false;
-    [SerializeField] private GameObject Button1;
-    [SerializeField] private GameObject Button2;
-    [SerializeField] private GameObject Button3;
-    [SerializeField] private GameObject Button4;
-    [SerializeField] private GameObject blackOut;
+    [SerializeField] GameObject Button1;
+    [SerializeField] GameObject Button2;
+    [SerializeField] GameObject Button3;
+    [SerializeField] GameObject Button4;
 
 
     private Vector3 leftWallNewPos;
@@ -26,21 +25,21 @@ public class BasementDeath : MonoBehaviour
     private Vector3 rightWallStartPos;
     private Vector3 deathLeftWallNewPos;
     private Vector3 deathRightWallNewPos;
+    private GameObject player;
     private GameObject ghost;
-    private Ghost ghostScript;
+    private Ghost ghost_script;
 
 
     private void Start()
     {
+        player = GameObject.FindWithTag("Player");
         ghost = GameObject.FindWithTag("Ghost");
-        ghostScript = ghost.GetComponent<Ghost>();
+        ghost_script = ghost.GetComponent<Ghost>();
     }
 
 
-    public void StartDeath()
+    public override void StartDeath()
     {
-        blackOut.SetActive(false);
-        ghostScript.canChangePhraseByButton = false;
         isStart = true;
         StartCoroutine(Ghost_COR());
         leftWallStartPos = leftWall.transform.position;
@@ -64,6 +63,8 @@ public class BasementDeath : MonoBehaviour
         heroScript.Death();
         isEnd = true;
         speed = 1;
+        Invoke(nameof(MoveWallToStart), 1f);
+        heroScript.EndCutScene();
     }
 
     private void MoveWallToStart()
@@ -75,9 +76,6 @@ public class BasementDeath : MonoBehaviour
 
     private void Update()
     {
-        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
-            StartDeath();
-
         if (isStart && !isEnd)
         {
             leftWall.transform.position = Vector3.MoveTowards(leftWall.transform.position, leftWallNewPos, speed * Time.deltaTime);
@@ -91,50 +89,46 @@ public class BasementDeath : MonoBehaviour
             MoveWallToStart();
     }
 
-    public bool ReadyToDeath()
+    public override bool ReadyToDeath()
     {
-        return !isStart && gameObject && ghostScript.isDialog;
+        return !isStart && gameObject && ghost_script.isDialog;
     }
 
     IEnumerator Ghost_COR()
     {
-        ghostScript.speed = 3.5f;
-        ghostScript.ChangeAim(Button1.transform, -0.55f, -0.2f);
+        ghost_script.speed = 3.5f;
+        ghost_script.ChangeAim(Button1.transform, -0.55f, -0.2f);
         yield return new WaitForSeconds(1f);
-        ghostScript.ChangePhrase(); //2 - индекс фразы 
+        ghost_script.ChangePhrase(); //2 - индекс фразы 
         yield return new WaitForSeconds(1f);
-        ghostScript.ChangePhrase(); //3
+        ghost_script.ChangePhrase(); //3
         yield return new WaitForSeconds(1.5f);
         Destroy(Button1);
         speed = 0.5f;
-        ghostScript.ChangeAim(Button2.transform, 0.7f, 0.2f);
+        ghost_script.ChangeAim(Button2.transform, 0.7f, 0.2f);
 
-        ghostScript.ChangePhrase(); //4
+        ghost_script.ChangePhrase(); //4
         yield return new WaitForSeconds(1.5f);
-        ghostScript.ChangePhrase(); //5
+        ghost_script.ChangePhrase(); //5
         yield return new WaitForSeconds(1.5f);
         Destroy(Button2);
         speed = 1.3f;
-        ghostScript.ChangeAim(Button3.transform, 0.55f, 0);
+        ghost_script.ChangeAim(Button3.transform, 0.55f, 0);
 
-        ghostScript.ChangePhrase(); //6
+        ghost_script.ChangePhrase(); //6
         yield return new WaitForSeconds(1.5f);
-        ghostScript.ChangePhrase(); //7
+        ghost_script.ChangePhrase(); //7
         yield return new WaitForSeconds(1.5f);
         Destroy(Button3);
         speed = 0.6f;
-        ghostScript.ChangeAim(Button4.transform, -0.7f, -0.4f);
+        ghost_script.ChangeAim(Button4.transform, -0.7f, -0.4f);
 
-        ghostScript.ChangePhrase(); //8
+        ghost_script.ChangePhrase(); //8
         yield return new WaitForSeconds(1.5f);
         Destroy(Button4);
         speed = 10f;
-        ghostScript.ChangeAimToPlayer();
+        ghost_script.ChangeAimToPlayer();
 
-        ghostScript.ChangePhrase();
-
-        yield return new WaitForSeconds(3.5f);
-        blackOut.SetActive(true);
-        LadderInteraction.canUseLadders = true;
+        ghost_script.ChangePhrase();
     }
 }

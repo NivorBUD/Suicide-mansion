@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MirrorDeath : MonoBehaviour
+public class MirrorDeath : DeathClass
 {
     public GameObject mary;
     public GameObject drawing;
     public GameObject button;
-    public GameObject blackOut;
 
     private GameObject mainCamera;
     private CameraController cameraController;
@@ -30,14 +29,13 @@ public class MirrorDeath : MonoBehaviour
         cameraController = mainCamera.GetComponent<CameraController>();
     }
 
-    public bool ReadyToDeath()
+    public override bool ReadyToDeath()
     {
         return isPlayerInArea && !isPlay && player.inventory.ContainsKey("Marker") && player.inventory.ContainsKey("Candle");
     }
 
-    public void StartDeath()
+    public override void StartDeath()
     {
-        blackOut.SetActive(false);
         InventoryLogic.UseItem(player.inventory["Marker"]);
         InventoryLogic.UseItem(player.inventory["Candle"]);
         isPlay = true;
@@ -65,21 +63,16 @@ public class MirrorDeath : MonoBehaviour
     public void SpawnMary()
     {
         cameraController.ZoomIn(5);
-        var playerPos = GameObject.FindWithTag("Player").transform.position;
+        var pl = GameObject.FindWithTag("Player");
+        var playerPos = pl.transform.position;
         Vector3 maryNewPos = playerPos;
         maryNewPos.x += 2; 
-        maryNewPos.y += 0.4f; 
+        maryNewPos.y += 1.5f; 
         mary.SetActive(true);
         mary.transform.position = maryNewPos;
         player.DeadlyScare();
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
-        Invoke(nameof(TurnOnBlackOut), 4.2f);
-    }
-
-    private void TurnOnBlackOut()
-    {
-        blackOut.SetActive(true);
     }
 
     private void Update()
@@ -89,8 +82,5 @@ public class MirrorDeath : MonoBehaviour
             button.SetActive(true);
             isEnd = true;
         }
-
-        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
-            StartDeath();
     }
 }

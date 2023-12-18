@@ -2,23 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackoutInteraction : MonoBehaviour
+public class PlantTrigger : MonoBehaviour
 {
-    private SpriteRenderer sr;
+    public bool isPlayerInArea;
 
     void Start()
     {
-        sr = gameObject.GetComponent<SpriteRenderer>();
-        sr.enabled = true;
+        isPlayerInArea = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        sr.enabled = false;
+        isPlayerInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        sr.enabled = true;
+        isPlayerInArea = false;
     }
 }
