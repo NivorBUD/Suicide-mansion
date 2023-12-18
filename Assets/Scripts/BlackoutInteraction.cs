@@ -14,11 +14,13 @@ public class BlackoutInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        sr.enabled = false;
+        if (collision.CompareTag("Player"))
+            sr.enabled = false;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        sr.enabled = true;
+        if (collision.CompareTag("Player"))
+            sr.enabled = true;
     }
 }

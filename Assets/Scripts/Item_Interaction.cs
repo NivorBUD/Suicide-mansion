@@ -10,12 +10,14 @@ public class Item_Interaction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        IsHeroInArea = true;
+        if (collision.CompareTag("Player"))
+            IsHeroInArea = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        IsHeroInArea = false;
+        if (collision.CompareTag("Player"))
+            IsHeroInArea = false;
     }
 
 
@@ -23,12 +25,17 @@ public class Item_Interaction : MonoBehaviour
     {
         if (InventoryLogic.InventoryItems < 3)
         {
+            PlayGetSound(); // звук подбора предмета
             InventoryLogic.TakeItem(InventoryObject);
             Destroy(gameObject);
         }
     }
 
-    // Update is called once per frame
+    private void PlayGetSound()
+    {
+
+    }
+
     void Update()
     {
         if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))
