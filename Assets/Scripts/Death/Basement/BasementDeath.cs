@@ -36,7 +36,6 @@ public class BasementDeath : MonoBehaviour
         ghostScript = ghost.GetComponent<Ghost>();
     }
 
-
     public void StartDeath()
     {
         blackOut.SetActive(false);
@@ -135,6 +134,14 @@ public class BasementDeath : MonoBehaviour
 
         yield return new WaitForSeconds(3.5f);
         blackOut.SetActive(true);
+        ghostScript.canChangePhraseByButton = true;
+        ghostScript.speed = 2;
+
+        while (!ghostScript.isDialog)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
         LadderInteraction.canUseLadders = true;
     }
 }

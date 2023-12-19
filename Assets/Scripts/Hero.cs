@@ -18,16 +18,14 @@ public class Hero : MonoBehaviour
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
     public Transform bulletPlace;
-    public bool isCutScene = false;
-    public int sceneIndex;
+    public bool isCutScene;
+    public Ghost ghostScript;
 
     private Vector3 liftPos;
-    private bool isLift;
-    private bool isHorizontalLift;
+    private bool isLift, isHorizontalLift;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
-    private Ghost ghostScript;
     private Sprite standardSprite;
 
     private void Start()

@@ -14,6 +14,9 @@ public class Piano : MonoBehaviour
     private GameObject player;
     private Rigidbody2D rb;
     private PolygonCollider2D bc;
+    private string[] dialog = new string[11] { "Забыла я про этот рояль", "Ну, теперь вспомнила", 
+        "Надеюсь, ты не сильно ушибся", "Зато эта дверь открылась", "Лет 50 не могла открыть её", 
+        "Cлууушай", "Убей ту летучую мышь", "Cлишком уж она мне надоела", "Pогатка", "Клавиша от рояля", "Действуй!"};
 
 
     void Start()
@@ -46,9 +49,9 @@ public class Piano : MonoBehaviour
             (Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 90) < 0.1f || Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 270) < 0.1f))
         {
             playerScript.Death();
+            Invoke(nameof(ShowGhost), 2.5f);
             Invoke(nameof(TurnOnBlackOut), 3.5f);
         }
-            
 
         if (!isEnd && transform.localPosition.x < -11 && rb.velocity.x == 0)
         {
@@ -59,6 +62,14 @@ public class Piano : MonoBehaviour
     private void PlayBreakPianoSound()
     {
 
+    }
+
+    private void ShowGhost()
+    {
+        playerScript.ghostScript.Show();
+        playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.needToStartDialog = true;
+        InventoryLogic.canGetItems = false;
     }
 
     private void BreakDoor()

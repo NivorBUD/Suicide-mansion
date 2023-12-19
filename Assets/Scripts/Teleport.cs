@@ -17,6 +17,11 @@ public class Teleport : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         hero.gameObject.transform.position = tpPlace.transform.position;
-        ghost.GetComponent<Ghost>().ChangeAimToPlayer();
+        Invoke(nameof(ShowGhost), 2);
+    }
+
+    private void ShowGhost()
+    {
+        ghost.GetComponent<Ghost>().Show();
     }
 }

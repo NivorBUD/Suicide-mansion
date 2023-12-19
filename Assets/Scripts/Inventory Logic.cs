@@ -11,8 +11,8 @@ public class InventoryLogic : MonoBehaviour
     [SerializeField] GameObject EmptySlot3;
 
     public static int InventoryItems = 0;
+    public static bool canGetItems = false;
 
-    // Update is called once per frame
     void Update()
     {
         SetEmptySlots();

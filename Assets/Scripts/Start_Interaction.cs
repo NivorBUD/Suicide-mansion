@@ -24,7 +24,6 @@ public class NewBehaviourScript : MonoBehaviour
         IsHeroInArea = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))
