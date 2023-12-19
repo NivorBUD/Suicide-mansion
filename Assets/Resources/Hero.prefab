@@ -164,6 +164,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   bulletPlace: {fileID: 0}
   isCutScene: 0
+  sceneIndex: 0
 --- !u!95 &6788141845898220860
 Animator:
   serializedVersion: 5
