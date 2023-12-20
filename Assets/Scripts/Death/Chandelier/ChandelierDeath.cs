@@ -21,7 +21,7 @@ public class ChandelierDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return (!isShoot && isPlayerInShootPlace && player.inventory.ContainsKey("Keys") && player.inventory.ContainsKey("Slingshot"));
+        return !isShoot && isPlayerInShootPlace && player.inventory.ContainsKey("Keys") && player.inventory.ContainsKey("Slingshot");
     }
 
     public static void EnterShootPlace()

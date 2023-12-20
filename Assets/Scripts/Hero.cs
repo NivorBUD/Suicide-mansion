@@ -22,7 +22,7 @@ public class Hero : MonoBehaviour
     public Ghost ghostScript;
 
     private Vector3 liftPos;
-    private bool isLift, isHorizontalLift;
+    private bool isLift, isHorizontalLift, isScared;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
@@ -47,8 +47,6 @@ public class Hero : MonoBehaviour
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
-        getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
-        holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
     }
 
     public void StartLift(bool isHorizontalLadder, Vector3 anotherLadderPos)
@@ -82,8 +80,15 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
-        if (State != States.electric)
+        if (!isScared && State != States.electric)
             State = States.idle;
+
+        if (isScared)
+        {
+            State = States.scare;
+            if (sprite.sprite.name == "Player Scaried 9")
+                Death();
+        }
 
         if (!isCutScene && Input.GetButtonDown("Jump"))
             Jump();
@@ -98,6 +103,9 @@ public class Hero : MonoBehaviour
             if (transform.position == liftPos)
                 StopLift();
         }
+
+        getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
+        holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
     }
 
     public void EletricSchock()
@@ -115,9 +123,9 @@ public class Hero : MonoBehaviour
 
     public void DeadlyScare()
     {
+        isScared = true;
         PlayScareSound(); // звук испуга
         sprite.flipX = !sprite.flipX;
-        Invoke(nameof(Death), 1);
     }
 
     private void PlayScareSound()
@@ -128,6 +136,7 @@ public class Hero : MonoBehaviour
     public void Death()
     {
         EndCutScene();
+        isScared = false;
         gameObject.SetActive(false);
         State = States.idle;
         Invoke(nameof(Respawn), 3);
@@ -181,5 +190,6 @@ public enum States
     idle,
     walk,
     lift,
-    electric
+    electric,
+    scare
 }

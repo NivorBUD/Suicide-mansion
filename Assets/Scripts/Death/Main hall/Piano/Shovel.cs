@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Axe : MonoBehaviour
+public class Shovel : MonoBehaviour
 {
     public GameObject getPlace, holdingPlace;
     public bool isReady = false;
@@ -17,10 +16,10 @@ public class Axe : MonoBehaviour
         if (!isReady && needToMove)
         {
             transform.position = Vector3.MoveTowards(transform.position, holdingPlace.transform.position, Time.deltaTime);
-            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.48f, 0.48f, 0.48f), 3 * Time.deltaTime);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.6f, 0.6f, 0.6f), 3 * Time.deltaTime);
         }
 
-        if (needToMove && transform.position == holdingPlace.transform.position && transform.localScale.x == 0.48f)
+        if (needToMove && transform.position == holdingPlace.transform.position && transform.localScale.x == 0.6f)
         {
             isReady = true;
             needToMove = false;
@@ -29,10 +28,10 @@ public class Axe : MonoBehaviour
         if (needToHit)
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, zAngle), 5 * Time.deltaTime);
 
-        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 330) <= 0.5f)
-            zAngle = 40;
+        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 30) <= 1)
+            zAngle = -60;
 
-        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 30) <= 0.5f)
+        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 310) <= 5)
         {
             isReady = true;
             needToHit = false;
@@ -50,6 +49,6 @@ public class Axe : MonoBehaviour
     {
         isReady = false;
         needToHit = true;
-        zAngle = -30;
+        zAngle = 30;
     }
 }

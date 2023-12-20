@@ -69,7 +69,7 @@ public class MirrorDeath : MonoBehaviour
         player.DeadlyScare();
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
-        Invoke(nameof(TurnOnBlackOut), 4.2f);
+        Invoke(nameof(TurnOnBlackOut), 5f);
     }
 
     private void TurnOnBlackOut()

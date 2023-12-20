@@ -35,8 +35,8 @@ public class Mary : MonoBehaviour
     public void Show()
     {
         var pos = player.transform.position;
-        pos.x += 4;
-        pos.y += 2;
+        pos.x += 1.5f;
+        pos.y += 1;
         pos.z = -1;
         transform.position = pos;
         needToShow = true;
@@ -56,7 +56,7 @@ public class Mary : MonoBehaviour
 
         if (needToShow)
         {
-            sprite.color = new Color(255, 255, 255, Mathf.MoveTowards(sprite.color.a, 1, 0.5f * Time.deltaTime));
+            sprite.color = new Color(255, 255, 255, Mathf.MoveTowards(sprite.color.a, 1, Time.deltaTime));
             if (sprite.color.a == 1)
                 needToShow = false;
         }
@@ -95,7 +95,7 @@ public class Mary : MonoBehaviour
         {
             phraseIndex++;
             textBox.text = dialog[phraseIndex];
-            if (phraseIndex == 10)
+            if (phraseIndex == 11)
                 GiveTheKey();
         }
     }

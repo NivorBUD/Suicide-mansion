@@ -7,17 +7,23 @@ public class ChandelierInteraction : MonoBehaviour
     public GameObject candle;
     public Sprite breakSprite;
     public SpriteRenderer render;
+    public bool isDrop = false;
 
     private Hero playerScript;
     private GameObject player;
     private Rigidbody2D rb;
-    public bool isDrop = false;
+    private string[] dialog;
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+        dialog = new string[16] {"Oпа, люстра", "Давно она мне не нравилась", "Ну теперь есть повод поменять её",
+            "Mожет поставить воскосберегающие свечи?", "Или вообще лампочки?", "Да не, свечей хватит",
+            "Вдруг электричество отключат", "Ладно, потом решу", "...", "Кстати, давно я не видела свою дочь", "Возьми свечку",
+            "Найди чем можно порисовать", "Ну и обведи мой старый рисунок", "Cделай это на зеркале", "Oно в детской комнате",
+            "Давай, пошуршал быстренько"};
     }
 
     public void Fall()
@@ -46,16 +52,22 @@ public class ChandelierInteraction : MonoBehaviour
         }
 
         if (rb.simulated && !isDrop && transform.position.y < -3.1)
-        {
-            isDrop = true;
-            rb.simulated = false;
-            GetComponent<BoxCollider2D>().enabled = false;
-            PlayBreakSound(); // звук ломания люстры
-            render.sprite = breakSprite;
-            playerScript.Death();
-            GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
-            Invoke(nameof(SpawnCandle), 0.25f);
-        }
+            EndDeath();
+    }
+
+    private void EndDeath()
+    {
+        playerScript.ghostScript.Show();
+        playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.needToStartDialog = true;
+        isDrop = true;
+        rb.simulated = false;
+        GetComponent<BoxCollider2D>().enabled = false;
+        PlayBreakSound(); // звук ломания люстры
+        render.sprite = breakSprite;
+        playerScript.Death();
+        GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
+        Invoke(nameof(SpawnCandle), 0.25f);
     }
 
     private void PlayBreakSound() 

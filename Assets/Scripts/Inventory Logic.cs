@@ -11,7 +11,7 @@ public class InventoryLogic : MonoBehaviour
     [SerializeField] GameObject EmptySlot3;
 
     public static int InventoryItems = 0;
-    public static bool canGetItems = false;
+    public static bool canGetItems = true;
 
     void Update()
     {

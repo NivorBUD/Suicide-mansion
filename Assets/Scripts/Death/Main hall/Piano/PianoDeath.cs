@@ -1,13 +1,16 @@
+using System.Collections;
 using UnityEngine;
 
 public class PianoDeath : MonoBehaviour
 {
+    public Heap heap;
+    public Shovel shovel;
+
     private static bool isPlayerInPlace = false;
     private Hero playerScript;
     private GameObject player;
 
     public GameObject blackOut;
-    public GameObject prop;
     public GameObject piano;
     public PolygonCollider2D col;
     public GameObject midPos;
@@ -16,16 +19,6 @@ public class PianoDeath : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
-    }
-
-    public void StartDeath()
-    {
-        Destroy(prop);
-        LadderHorizontalInteraction.StopUsingMidPos();
-        col.enabled = true;
-        InventoryLogic.UseItem(playerScript.inventory["Shovel"]);
-        piano.GetComponent<Rigidbody2D>().simulated = true;
-        midPos.SetActive(false);
     }
 
     public bool ReadyToDeath()
@@ -46,6 +39,34 @@ public class PianoDeath : MonoBehaviour
     private void Update()
     {
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F) && !playerScript.isCutScene) 
-            StartDeath();
+            StartCoroutine(Death());
+    }
+
+    IEnumerator Death()
+    {
+        playerScript.isCutScene = true;
+        LadderHorizontalInteraction.StopUsingMidPos();
+        shovel.GetAndMoveToHand();
+
+        while (!shovel.isReady)
+            yield return new WaitForSeconds(0.1f);
+
+        while (!heap.isReady)
+        {
+            shovel.Hit();
+
+            while (!shovel.isReady)
+                yield return new WaitForSeconds(0.1f);
+
+            heap.ChangeSprite();
+        }
+
+        Destroy(shovel.gameObject);
+        playerScript.isCutScene = false;
+
+        col.enabled = true;
+        InventoryLogic.UseItem(playerScript.inventory["Shovel"]);
+        piano.GetComponent<Rigidbody2D>().simulated = true;
+        midPos.SetActive(false);
     }
 }
