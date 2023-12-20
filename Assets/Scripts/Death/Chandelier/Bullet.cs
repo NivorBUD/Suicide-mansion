@@ -8,12 +8,12 @@ public class Bullet : MonoBehaviour
     public int targetindex = 0;
 
     private Vector3[] targets;
-    private Chandelier_Interaction chandelierInteraction;
+    private ChandelierInteraction chandelierInteraction;
     
 
     void Start()
     {
-        chandelierInteraction = GameObject.FindWithTag("Chandelier").GetComponent<Chandelier_Interaction>();
+        chandelierInteraction = GameObject.FindWithTag("Chandelier").GetComponent<ChandelierInteraction>();
         targets = new Vector3[11];
         for (int i = 0; i < chandelierInteraction.targets.Length; i++)
             targets[i] = chandelierInteraction.targets[i].transform.position;

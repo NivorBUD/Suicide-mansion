@@ -8,7 +8,7 @@ public class ChandelierDeath : MonoBehaviour
     public GameObject blackOut2;
     public GameObject bullet;
 
-    private Chandelier_Interaction chandelierInteraction;
+    private ChandelierInteraction chandelierInteraction;
     private static bool isShoot = false;
     private static bool isPlayerInShootPlace = false;
     private static Hero player;
@@ -16,7 +16,7 @@ public class ChandelierDeath : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Hero>();
-        chandelierInteraction = gameObject.GetComponent<Chandelier_Interaction>();
+        chandelierInteraction = gameObject.GetComponent<ChandelierInteraction>();
     }
 
     public bool ReadyToDeath()
@@ -55,6 +55,7 @@ public class ChandelierDeath : MonoBehaviour
     {
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
             StartDeath();
+
         if (chandelierInteraction.isDrop)
         {
             chandelierInteraction.isDrop = false;

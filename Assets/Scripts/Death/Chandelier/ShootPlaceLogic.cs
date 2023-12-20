@@ -2,15 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootPlace_Logic : MonoBehaviour
+public class ShootPlaceLogic : MonoBehaviour
 {
-    private Hero player;
-
-    private void Start()
-    {
-        player = GameObject.FindWithTag("Player").GetComponent<Hero>();
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         ChandelierDeath.EnterShootPlace();

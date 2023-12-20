@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
 
-public class Chandelier_Interaction : MonoBehaviour
+public class ChandelierInteraction : MonoBehaviour
 {
     public GameObject[] targets;
     public GameObject candle;
+    public Sprite breakSprite;
+    public SpriteRenderer render;
 
     private Hero playerScript;
     private GameObject player;
@@ -49,6 +51,7 @@ public class Chandelier_Interaction : MonoBehaviour
             rb.simulated = false;
             GetComponent<BoxCollider2D>().enabled = false;
             PlayBreakSound(); // звук ломания люстры
+            render.sprite = breakSprite;
             playerScript.Death();
             GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
             Invoke(nameof(SpawnCandle), 0.25f);

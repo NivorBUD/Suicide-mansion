@@ -65,12 +65,7 @@ public class MirrorDeath : MonoBehaviour
     public void SpawnMary()
     {
         cameraController.ZoomIn(5);
-        var playerPos = GameObject.FindWithTag("Player").transform.position;
-        Vector3 maryNewPos = playerPos;
-        maryNewPos.x += 2; 
-        maryNewPos.y += 0.4f; 
-        mary.SetActive(true);
-        mary.transform.position = maryNewPos;
+        mary.GetComponent<Mary>().Show();
         player.DeadlyScare();
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
