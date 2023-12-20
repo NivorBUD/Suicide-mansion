@@ -10,6 +10,11 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("SampleScene"); // Замените "GameScene" именем вашей игровой сцены
     }
 
+    public void SettingsMenu()
+    {
+        SceneManager.LoadScene("SettingsMenu");
+    }
+
     public void QuitGame()
     {
         #if UNITY_EDITOR
