@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class BathDeath : MonoBehaviour
 {
-    [SerializeField] private GameObject ghostSon;
-    [SerializeField] private GameObject ghost;
-    [SerializeField] private Trigger trigger;
+    [SerializeField] private Trigger trigger, scaleTrigger;
     [SerializeField] private BathBomb bathBomb;
-    [SerializeField] private ParticleSystem steam;
-    [SerializeField] private ParticleSystem bubbles;
-    [SerializeField] private GameObject blackOut;
-    [SerializeField] private GameObject downPosAtticLadder;
+    [SerializeField] private ParticleSystem steam, bubbles;
+    [SerializeField] private GameObject ghostSon, blackOut, downPosAtticLadder, ghostPlace;
+    [SerializeField] private Bath bath;
 
     private Ghost ghostScript;
     private GhostSon ghostSonScript;
@@ -18,6 +15,7 @@ public class BathDeath : MonoBehaviour
     private CameraController cameraScript;
     private GameObject player;
     private Vector3 respawnPlace;
+    private string[] dialog;
 
     public bool ReadyToDeath()
     {
@@ -33,9 +31,12 @@ public class BathDeath : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
-        ghostScript = ghost.GetComponent<Ghost>();
+        ghostScript = playerScript.ghostScript;
         ghostSonScript = ghostSon.GetComponent<GhostSon>();
         cameraScript = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
+        dialog = new string[11] {"Опять ты за своё?!", "Выходи, не прячься!", "Сколько можно?!", "Ничего не скажет и утопит!", 
+            "Сказал бы что-то перед этим!", "Давай, лети отсюда!", "Ну а ты прости его", "Ему всего 113 лет", 
+            "Лучше выйди на веранду", "Только включи рубильник на чердаке", "Надеюсь, там всё в порядке"};
     }
 
     void Update()
@@ -69,8 +70,9 @@ public class BathDeath : MonoBehaviour
         cameraScript.ChangeAim(ghostSon.transform);
         cameraScript.ZoomIn(2);
 
-        steam.Play();
-        bubbles.Stop();
+        bath.ChangeSprite();
+        //steam.Play();
+        bubbles.Play();
 
         yield return new WaitForSeconds(1f);
 
@@ -82,11 +84,15 @@ public class BathDeath : MonoBehaviour
 
         ghostSonScript.DrawnPlayer();
 
+        while (!scaleTrigger.isTriggered)
+            yield return new WaitForSeconds(0.1f);
+
+        player.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
         while (!ghostSonScript.isEnd)
             yield return new WaitForSeconds(0.1f);
 
-        bubbles.Play();
-        
+        //bubbles.Play();
 
         yield return new WaitForSeconds(1.5f);
         playerScript.Death();
@@ -94,6 +100,20 @@ public class BathDeath : MonoBehaviour
         ghostSonScript.StopDrawn();
         player.transform.position = respawnPlace;
 
+        ghostScript.ChangeDialog(dialog);
+        ghostScript.Show();
+        ghostScript.ChangeAim(ghostPlace.transform, 2, 0);
+
+        while (ghostScript.phraseIndex != 1)
+            yield return new WaitForSeconds(0.1f);
+
+        ghostScript.speed = 2;
+        ghostSonScript.GoToMom();
+
+        while (ghostScript.phraseIndex != 5)
+            yield return new WaitForSeconds(0.1f);
+
+        ghostSonScript.Hide();
         downPosAtticLadder.GetComponent<BoxCollider2D>().enabled = true;
         blackOut.SetActive(true);
     }

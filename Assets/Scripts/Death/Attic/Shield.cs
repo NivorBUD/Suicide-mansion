@@ -13,12 +13,15 @@ public class Shield : MonoBehaviour
     private GameObject player;
     private Hero playerScript;
     private bool isUsed;
+    private string[] dialog;
 
     void Start()
     {
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
+        dialog = new string[] {"Мда, из тебя электрик", "Как из меня человек", "Перчатки бы надел", 
+            "Ладно, иди на веранду", "Там встретимся" };
     }
 
     void Update()
@@ -51,6 +54,11 @@ public class Shield : MonoBehaviour
         terraceDoor.Open();
         pantaloonsCollider.enabled = true;
         ropeCollider.enabled = true;
+        yield return new WaitForSeconds(2);
+
+        playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.ChangeAimToPlayer();
+        playerScript.ghostScript.Show();
     }
 
     private void PlayElectricShockSound()

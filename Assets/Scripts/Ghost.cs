@@ -7,8 +7,8 @@ public class Ghost : MonoBehaviour
 {
     [SerializeField] GameObject speechBox;
     [SerializeField] TextMeshPro textBox;
-    public float speed = 2f;
-    public bool isDialog, needToStartDialog;
+    public float speed = 3f;
+    public bool isDialog, needToStartDialog, needTerraceDialog;
     public int phraseIndex = 0;
     public bool canChangePhraseByButton;
 
@@ -21,6 +21,7 @@ public class Ghost : MonoBehaviour
 
     void Start()
     {
+        needTerraceDialog = true;
         needToStartDialog = true;
         player = GameObject.FindWithTag("Player");
         sprite = gameObject.GetComponent<SpriteRenderer>();
@@ -50,17 +51,20 @@ public class Ghost : MonoBehaviour
     {
         aim = transform;
         needToHide = true;
+        isDialog = false;
     }
 
     public void Show()
     {
+        needToStartDialog = true;
         var pos = player.transform.position;
-        pos.x += 8;
-        pos.y += 4;
+        pos.x += 6;
+        pos.y += 3;
         pos.z = -1;
         transform.position = pos;
         needToShow = true;
         ChangeAimToPlayer();
+        InventoryLogic.canGetItems = false;
     }
 
     private void Update()
@@ -72,7 +76,7 @@ public class Ghost : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, pos, speed * Time.deltaTime);
         sprite.flipX = transform.position.x < pos.x;
 
-        if (needToStartDialog && !isDialog && CheckIsNearThePlayer())
+        if (needToStartDialog && !isDialog && CheckIsNearTheAim())
             StartDialog();
 
         if (canChangePhraseByButton && isDialog && Input.GetKeyDown(KeyCode.F))
@@ -89,10 +93,7 @@ public class Ghost : MonoBehaviour
         {
             sprite.color = new Color(255, 255, 255, Mathf.MoveTowards(sprite.color.a, 1, 0.5f * Time.deltaTime));
             if (sprite.color.a == 1)
-            {
                 needToShow = false;
-                ChangeAimToPlayer();
-            }
         }
     }
 
@@ -114,9 +115,10 @@ public class Ghost : MonoBehaviour
         InventoryLogic.canGetItems = true;
     }
 
-    public bool CheckIsNearThePlayer()
+    public bool CheckIsNearTheAim()
     {
-        return gameObject && Math.Abs(transform.position.x - (player.transform.position.x + 1.5f)) <= 0.1f && Math.Abs(transform.position.y - (player.transform.position.y + 0.4f)) <= 0.1f;
+        return gameObject && Math.Abs(transform.position.x - (aim.position.x + aimXDelta)) <= 0.3f && 
+            Math.Abs(transform.position.y - (aim.position.y + aimYDelta)) <= 0.3f && aim != transform;
     }
 
     public void ChangeDialog(string[] newDialog)

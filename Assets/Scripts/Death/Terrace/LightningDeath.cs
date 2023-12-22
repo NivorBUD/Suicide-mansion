@@ -1,17 +1,19 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class LightningDeath : MonoBehaviour
 {
-    [SerializeField] private GameObject pantaloons, rope, treasureKey;
-    [SerializeField] private Clouds cloudsScript;
+    [SerializeField] private GameObject pantaloons, treasureKey;
+    [SerializeField] private Clouds cloudsScript;   
+    [SerializeField] private Sprite ropeSprite, lightningSprte;
 
     private Hero playerScript;
     private Pantaloons pantaloonsScript;
     private CameraController cameraController;
     private BoxCollider2D keyCollider;
     private Rigidbody2D keyrb;
+    private SpriteRenderer sprite;
+    private string[] dialog;
 
     public void StartDeath()
     {
@@ -26,6 +28,9 @@ public class LightningDeath : MonoBehaviour
         pantaloonsScript = pantaloons.GetComponent<Pantaloons>();
         keyCollider = treasureKey.GetComponent<BoxCollider2D>();
         keyrb = treasureKey.GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        dialog = new string[] {"Ну вот и всё", "Хоть и не повезло с молнией", "Но спасибо за помощь", "Этот ключ тебе",
+            "Он откроет сокровища", "Но их надо найти в доме"};
     }
 
     private void Update()
@@ -42,7 +47,7 @@ public class LightningDeath : MonoBehaviour
         InventoryLogic.UseItem(playerScript.inventory["Pantaloons"]);
         InventoryLogic.UseItem(playerScript.inventory["Rope"]);
 
-        rope.SetActive(true);
+        sprite.sprite = ropeSprite;
 
         cameraController.ChangeAim(playerScript.gameObject.transform);
         cameraController.ZoomIn(2);
@@ -78,6 +83,11 @@ public class LightningDeath : MonoBehaviour
 
         playerScript.Death();
         cloudsScript.StopLightning();
+        yield return new WaitForSeconds(2);
+
+        playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.Show();
+
         yield return new WaitForSeconds(7);
 
         cloudsScript.StopRain();

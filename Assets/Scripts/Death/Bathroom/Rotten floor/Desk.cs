@@ -34,7 +34,7 @@ public class Desk : MonoBehaviour
         if (!isReady && needToDrop)
             transform.position = Vector3.MoveTowards(transform.position, dropPlace.transform.position, Time.deltaTime);
 
-        if (Math.Abs(transform.rotation.eulerAngles.z) <= 0.5f && rb.velocity.x == 0)
+        if (Math.Abs(transform.rotation.eulerAngles.z) <= 0.5f && Math.Abs(rb.velocity.x) < 0.1f)
         {
             isInstall = true;
             Destroy(helper1);

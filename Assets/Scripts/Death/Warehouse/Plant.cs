@@ -6,18 +6,10 @@ public class Plant : MonoBehaviour
     public BoxCollider2D axeCollider;
 
     [SerializeField] private Trigger trigger;
-    [SerializeField] private GameObject acid;
-    [SerializeField] private GameObject flamethrower;
-    [SerializeField] private GameObject downLiana;
-    [SerializeField] private GameObject upLiana;
-    [SerializeField] private GameObject downLianaWay;
-    [SerializeField] private GameObject upLianaWay;
+    [SerializeField] private GameObject acid, flamethrower, downLiana, upLiana, downLianaWay, upLianaWay;
     
     [SerializeField] private Wardrobe wardrobe; 
-    [SerializeField] private GameObject door;
-    [SerializeField] private GameObject axe;
-    [SerializeField] private GameObject body;
-    [SerializeField] private GameObject blackOut;
+    [SerializeField] private GameObject door, axe, body, blackOut;
 
     private ParticleSystem smoke;
     private Acid acidScript;
@@ -26,12 +18,11 @@ public class Plant : MonoBehaviour
     private GameObject player;
     private CameraController cameraController;
     private bool needToMoveAcid;
-    private LianaHead downLianaScript;
-    private LianaHead upLianaScript;
+    private LianaHead downLianaScript, upLianaScript;
 
-    [SerializeField] private Transform upPos;
-    [SerializeField] private Transform cutscenePos;
+    [SerializeField] private Transform upPos, cutscenePos;
     private float acidAngle = 0;
+    private string[] dialog;
 
     private bool ReadyToStart()
     {
@@ -66,6 +57,10 @@ public class Plant : MonoBehaviour
         smoke = gameObject.GetComponent<ParticleSystem>();
         downLianaScript = downLiana.GetComponent<LianaHead>();
         upLianaScript = upLiana.GetComponent<LianaHead>();
+        dialog = new string[10] { "Ого, молодец!", "Сама бы я не справилась", "Спасибо тебе", 
+            "Но вот с полом надо что-то делать", "Сломай чем-то левую дверь наверху", "Может получишь доску", 
+            "Потом наполни ванну и...", "Кинь туда бомбочку из шкафа", 
+            "Хочу немного отдохнуть", "Давай, давай, не стой!"};
     }
 
     void Update()
@@ -182,6 +177,9 @@ public class Plant : MonoBehaviour
         door.SetActive(false);
         flamethrower.SetActive(false);
         smoke.Stop();
+
+        playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.Show();
 
         axe.SetActive(true);
         playerScript.EndCutScene();

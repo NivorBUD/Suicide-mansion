@@ -19,10 +19,10 @@ public class Flamethrower : MonoBehaviour
         if (!isReady && needToMove)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, holdingPlace.transform.position, Time.deltaTime);
-            gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(0.8f, 0.8f, 0.8f), Time.deltaTime);
+            gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(0.9f, 0.9f, 0.9f), Time.deltaTime);
         }
 
-        if (gameObject.transform.position == holdingPlace.transform.position)
+        if (gameObject.transform.position == holdingPlace.transform.position && gameObject.transform.localScale.x == 0.9f)
             isReady = true;
 
         if (needToRotate)

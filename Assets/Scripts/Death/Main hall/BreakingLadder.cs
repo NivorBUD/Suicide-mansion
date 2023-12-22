@@ -15,6 +15,7 @@ public class BreakingLadder : MonoBehaviour
     private bool isEnd = false;
     private bool needToSetAngularVelocity;
     private CameraController cameraController;
+    private string[] dialog;
 
 
     void Start()
@@ -23,6 +24,8 @@ public class BreakingLadder : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
+        dialog = new string[5] {"Охх", "Куда-то пропал болтик", "В доме есть инструмент", 
+            "Найди чем и что закрутить", "И почини лестницу"};
     }
 
     void Update()
@@ -55,6 +58,7 @@ public class BreakingLadder : MonoBehaviour
                     mainLadderCollider.enabled = true;
                     needToSetAngularVelocity = false;
                     playerScript.rb.angularVelocity = -100;
+                    Invoke(nameof(StartGhostDialog), 1.5f);
                 }
             }
 
@@ -68,6 +72,12 @@ public class BreakingLadder : MonoBehaviour
         if (repairTrigger.isTriggered && isEnd && !isStart && playerScript.inventory.ContainsKey("Screws") 
             && playerScript.inventory.ContainsKey("Screwdriver") && Input.GetKeyUp(KeyCode.F))
             RepairStairs();
+    }
+
+    private void StartGhostDialog()
+    {
+        playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.Show();
     }
 
     private void Break()

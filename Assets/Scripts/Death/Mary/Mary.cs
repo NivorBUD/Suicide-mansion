@@ -40,6 +40,7 @@ public class Mary : MonoBehaviour
         pos.z = -1;
         transform.position = pos;
         needToShow = true;
+        InventoryLogic.canGetItems = false;
     }
 
     private void Update()

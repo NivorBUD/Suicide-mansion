@@ -26,7 +26,7 @@ public class BasementDeath : MonoBehaviour
     private Vector3 rightWallStartPos;
     private Vector3 deathLeftWallNewPos;
     private Vector3 deathRightWallNewPos;
-    private GameObject ghost;
+    private GameObject ghost, player;
     private Ghost ghostScript;
 
 
@@ -34,6 +34,7 @@ public class BasementDeath : MonoBehaviour
     {
         ghost = GameObject.FindWithTag("Ghost");
         ghostScript = ghost.GetComponent<Ghost>();
+        player = GameObject.FindWithTag("Player");
     }
 
     public void StartDeath()
@@ -92,7 +93,7 @@ public class BasementDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return !isStart && gameObject && ghostScript.isDialog;
+        return !isStart && gameObject && ghostScript.isDialog && player.transform.position.y < -5;
     }
 
     IEnumerator Ghost_COR()

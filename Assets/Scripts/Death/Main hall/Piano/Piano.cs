@@ -68,8 +68,6 @@ public class Piano : MonoBehaviour
     {
         playerScript.ghostScript.Show();
         playerScript.ghostScript.ChangeDialog(dialog);
-        playerScript.ghostScript.needToStartDialog = true;
-        InventoryLogic.canGetItems = false;
     }
 
     private void BreakDoor()

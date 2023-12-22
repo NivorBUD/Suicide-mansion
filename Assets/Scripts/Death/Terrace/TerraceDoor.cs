@@ -13,6 +13,7 @@ public class TerraceDoor : MonoBehaviour
     private Trigger trigger;
     private Hero playerScript;
     private GameObject mainCamera;
+    private string[] dialog;
 
     public void Open()
     {
@@ -35,6 +36,8 @@ public class TerraceDoor : MonoBehaviour
 
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         mainCamera = GameObject.FindWithTag("MainCamera");
+        dialog = new string[] {"Осталось одно дело", "Найди веревку и...", "Какой-то флаг", 
+            "Или что-то похожее", "В ванной точно есть что-то", "И повесь это на флагшток"};
     }
 
     void Update()
@@ -47,6 +50,13 @@ public class TerraceDoor : MonoBehaviour
             var camPos = playerScript.gameObject.transform.position;
             camPos.y = mainCamera.transform.position.y;
             mainCamera.transform.position = camPos;
+
+            if (playerScript.ghostScript.needTerraceDialog)
+            {
+                playerScript.ghostScript.needTerraceDialog = false;
+                playerScript.ghostScript.ChangeDialog(dialog);
+                playerScript.ghostScript.Show();
+            }
         }
     }
 }

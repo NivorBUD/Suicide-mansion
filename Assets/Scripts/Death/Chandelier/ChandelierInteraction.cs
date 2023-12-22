@@ -59,7 +59,6 @@ public class ChandelierInteraction : MonoBehaviour
     {
         playerScript.ghostScript.Show();
         playerScript.ghostScript.ChangeDialog(dialog);
-        playerScript.ghostScript.needToStartDialog = true;
         isDrop = true;
         rb.simulated = false;
         GetComponent<BoxCollider2D>().enabled = false;
