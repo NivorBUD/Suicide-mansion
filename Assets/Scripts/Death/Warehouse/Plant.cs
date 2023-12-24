@@ -146,15 +146,14 @@ public class Plant : MonoBehaviour
 
         playerScript.rb.simulated = true;
         playerScript.GetComponent<BoxCollider2D>().enabled = true;
-
-        //yield return new WaitForSeconds(2.5f);
-        
-
         yield return new WaitForSeconds(1f);
-        blackOut.SetActive(true);
+        
         Destroy(upLiana);
         Destroy(downLiana);
         door.GetComponent<BoxCollider2D>().isTrigger = false;
+        yield return new WaitForSeconds(1f);
+
+        blackOut.SetActive(true);
     }
 
     IEnumerator CutScene2()

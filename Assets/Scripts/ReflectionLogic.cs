@@ -29,7 +29,7 @@ public class ReflectionLogic : MonoBehaviour
             var newPos = gameObject.transform.position;
             newPos.x = xPos;
             gameObject.transform.position = newPos;
-            sr.flipX = playerSr.flipX;
+            sr.flipX = !playerSr.flipX;
         }
         else
         {

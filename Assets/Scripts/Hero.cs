@@ -80,6 +80,13 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        if (transform.position.z != 0)
+        {
+            var pos = transform.position;
+            pos.z = 0;
+            transform.position = pos;   
+        }
+
         ChangeSprite();
 
         if (!isCutScene && Input.GetButtonDown("Jump"))
@@ -107,7 +114,7 @@ public class Hero : MonoBehaviour
 
         else if (isScared)
         {
-            State = States.acid;
+            State = States.scare;
             if (sprite.sprite.name == "Player Scaried 9")
                 Death();
         }

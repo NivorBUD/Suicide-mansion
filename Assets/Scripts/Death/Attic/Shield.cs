@@ -8,6 +8,7 @@ public class Shield : MonoBehaviour
     public TerraceDoor terraceDoor;
     public BoxCollider2D ropeCollider, pantaloonsCollider;
     public Sprite playerElectric, skeletonElectric;
+    public GameObject blackOut;
 
     private CameraController mainCamera;
     private GameObject player;
@@ -38,6 +39,7 @@ public class Shield : MonoBehaviour
 
     public void StartDeath()
     {
+        blackOut.SetActive(false);
         PlayElectricShockSound(); // звук удара током на 3 секунды
         mainCamera.ZoomIn(2);
         mainCamera.ChangeAim(player.transform);
@@ -59,6 +61,9 @@ public class Shield : MonoBehaviour
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.ChangeAimToPlayer();
         playerScript.ghostScript.Show();
+        yield return new WaitForSeconds(2);
+
+        blackOut.SetActive(true);
     }
 
     private void PlayElectricShockSound()
