@@ -9,6 +9,8 @@ public class GameLogic : MonoBehaviour
     public SpriteRenderer activeBallRenderer;
     [SerializeField] GameObject acid;
     [SerializeField] ParticleSystem poof;
+    [SerializeField] SpriteRenderer boilerSR;
+    [SerializeField] Sprite acidBoilerSprite;
 
     [SerializeField] private Bottle bottle1;
     [SerializeField] private Bottle bottle2;
@@ -46,6 +48,7 @@ public class GameLogic : MonoBehaviour
         playerScript.isCutScene = false;
 
         PlayPuffSound(); // звук пуф при создании кислоты
+        boilerSR.sprite = acidBoilerSprite;
         acid.SetActive(true);
     }
 
@@ -74,6 +77,5 @@ public class GameLogic : MonoBehaviour
             poof.Play();
             Invoke(nameof(EndGame), 1f);
         }
-            
     }
 }

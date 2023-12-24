@@ -18,9 +18,8 @@ public class TerraceDoor : MonoBehaviour
     public void Open()
     {
         PlayOpenSound(); // звук открытия двери
-        GetComponent<SpriteRenderer>().color = Color.white;
         isOpened = true;
-        //GetComponent<SpriteRenderer>().sprite = openedDoor;
+        GetComponent<SpriteRenderer>().sprite = openedDoor;
     }
 
     private void PlayOpenSound()

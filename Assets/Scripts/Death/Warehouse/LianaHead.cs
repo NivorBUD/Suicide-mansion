@@ -58,7 +58,7 @@ public class LianaHead : MonoBehaviour
 
     public void StartMove()
     {
-        xHeadVelocity = 2;
+        xHeadVelocity = 3;
     }
 
     public void StartReverseMove()

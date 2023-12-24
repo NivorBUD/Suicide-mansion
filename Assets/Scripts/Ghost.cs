@@ -74,7 +74,7 @@ public class Ghost : MonoBehaviour
         pos.y += aimYDelta;
         pos.z = -1;
         transform.position = Vector3.MoveTowards(transform.position, pos, speed * Time.deltaTime);
-        sprite.flipX = transform.position.x < pos.x;
+        sprite.flipX = transform.position.x > aim.position.x;
 
         if (needToStartDialog && !isDialog && CheckIsNearTheAim())
             StartDialog();

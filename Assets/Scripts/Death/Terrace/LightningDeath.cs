@@ -4,8 +4,8 @@ using UnityEngine;
 public class LightningDeath : MonoBehaviour
 {
     [SerializeField] private GameObject pantaloons, treasureKey;
-    [SerializeField] private Clouds cloudsScript;   
-    [SerializeField] private Sprite ropeSprite, lightningSprte;
+    [SerializeField] private Clouds cloudsScript;     
+    [SerializeField] private Sprite ropeSprite, lightningSprite;
 
     private Hero playerScript;
     private Pantaloons pantaloonsScript;
@@ -61,6 +61,7 @@ public class LightningDeath : MonoBehaviour
         cameraController.ChangeAim(pantaloons.transform);
 
         pantaloonsScript.MoveToUpPos();
+        playerScript.UpHands();
 
         while (!pantaloonsScript.isReadyToLightning)
             yield return new WaitForSeconds(0.1f);
@@ -73,16 +74,21 @@ public class LightningDeath : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
         cloudsScript.StartRain();
-        cloudsScript.StartLightning();
-        yield return new WaitForSeconds(3);
+        playerScript.StopHandsUp();
+        yield return new WaitForSeconds(2);
 
         cameraController.ZoomIn(5);
         cameraController.ChangeAim(playerScript.gameObject.transform);
+        yield return new WaitForSeconds(2); 
+
+        cloudsScript.StartLightning();
+        sprite.sprite = lightningSprite;
         playerScript.EletricSchock();
         yield return new WaitForSeconds(3);
 
         playerScript.Death();
         cloudsScript.StopLightning();
+        sprite.sprite = ropeSprite;
         yield return new WaitForSeconds(2);
 
         playerScript.ghostScript.ChangeDialog(dialog);

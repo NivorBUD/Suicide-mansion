@@ -13,7 +13,11 @@ public class CableLogic : MonoBehaviour
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0, transform.position);
+        
+        var pos = transform.position;
+        pos.z += 0.1f;
+
+        lineRenderer.SetPosition(0, pos);
     }
 
     private void OnMouseDown()
@@ -33,7 +37,13 @@ public class CableLogic : MonoBehaviour
         if (gameLogic.activeCable != this)
             isActiveCabel = false;
 
-        lineRenderer.SetPosition(1, isActiveCabel ? GetMousePosition() : isReady ? rightPort.gameObject.transform.position : transform.position);
+        var portPos = rightPort.gameObject.transform.position;
+        portPos.z += 0.1f;
+
+        var pos = transform.position;
+        pos.z += 0.1f;
+
+        lineRenderer.SetPosition(1, isActiveCabel ? GetMousePosition() : isReady ? portPos : pos);
     }
 
     private Vector3 GetMousePosition()

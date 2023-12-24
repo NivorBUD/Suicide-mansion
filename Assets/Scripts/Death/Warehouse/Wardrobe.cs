@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class Wardrobe : MonoBehaviour
 {
-    [SerializeField] Sprite brakeSprite;
-    [SerializeField] GameObject flammenwerfer;
+    [SerializeField] Sprite brakeSprite, acidSprite;
+    [SerializeField] GameObject flamethrower;
     [SerializeField] GameObject bathBomb;
 
-    public void ChangeSprite()
+    public void Break()
     {
-        //gameObject.GetComponent<SpriteRenderer>().sprite = brakeSprite;
-        gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+        gameObject.GetComponent<SpriteRenderer>().sprite = brakeSprite;
+    }
+    
+    public void Acid()
+    {
+        gameObject.GetComponent<SpriteRenderer>().sprite = acidSprite;
     }
 
-    public void DropFlammenwerfer()
+    public void DropFlamethrower()
     {
-        flammenwerfer.SetActive(true);
+        flamethrower.SetActive(true);
         bathBomb.SetActive(true);
         bathBomb.GetComponent<Rigidbody2D>().AddForce(new Vector2(3, 0));
-    }
-
-    private void Update()
-    {
-        
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Piano : MonoBehaviour
@@ -9,12 +10,14 @@ public class Piano : MonoBehaviour
     public PianoDeath deathScript;
     public bool isEnd;
     public BoxCollider2D floorCollider;
+    public Sprite[] breakSprites;
 
+    private int breakIndex;
     private Hero playerScript;
     private GameObject player;
     private Rigidbody2D rb;
-    private PolygonCollider2D bc;
-    private string[] dialog = new string[11] { "Забыла я про этот рояль", "Ну, теперь вспомнила", 
+    private PolygonCollider2D col;
+    private string[] dialog = new string[] { "Забыла я про этот рояль", "Ну, теперь вспомнила", 
         "Надеюсь, ты не сильно ушибся", "Зато эта дверь открылась", "Лет 50 не могла открыть её", 
         "Cлууушай", "Убей ту летучую мышь", "Cлишком уж она мне надоела", "Pогатка", "Клавиша от рояля", "Действуй!"};
 
@@ -24,7 +27,7 @@ public class Piano : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        bc = gameObject.GetComponent<PolygonCollider2D>();
+        col = gameObject.GetComponent<PolygonCollider2D>();
 
         rb.centerOfMass = new Vector2(0, -1.5f);
     }
@@ -42,6 +45,8 @@ public class Piano : MonoBehaviour
         if (!door.isBroke && transform.localPosition.x <= -11)
         {
             BreakDoor();
+            breakIndex = 0;
+            StartCoroutine(Breaking());
             PlayBreakPianoSound(); //звук ломания пианино
         }
 
@@ -54,14 +59,23 @@ public class Piano : MonoBehaviour
         }
 
         if (!isEnd && transform.localPosition.x < -11 && rb.velocity.x == 0)
-        {
             EndDeath();
-        }
     }
 
     private void PlayBreakPianoSound()
     {
 
+    }
+
+    IEnumerator Breaking()
+    {
+        var spriteRender = GetComponent<SpriteRenderer>();
+
+        foreach (var sprite in breakSprites)
+        {
+            spriteRender.sprite = sprite;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private void ShowGhost()
@@ -92,7 +106,7 @@ public class Piano : MonoBehaviour
         
         isEnd = true;
         rb.simulated = false;
-        bc.enabled = false;
+        col.enabled = false;
         deathScript.col.enabled = false;
     }
 

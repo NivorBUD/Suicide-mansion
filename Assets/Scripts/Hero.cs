@@ -18,11 +18,11 @@ public class Hero : MonoBehaviour
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
     public Transform bulletPlace;
-    public bool isCutScene;
+    public bool isCutScene, isHandsUp;
     public Ghost ghostScript;
 
     private Vector3 liftPos;
-    private bool isLift, isHorizontalLift, isScared;
+    private bool isLift, isHorizontalLift, isScared, isUppingHands, isAcid;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
@@ -80,15 +80,7 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
-        if (!isScared && State != States.electric)
-            State = States.idle;
-
-        if (isScared)
-        {
-            State = States.scare;
-            if (sprite.sprite.name == "Player Scaried 9")
-                Death();
-        }
+        ChangeSprite();
 
         if (!isCutScene && Input.GetButtonDown("Jump"))
             Jump();
@@ -106,6 +98,35 @@ public class Hero : MonoBehaviour
 
         getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
         holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
+    }
+
+    private void ChangeSprite()
+    {
+        if (!isAcid && !isUppingHands && !isScared && State != States.electric)
+            State = States.idle;
+
+        else if (isScared)
+        {
+            State = States.acid;
+            if (sprite.sprite.name == "Player Scaried 9")
+                Death();
+        }
+        else if (isAcid)
+        {
+            State = States.acid;
+            if (sprite.sprite.name == "Player Acid 9")
+                Death();
+        }
+        else if (isUppingHands)
+        {
+            if (sprite.sprite.name == "PlayerPrimer 7" || State == States.handsUpStand)
+            {
+                isHandsUp = true;
+                State = States.handsUpStand;
+            }
+            else
+                State = States.handsUp;
+        }
     }
 
     public void EletricSchock()
@@ -128,6 +149,23 @@ public class Hero : MonoBehaviour
         sprite.flipX = !sprite.flipX;
     }
 
+    public void UpHands()
+    {
+        isUppingHands = true;
+        sprite.flipX = false;
+    }
+
+    public void StopHandsUp()
+    {
+        isUppingHands = false;
+        isHandsUp = false;
+    }
+
+    public void Acid()
+    {
+        isAcid = true;
+    }
+
     private void PlayScareSound()
     {
 
@@ -137,6 +175,8 @@ public class Hero : MonoBehaviour
     {
         EndCutScene();
         isScared = false;
+        isUppingHands = false;
+        isAcid = false;
         gameObject.SetActive(false);
         State = States.idle;
         Invoke(nameof(Respawn), 3);
@@ -191,5 +231,8 @@ public enum States
     walk,
     lift,
     electric,
-    scare
+    scare,
+    handsUp, 
+    handsUpStand,
+    acid
 }

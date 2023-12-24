@@ -128,21 +128,27 @@ public class Plant : MonoBehaviour
         while (acid.transform.rotation.eulerAngles.z <= 179)
             yield return new WaitForSeconds(0.02f);
 
-        playerScript.Death();
-        playerScript.rb.simulated = true;
-        playerScript.GetComponent<BoxCollider2D>().enabled = true;
+        playerScript.Acid();
+        wardrobe.Acid();
+        yield return new WaitForSeconds(1f);
 
         downLianaScript.StartReverseMove();
         upLianaScript.StartReverseMove();
 
         acid.SetActive(false);
-        wardrobe.ChangeSprite();
-        wardrobe.DropFlammenwerfer();
         needToMoveAcid = false;
+        yield return new WaitForSeconds(2f);
 
-        yield return new WaitForSeconds(2.5f);
+        wardrobe.Break();
+        wardrobe.DropFlamethrower();
         downLianaWay.SetActive(false);
         upLianaWay.SetActive(false);
+
+        playerScript.rb.simulated = true;
+        playerScript.GetComponent<BoxCollider2D>().enabled = true;
+
+        //yield return new WaitForSeconds(2.5f);
+        
 
         yield return new WaitForSeconds(1f);
         blackOut.SetActive(true);

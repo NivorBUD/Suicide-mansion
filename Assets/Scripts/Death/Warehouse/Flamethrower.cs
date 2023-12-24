@@ -7,12 +7,14 @@ public class Flamethrower : MonoBehaviour
     public bool isReady;
     [SerializeField] GameObject getPlace;
     [SerializeField] GameObject holdingPlace;
-    [SerializeField] GameObject fire;
-    [SerializeField] Transform firePlace;
-    private bool needToMove;
+    [SerializeField] SpriteRenderer fire;
+    [SerializeField] Sprite[] fireSprites;
     public bool needToRotate;
-    private float zAngle;
     public int rotateNum;
+
+    private float zAngle;
+    private bool needToMove;
+    private int fireIndex;
 
     void Update()
     {
@@ -44,6 +46,16 @@ public class Flamethrower : MonoBehaviour
         }
     }
 
+    IEnumerator Fireing()
+    {
+        while (true)
+        {
+            fireIndex = (fireIndex + 1) % 8;
+            fire.sprite = fireSprites[fireIndex];
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     public void GetAndMoveToHand()
     {
         gameObject.SetActive(true);
@@ -55,8 +67,8 @@ public class Flamethrower : MonoBehaviour
     {
         rotateNum = 0;
         zAngle = -30;
-        fire.transform.position = firePlace.position;
-        fire.SetActive(true);
+        fire.gameObject.SetActive(true);
+        StartCoroutine(Fireing());
         Invoke(nameof(Rotate), 2f);
     }
 

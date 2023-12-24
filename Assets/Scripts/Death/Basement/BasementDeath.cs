@@ -55,7 +55,6 @@ public class BasementDeath : MonoBehaviour
         deathLeftWallNewPos.x += 6.7f;
         deathRightWallNewPos = rightWall.transform.position;
         deathRightWallNewPos.x -= 6.7f;
-
     }
 
     public void DeathHero()
@@ -138,7 +137,7 @@ public class BasementDeath : MonoBehaviour
         ghostScript.canChangePhraseByButton = true;
         ghostScript.speed = 2;
 
-        while (!ghostScript.isDialog)
+        while (ghostScript.isDialog)
         {
             yield return new WaitForSeconds(0.1f);
         }

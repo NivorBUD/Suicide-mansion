@@ -5,12 +5,17 @@ using UnityEngine;
 public class Boiler : MonoBehaviour
 {
     [SerializeField] GameObject gameArea;
+    [SerializeField] GameObject acid;
+    [SerializeField] Sprite emptySprite;
     private Hero playerScript;
+    private SpriteRenderer sr;
+
     public bool isPlayerInArea;
 
     void Start()
     {
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,5 +37,8 @@ public class Boiler : MonoBehaviour
             InventoryLogic.UseItem(playerScript.inventory["CaF2"]);
             gameArea.GetComponent<GameLogic>().StartGame();
         }
+
+        if (isPlayerInArea && Input.GetKeyDown(KeyCode.E) && sr.sprite.name == "BoilerAcid")
+            sr.sprite = emptySprite;
     }
 }
