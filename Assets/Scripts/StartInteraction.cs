@@ -28,8 +28,18 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))
         {
-            sprite.flipX = !sprite.flipX;
-            LeverPlatform.GetComponent<BoxCollider2D>().enabled = false;
+            PlayRingSound();
+            Invoke(nameof(Teleport), 0.5f);
         }
+    }
+
+    private void Teleport()
+    {
+        LeverPlatform.GetComponent<BoxCollider2D>().enabled = false;
+    }
+
+    private void PlayRingSound()
+    {
+
     }
 }

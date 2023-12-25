@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenDoor_Interaction : MonoBehaviour
+public class OpenDoorInteraction : MonoBehaviour
 {
     [SerializeField] GameObject anotherDoor;
 

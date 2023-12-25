@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class Item_Interaction : MonoBehaviour
+public class ItemInteraction : MonoBehaviour
 {
     [SerializeField] GameObject InventoryObject;
     private bool IsHeroInArea = false;

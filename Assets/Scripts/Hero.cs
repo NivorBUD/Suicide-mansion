@@ -11,6 +11,7 @@ public class Hero : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
+    [SerializeField] private ParticleSystem respawnPoof;
     [SerializeField] GameObject ghost;
     [SerializeField] GameObject getPlace;
     [SerializeField] GameObject holdingPlace;
@@ -186,7 +187,7 @@ public class Hero : MonoBehaviour
         isAcid = false;
         gameObject.SetActive(false);
         State = States.idle;
-        Invoke(nameof(Respawn), 3);
+        Invoke(nameof(RespawnPoof), 1);
 
         if (transform.localScale.y != 0.4 || transform.localScale.x != 0.4)
         {
@@ -197,7 +198,16 @@ public class Hero : MonoBehaviour
         }
     }
 
-    public void Respawn()
+    private void RespawnPoof()
+    {
+        var pos = transform.position;
+        pos.z = respawnPoof.gameObject.transform.position.z;
+        respawnPoof.gameObject.transform.position = pos;
+        respawnPoof.Play();
+        Invoke(nameof(Respawn), 1.5f);
+    }
+
+    private void Respawn()
     {
         var rot = gameObject.transform.rotation;
         rot.z = 0;
