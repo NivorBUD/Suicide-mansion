@@ -22,6 +22,6 @@ public class Wardrobe : MonoBehaviour
     {
         flamethrower.SetActive(true);
         bathBomb.SetActive(true);
-        bathBomb.GetComponent<Rigidbody2D>().AddForce(new Vector2(3, 0));
+        bathBomb.GetComponent<Rigidbody2D>().AddTorque(-5);
     }
 }

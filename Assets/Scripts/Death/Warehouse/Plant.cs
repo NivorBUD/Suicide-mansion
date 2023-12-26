@@ -57,10 +57,11 @@ public class Plant : MonoBehaviour
         smoke = gameObject.GetComponent<ParticleSystem>();
         downLianaScript = downLiana.GetComponent<LianaHead>();
         upLianaScript = upLiana.GetComponent<LianaHead>();
-        dialog = new string[10] { "Ого, молодец!", "Сама бы я не справилась", "Спасибо тебе", 
-            "Но вот с полом надо что-то делать", "Сломай чем-то левую дверь наверху", "Может получишь доску", 
-            "Потом наполни ванну и...", "Кинь туда бомбочку из шкафа", 
-            "Хочу немного отдохнуть", "Давай, давай, не стой!"};
+        dialog = new string[] { "Отличная работа!", "Откуда у меня огнемёт?", "Ну у меня немало скелетов в шкафу",
+            "Вернее, в разных шкафах…", "Ого, это же бомбочка для ванной!", "Она тебе пригодится",
+            "Теперь нужно перебраться через дыру наверху", "Сломай чем-то дверь в покои",
+            "И положи доску поперёк пролома", "Да, я разрешаю", "Потом наполни ванну и...", 
+            "Кинь туда бомбочку", "Давай, мне уже не терпится…"};
     }
 
     void Update()
@@ -125,7 +126,7 @@ public class Plant : MonoBehaviour
 
 
         acidAngle = 180;
-        while (acid.transform.rotation.eulerAngles.z <= 179)
+        while (acid.transform.rotation.eulerAngles.z <= 176)
             yield return new WaitForSeconds(0.02f);
 
         playerScript.Acid();

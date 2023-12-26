@@ -20,11 +20,10 @@ public class Mary : MonoBehaviour
         sprite = gameObject.GetComponent<SpriteRenderer>();
         sprite.color = new Color(255, 255, 255, 0);
 
-        dialog = new string[15] { "Привет!", "Oй...", "Да знаю, знаю",
-            "Давно не видел таких красоток", "Mог бы просто сказать", "Hезачем в обморок падать",
-            "А как ты здесь вообще оказался?", "Ладно, не отвечай", "Ты наш сотый посетитель", "Hу или не сотый", 
-            "B общем, у меня для тебя подарок", "Держи",
-            "Это ключ от ванной наверху", "Cходи, посмотри, что там происходит", "Hу а я пошла отдыхать, прощай"};
+        dialog = new string[] { "ПРИВЕ-Е-ЕТ!", "Ой...", "Да знаю, знаю",
+            "Давно не видел таких красоток", "В обморок падать не обязательно", "А как ты здесь вообще оказался?",
+            "Ладно, не отвечай","Ты наш первый посетитель за столько лет", "И потому, тебе вручается подарок",
+            "Держи!", "Это ключ от ванной наверху", "Ну а я пошла отдыхать, прощай", "Была рада знакомству"};
     }
 
     public void Hide()
@@ -77,13 +76,12 @@ public class Mary : MonoBehaviour
         textBox.text = dialog[phraseIndex];
         Hide();
         dialog = null;
-        InventoryLogic.canGetItems = true;
-    }
 
-    public void ChangeDialog(string[] newDialog)
-    {
-        dialog = newDialog;
-        phraseIndex = 0;
+        string[] ghostDialog = new string[] { "Ну как она тебе?", "По-моему - <I>мертвецки</I> красивая", 
+            "Ох, что-то я немного устала…", "Набери-ка мне ванную", "Она в ванной комнате… Как ни странно", 
+            "Иди, чего встал-то?", "Ванная? Не для призрака? И слышать не хочу!"};
+        player.GetComponent<Hero>().ghostScript.ChangeDialog(ghostDialog);
+        player.GetComponent<Hero>().ghostScript.Show();
     }
 
     public void ChangePhrase()

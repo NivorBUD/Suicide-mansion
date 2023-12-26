@@ -1,11 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.U2D;
-using UnityEngine.UIElements;
 
 public class Hero : MonoBehaviour
 {
@@ -90,10 +85,10 @@ public class Hero : MonoBehaviour
 
         ChangeSprite();
 
-        if (!isCutScene && Input.GetButtonDown("Jump"))
+        if (!ghostScript.isDialog && !isCutScene && Input.GetButtonDown("Jump"))
             Jump();
 
-        if (!isCutScene && Input.GetButton("Horizontal"))
+        if (!ghostScript.isDialog && !isCutScene && Input.GetButton("Horizontal"))
             Run();
 
         if (isLift || isHorizontalLift)
@@ -172,6 +167,12 @@ public class Hero : MonoBehaviour
     public void Acid()
     {
         isAcid = true;
+        PlayAcidSound();
+    }
+
+    private void PlayAcidSound()
+    {
+
     }
 
     private void PlayScareSound()
@@ -198,7 +199,17 @@ public class Hero : MonoBehaviour
         }
     }
 
-    private void RespawnPoof()
+    public void NoRespawnDeath()
+    {
+        EndCutScene();
+        isScared = false;
+        isUppingHands = false;
+        isAcid = false;
+        gameObject.SetActive(false);
+        State = States.idle;
+    }
+
+    public void RespawnPoof()
     {
         var pos = transform.position;
         pos.z = respawnPoof.gameObject.transform.position.z;

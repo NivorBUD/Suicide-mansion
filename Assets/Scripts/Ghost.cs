@@ -8,7 +8,7 @@ public class Ghost : MonoBehaviour
     [SerializeField] GameObject speechBox;
     [SerializeField] TextMeshPro textBox;
     public float speed = 3f;
-    public bool isDialog, needToStartDialog, needTerraceDialog;
+    public bool isDialog, needToStartDialog, needTerraceDialog, dialogIsStarting;
     public int phraseIndex = 0;
     public bool canChangePhraseByButton;
 
@@ -27,10 +27,16 @@ public class Ghost : MonoBehaviour
         sprite = gameObject.GetComponent<SpriteRenderer>();
         ChangeAim(gameObject.transform, 0, 0);
         canChangePhraseByButton = true;
-        actualDialog = new string[14] { "У-у-у-у-у!", "Зря ты очутился в этом доме!", "Приготовься к своей погибели!", 
+        actualDialog = new string[] { "У-у-у-у-у!", "Зря ты очутился в этом доме!", "Приготовься к своей погибели!",
             "Злостный... доставщик пиццы?", "Прошу меня извинить, сейчас я...", "Как же это остановить...",
-            "Не та кнопка...", "А может та?", "А, вот!", "Упс... Извини", "Ладно, не буду тебя мучить", 
-            "Просто разгреби завал на лестнице", "Для этого тебе понадобится лопата", "Подбери её с помощью кнопки Е"};
+            "Не та кнопка...", "А может та?", "А, вот!", "Упс... Извини", "Так-так-так, как же там было… ",
+            "Воскресни, несчастный, приди в этот мир!", "Абракадабра симсалабим!", 
+            "Ух ты, вот и пригодились бабушкины заклинания!", "Итак, Доставщик…", "Ты, наверное, хочешь выбраться отсюда?",
+            "Что ж, я тебя отпущу…", "Как только ты выполнишь все мои задания", 
+            "Моё родовое поместье пришло в запустение", "И ты должен привести его в порядок", "Ты согласен?",
+            "Не отвечай, я знаю, что да!", "Итак, нужно расчистить проход на второй этаж", 
+            "Убери кучу хлама на лестнице", "Подбери лопату с помощью кнопки E", "Теперь подойди к мусору на лестнице",
+            "Используй F чтобы применить предмет"};
     }
 
     public void ChangeAim(Transform newAim, float newXDelta, float newYDelta)
@@ -79,7 +85,7 @@ public class Ghost : MonoBehaviour
         if (needToStartDialog && !isDialog && CheckIsNearTheAim())
             StartDialog();
 
-        if (canChangePhraseByButton && isDialog && Input.GetKeyDown(KeyCode.F))
+        if (canChangePhraseByButton && dialogIsStarting && Input.GetKeyDown(KeyCode.F))
             ChangePhrase();
 
         if (needToHide) 
@@ -100,12 +106,15 @@ public class Ghost : MonoBehaviour
     public void StartDialog()
     {
         isDialog = true;
+        dialogIsStarting = true;
+        needToStartDialog = false;
         speechBox.SetActive(true);
         textBox.text = actualDialog[phraseIndex];
     }
 
     private void EndDialog()
     {
+        dialogIsStarting = false;
         isDialog = false;
         needToStartDialog = false;
         speechBox.SetActive(false);

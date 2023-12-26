@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     private Vector3 pos;
     private float speed = 1.0f;
     private bool isAimPlayer = true;
-    private Camera camera;
+    private Camera cam;
     private float newCamSize;
     private bool needToZoom;
 
@@ -46,13 +46,13 @@ public class CameraController : MonoBehaviour
     {
         if (!aim)
             aim = FindObjectOfType<Hero>().transform;
-        camera = gameObject.GetComponent<Camera>();
+        cam = gameObject.GetComponent<Camera>();
     }
 
     void Update()
     {
         if (needToZoom)
-            camera.orthographicSize = Mathf.MoveTowards(camera.orthographicSize, newCamSize, 5.0f * Time.deltaTime);
+            cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, newCamSize, 5.0f * Time.deltaTime);
 
         if (!aim)
             ChangeAimToPlayer();

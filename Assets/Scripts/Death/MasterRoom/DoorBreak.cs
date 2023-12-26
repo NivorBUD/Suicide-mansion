@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class DoorBreak : MonoBehaviour
@@ -13,6 +14,7 @@ public class DoorBreak : MonoBehaviour
     private ConstantForce2D force;
     private Rigidbody2D rb;
     private CameraController cameraController;
+    private string[] dialog;
 
     private void Start()
     {
@@ -20,6 +22,8 @@ public class DoorBreak : MonoBehaviour
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         force = gameObject.GetComponent<ConstantForce2D>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+        dialog = new string[] {"Здорово ты её!", "Напомнил моего знакомого, Джонни", "Славный был парень",
+            "Жаль, с семейкой не повезло…", "И с лабиринтом…"};
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -103,10 +107,13 @@ public class DoorBreak : MonoBehaviour
 
         // Вкл управление перса
         playerScript.isCutScene = false;
-
         yield return new WaitForSeconds(1);
 
         // Включаем затемнение
         blackOut.SetActive(true);
+
+        playerScript.ghostScript.Show();
+        playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.StartDialog();
     }
 }

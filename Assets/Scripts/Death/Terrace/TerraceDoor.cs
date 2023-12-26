@@ -7,6 +7,7 @@ public class TerraceDoor : MonoBehaviour
 {
     public Transform anotherPlayerPosition;
     public Transform playerPosition;
+    public GameObject pantaloonsDialogTrigger;
 
     [SerializeField] private Sprite openedDoor;
     public bool isOpened;
@@ -35,13 +36,13 @@ public class TerraceDoor : MonoBehaviour
 
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         mainCamera = GameObject.FindWithTag("MainCamera");
-        dialog = new string[] {"Осталось одно дело", "Найди веревку и...", "Какой-то флаг", 
-            "Или что-то похожее", "В ванной точно есть что-то", "И повесь это на флагшток"};
+        dialog = new string[] {"О нет, наш флаг!", "Нужно восстановить честь нашего рода!", "Найди веревку и...", 
+            "Какой-то флаг", "Или что-то похожее", "В ванной точно есть что-то", "Возвращайся с этим сюда"};
     }
 
     void Update()
     {
-        if (isOpened && trigger.isTriggered && Input.GetKeyDown(KeyCode.F))
+        if (isOpened && trigger.isTriggered && Input.GetKeyDown(KeyCode.F) && !playerScript.ghostScript.isDialog)
         {
             playerPosition.position = playerScript.gameObject.transform.position;
             playerScript.gameObject.transform.position = anotherPlayerPosition.position;
@@ -52,9 +53,10 @@ public class TerraceDoor : MonoBehaviour
 
             if (playerScript.ghostScript.needTerraceDialog)
             {
-                playerScript.ghostScript.needTerraceDialog = false;
                 playerScript.ghostScript.ChangeDialog(dialog);
+                playerScript.ghostScript.needTerraceDialog = false;
                 playerScript.ghostScript.Show();
+                pantaloonsDialogTrigger.SetActive(true);
             }
         }
     }

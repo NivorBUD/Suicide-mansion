@@ -23,12 +23,14 @@ public class PianoDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return isPlayerInPlace && playerScript.inventory.ContainsKey("Shovel");
+        return isPlayerInPlace && playerScript.inventory.ContainsKey("Shovel") && !playerScript.ghostScript.isDialog;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         isPlayerInPlace = true;
+        if (playerScript.ghostScript.phraseIndex == 25)
+            playerScript.ghostScript.ChangePhrase();
     }
 
     private void OnTriggerExit2D(Collider2D collision)

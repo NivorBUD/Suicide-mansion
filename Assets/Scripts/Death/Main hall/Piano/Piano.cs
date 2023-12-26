@@ -12,14 +12,14 @@ public class Piano : MonoBehaviour
     public BoxCollider2D floorCollider;
     public Sprite[] breakSprites;
 
-    private int breakIndex;
     private Hero playerScript;
     private GameObject player;
     private Rigidbody2D rb;
     private PolygonCollider2D col;
-    private string[] dialog = new string[] { "Забыла я про этот рояль", "Ну, теперь вспомнила", 
-        "Надеюсь, ты не сильно ушибся", "Зато эта дверь открылась", "Лет 50 не могла открыть её", 
-        "Cлууушай", "Убей ту летучую мышь", "Cлишком уж она мне надоела", "Pогатка", "Клавиша от рояля", "Действуй!"};
+    private string[] dialog = new string[] { "Ого!", "Спустить рояль было следующим заданием…",
+        "Но ты схватываешь всё на лету!", "Молодец, слушай дальше", "Видишь ту летучую мышь на перилах?",
+        "За эти 150 лет она меня уже достала!", "Можешь прогнать её оттуда?", "Кажется в детской лежит рогатка",
+        "А на счёт снаряда…", "Поищи сам что-нибудь подходящее", "Вперёд!"};
 
 
     void Start()
@@ -45,12 +45,11 @@ public class Piano : MonoBehaviour
         if (!door.isBroke && transform.localPosition.x <= -11)
         {
             BreakDoor();
-            breakIndex = 0;
             StartCoroutine(Breaking());
             PlayBreakPianoSound(); //звук ломания пианино
         }
 
-        if (!isEnd && playerScript.isCutScene && playerScript.rb.velocity.x == 0 &&
+        if (!isEnd && playerScript.isCutScene && Math.Abs(playerScript.rb.velocity.x) <= 0.5f &&
             (Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 90) < 0.1f || Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 270) < 0.1f))
         {
             playerScript.Death();

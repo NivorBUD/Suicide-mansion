@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LightningDeath : MonoBehaviour
 {
-    [SerializeField] private GameObject pantaloons, treasureKey;
+    [SerializeField] private GameObject pantaloons, treasureKey, requestPlace;
     [SerializeField] private Clouds cloudsScript;     
     [SerializeField] private Sprite ropeSprite, lightningSprite;
 
@@ -29,8 +29,10 @@ public class LightningDeath : MonoBehaviour
         keyCollider = treasureKey.GetComponent<BoxCollider2D>();
         keyrb = treasureKey.GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        dialog = new string[] {"Ну вот и всё", "Хоть и не повезло с молнией", "Но спасибо за помощь", "Этот ключ тебе",
-            "Он откроет сокровища", "Но их надо найти в доме"};
+        dialog = new string[] {"Простите, о великие души предков", "Я верю, он это не со зла", 
+            "Ну вот, это было последнее задание", "Я <I>до конца смерти</I> тебе благодарна!", "Знаешь, я тут подумала…",
+            "Нам всё равно уже ничего не нужно", "Возьми этот ключ", 
+            "А откуда он… Я думаю, ты догадаешься", "Удачи, и спасибо тебе за всё!"};
     }
 
     private void Update()
@@ -86,17 +88,32 @@ public class LightningDeath : MonoBehaviour
         playerScript.EletricSchock();
         yield return new WaitForSeconds(3);
 
-        playerScript.Death();
+        playerScript.NoRespawnDeath();
         cloudsScript.StopLightning();
         sprite.sprite = ropeSprite;
         yield return new WaitForSeconds(2);
 
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
+        playerScript.ghostScript.ChangeAim(requestPlace.transform, 0, 0);
+        playerScript.ghostScript.canChangePhraseByButton = false;
+        yield return new WaitForSeconds(5);
 
-        yield return new WaitForSeconds(7);
+        playerScript.ghostScript.ChangePhrase();
+        yield return new WaitForSeconds(3);
 
+        playerScript.ghostScript.ChangeAimToPlayer();
+        playerScript.ghostScript.ChangePhrase();
+        playerScript.RespawnPoof();
+        playerScript.EndCutScene();
         cloudsScript.StopRain();
+
+        yield return new WaitForSeconds(1.5f);
+        playerScript.ghostScript.canChangePhraseByButton = true;
+
+        while (playerScript.ghostScript.phraseIndex != 6)
+            yield return new WaitForSeconds(0.1f);
+
         treasureKey.SetActive(true);
     }
 }

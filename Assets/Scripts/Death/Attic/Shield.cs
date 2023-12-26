@@ -21,8 +21,8 @@ public class Shield : MonoBehaviour
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
-        dialog = new string[] {"Мда, из тебя электрик", "Как из меня человек", "Перчатки бы надел", 
-            "Ладно, иди на веранду", "Там встретимся" };
+        dialog = new string[] {"Да, похоже ты не лучший электрик…", "<I>Среди нас</I>", 
+            "Но дело сделано, встретимся на веранде"};
     }
 
     void Update()

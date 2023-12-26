@@ -24,8 +24,8 @@ public class BreakingLadder : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        dialog = new string[5] {"Охх", "Куда-то пропал болтик", "В доме есть инструмент", 
-            "Найди чем и что закрутить", "И почини лестницу"};
+        dialog = new string[] {"Вот это <I>смертельный</I> трюк", "Кажется, куда-то пропал болтик", 
+            "В доме есть инструмент", "Найди всё это и почини лестницу"};
     }
 
     void Update()

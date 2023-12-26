@@ -1,33 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BasementDeath : MonoBehaviour
 {
-    public GameObject leftWall;
-    public GameObject rightWall;
-    public GameObject exit;
+    public GameObject leftWall, rightWall;
     public static float speed = 0.0f;
-    public bool isStart = false;
-    public bool isEnd = false;
-    [SerializeField] private GameObject Button1;
-    [SerializeField] private GameObject Button2;
-    [SerializeField] private GameObject Button3;
-    [SerializeField] private GameObject Button4;
+    public bool isStart,isEnd;
+    [SerializeField] private GameObject Button1, Button2, Button3, Button4;
     [SerializeField] private GameObject blackOut;
+    [SerializeField] private GameObject shovel;
 
-
-    private Vector3 leftWallNewPos;
-    private Vector3 rightWallNewPos;
-    private Vector3 leftWallStartPos;
-    private Vector3 rightWallStartPos;
-    private Vector3 deathLeftWallNewPos;
-    private Vector3 deathRightWallNewPos;
+    private Vector3 leftWallNewPos, rightWallNewPos;
+    private Vector3 leftWallStartPos, rightWallStartPos;
+    private Vector3 deathLeftWallNewPos, deathRightWallNewPos;
     private GameObject ghost, player;
     private Ghost ghostScript;
+    private Hero playerScript;
 
 
     private void Start()
@@ -35,10 +23,12 @@ public class BasementDeath : MonoBehaviour
         ghost = GameObject.FindWithTag("Ghost");
         ghostScript = ghost.GetComponent<Ghost>();
         player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<Hero>();
     }
 
     public void StartDeath()
     {
+        ghostScript.isDialog = false;
         blackOut.SetActive(false);
         ghostScript.canChangePhraseByButton = false;
         isStart = true;
@@ -59,8 +49,8 @@ public class BasementDeath : MonoBehaviour
 
     public void DeathHero()
     {
-        var heroScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
-        heroScript.Death();
+        playerScript.NoRespawnDeath();
+        ghostScript.canChangePhraseByButton = false;
         isEnd = true;
         speed = 1;
     }
@@ -70,7 +60,6 @@ public class BasementDeath : MonoBehaviour
         leftWall.transform.position = Vector3.MoveTowards(leftWall.transform.position, leftWallStartPos, 3 * speed * Time.deltaTime);
         rightWall.transform.position = Vector3.MoveTowards(rightWall.transform.position, rightWallStartPos, 3 * speed * Time.deltaTime);
     }
-
 
     private void Update()
     {
@@ -131,17 +120,39 @@ public class BasementDeath : MonoBehaviour
         ghostScript.ChangeAimToPlayer();
 
         ghostScript.ChangePhrase();
+        yield return new WaitForSeconds(1.5f);
 
-        yield return new WaitForSeconds(3.5f);
-        blackOut.SetActive(true);
-        ghostScript.canChangePhraseByButton = true;
         ghostScript.speed = 2;
 
-        while (ghostScript.isDialog)
-        {
+        LadderInteraction.canUseLadders = true;
+        while (!isEnd)
             yield return new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < 3; i++)
+        {
+            ghostScript.ChangePhrase();
+            yield return new WaitForSeconds(1.5f);
         }
 
-        LadderInteraction.canUseLadders = true;
+        playerScript.RespawnPoof();
+        ghostScript.canChangePhraseByButton = true;
+
+        while (ghostScript.phraseIndex != 24)
+            yield return new WaitForSeconds(0.1f);
+
+        ghostScript.canChangePhraseByButton = false;
+        InventoryLogic.canGetItems = true;
+
+        while (shovel != null)
+            yield return new WaitForSeconds(0.1f);
+
+        blackOut.SetActive(true);
+        ghostScript.ChangePhrase();
+
+        while (ghostScript.phraseIndex != 26)
+            yield return new WaitForSeconds(0.1f);
+
+        yield return new WaitForSeconds(1.5f);
+        ghostScript.ChangePhrase();
     }
 }
