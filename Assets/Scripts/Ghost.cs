@@ -66,7 +66,7 @@ public class Ghost : MonoBehaviour
         var pos = player.transform.position;
         pos.x += 6;
         pos.y += 3;
-        pos.z = -1;
+        pos.z = -4.5f;
         transform.position = pos;
         needToShow = true;
         ChangeAimToPlayer();

@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class MirrorDeath : MonoBehaviour
 {
-    public GameObject mary;
-    public GameObject drawing;
-    public GameObject button;
-    public GameObject blackOut;
+    public GameObject mary, drawing, button, blackOut;
+    public Trigger trigger;
 
     private GameObject mainCamera;
     private CameraController cameraController;
     private bool isPlay;
     private bool isEnd;
-    private static bool isPlayerInArea = false;
     private Hero player;
 
     public void Prepare()
@@ -32,7 +29,7 @@ public class MirrorDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return isPlayerInArea && !isPlay && player.inventory.ContainsKey("Marker") && player.inventory.ContainsKey("Candle");
+        return trigger.isTriggered && !isPlay && player.inventory.ContainsKey("Marker") && player.inventory.ContainsKey("Candle");
     }
 
     public void StartDeath()
@@ -43,16 +40,6 @@ public class MirrorDeath : MonoBehaviour
         isPlay = true;
         player.isCutScene = true;
         StartDraw();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        isPlayerInArea = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        isPlayerInArea = false;
     }
 
     private void StartDraw()

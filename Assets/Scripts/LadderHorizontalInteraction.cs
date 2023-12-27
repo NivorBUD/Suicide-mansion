@@ -7,6 +7,7 @@ public class LadderHorizontalInteraction : MonoBehaviour
 {
     public GameObject anotherLadderPlace;
     public GameObject midLadderPos;
+    public GameObject Railing;
     public static bool isUseMidPos;
 
     private Hero playerScript;
@@ -46,5 +47,10 @@ public class LadderHorizontalInteraction : MonoBehaviour
             pos.z = player.transform.position.z;
             playerScript.StartLift(true, pos);
         }
+
+        if (playerScript.isHorizontalLift || isUseMidPos)
+            Railing.transform.localPosition = new Vector3(Railing.transform.localPosition.x, Railing.transform.localPosition.y, -1);
+        else
+            Railing.transform.localPosition = new Vector3(Railing.transform.localPosition.x, Railing.transform.localPosition.y, 0.1f);
     }
 }

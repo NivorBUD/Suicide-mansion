@@ -47,7 +47,6 @@ public class PianoDeath : MonoBehaviour
     IEnumerator Death()
     {
         playerScript.isCutScene = true;
-        LadderHorizontalInteraction.StopUsingMidPos();
         shovel.GetAndMoveToHand();
 
         while (!shovel.isReady)

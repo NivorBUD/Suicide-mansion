@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
@@ -8,17 +9,16 @@ public class Hero : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private ParticleSystem respawnPoof;
     [SerializeField] GameObject ghost;
-    [SerializeField] GameObject getPlace;
-    [SerializeField] GameObject holdingPlace;
+    [SerializeField] GameObject getPlace, holdingPlace;
     public GameObject bullet;
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
     public Transform bulletPlace;
-    public bool isCutScene, isHandsUp;
+    public bool isCutScene, isHandsUp, isHorizontalLift;
     public Ghost ghostScript;
 
     private Vector3 liftPos;
-    private bool isLift, isHorizontalLift, isScared, isUppingHands, isAcid;
+    private bool isLift, isScared, isUppingHands, isAcid, isSit;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
@@ -64,6 +64,17 @@ public class Hero : MonoBehaviour
         isCutScene = false;
     }
 
+    public void StartSit()
+    {
+        isSit = true;
+        State = States.sit;
+    }
+
+    public void EndSit()
+    {
+        isSit = false;
+    }
+
     public void AddToInventiry([SerializeField] GameObject InventoryObject)
     {
         inventory[InventoryObject.name] = InventoryObject;
@@ -76,11 +87,17 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.z != 0)
+        if (transform.position.z != 0 && !isHorizontalLift)
         {
             var pos = transform.position;
             pos.z = 0;
             transform.position = pos;   
+        }
+        else if (isHorizontalLift)
+        {
+            var pos = transform.position;
+            pos.z = 1;
+            transform.position = pos;
         }
 
         ChangeSprite();
@@ -95,7 +112,8 @@ public class Hero : MonoBehaviour
         {
             State = isHorizontalLift ? States.walk : States.lift;
             transform.position = Vector3.MoveTowards(transform.position, liftPos, speed * Time.deltaTime);
-            if (transform.position == liftPos)
+            if (Math.Abs(transform.position.x - liftPos.x) <= 0.1f &&
+                Math.Abs(transform.position.y - liftPos.y) <= 0.1f)
                 StopLift();
         }
 
@@ -105,7 +123,7 @@ public class Hero : MonoBehaviour
 
     private void ChangeSprite()
     {
-        if (!isAcid && !isUppingHands && !isScared && State != States.electric)
+        if (!isSit && !isAcid && !isUppingHands && !isScared && State != States.electric)
             State = States.idle;
 
         else if (isScared)
@@ -120,6 +138,8 @@ public class Hero : MonoBehaviour
             if (sprite.sprite.name == "Player Acid 9")
                 Death();
         }
+        else if (isSit)
+            State = States.sit;
         else if (isUppingHands)
         {
             if (sprite.sprite.name == "PlayerPrimer 7" || State == States.handsUpStand)
@@ -229,6 +249,7 @@ public class Hero : MonoBehaviour
 
     public void Up()
     {
+        EndSit();
         sprite.flipX = true;
         rb.AddForce(transform.right * jumpForce, ForceMode2D.Impulse);
         Invoke(nameof(TurnUp), 0.05f);
@@ -262,5 +283,6 @@ public enum States
     scare,
     handsUp, 
     handsUpStand,
-    acid
+    acid,
+    sit
 }

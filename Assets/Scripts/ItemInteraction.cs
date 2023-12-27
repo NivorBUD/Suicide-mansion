@@ -6,7 +6,7 @@ using UnityEngine.U2D;
 public class ItemInteraction : MonoBehaviour
 {
     [SerializeField] GameObject InventoryObject;
-    private bool IsHeroInArea = false;
+    public bool IsHeroInArea = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

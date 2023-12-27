@@ -50,7 +50,7 @@ public class BreakingLadder : MonoBehaviour
             {
                 if (downTrigger.isTriggered && !floorCollider.enabled)
                     if (Math.Abs(player.transform.localEulerAngles.z - 90) <= 8f)
-                        EndDeath();
+                        EndCutScene();
                 
                 if (upTrigger.isTriggered && floorCollider.enabled)
                 {
@@ -90,6 +90,7 @@ public class BreakingLadder : MonoBehaviour
         playerScript.rb.freezeRotation = false;
         GetComponent<SpriteRenderer>().sprite = brokenLadder;
         ladderInteraction.enabled = false;
+        playerScript.StartSit();
     }
 
     private void PlayBreakSound()
@@ -97,14 +98,16 @@ public class BreakingLadder : MonoBehaviour
 
     }
 
-    private void EndDeath()
+    private void EndCutScene()
     {
         cameraController.ChangeAimToPlayer();
+
         player.transform.eulerAngles = new Vector3(0, 0, 90);
         playerScript.rb.freezeRotation = true;
         playerScript.rb.angularVelocity = 0;
         player.GetComponent<BoxCollider2D>().enabled = true;
         player.GetComponent<CircleCollider2D>().enabled = false;
+
         floorCollider.enabled = true;
         mainLadderCollider.enabled = false;
         isEnd = true;

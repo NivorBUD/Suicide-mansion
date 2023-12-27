@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootPlaceLogic : MonoBehaviour
+public class BreakingDoorPoint : MonoBehaviour
 {
     private Hero playerScript;
     private SpriteRenderer sprite;
@@ -15,19 +15,9 @@ public class ShootPlaceLogic : MonoBehaviour
 
     private void Update()
     {
-        if (playerScript.inventory.ContainsKey("Keys") && playerScript.inventory.ContainsKey("Slingshot"))
+        if (playerScript.inventory.ContainsKey("Axe"))
             sprite.enabled = true;
         else
             sprite.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        ChandelierDeath.EnterShootPlace();
-    }
-    
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        ChandelierDeath.ExitShootPlace();
     }
 }

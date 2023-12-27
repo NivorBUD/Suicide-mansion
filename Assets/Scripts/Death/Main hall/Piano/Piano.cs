@@ -68,6 +68,7 @@ public class Piano : MonoBehaviour
 
     IEnumerator Breaking()
     {
+        LadderHorizontalInteraction.StopUsingMidPos();
         var spriteRender = GetComponent<SpriteRenderer>();
 
         foreach (var sprite in breakSprites)
