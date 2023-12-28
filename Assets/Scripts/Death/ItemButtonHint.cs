@@ -15,7 +15,7 @@ public class ItemButtonHint : MonoBehaviour
 
     void Update()
     {
-        if (trigger.IsHeroInArea)
+        if (trigger.IsHeroInArea && InventoryLogic.canGetItems)
             hint.SetActive(true);
         else
             hint.SetActive(false);

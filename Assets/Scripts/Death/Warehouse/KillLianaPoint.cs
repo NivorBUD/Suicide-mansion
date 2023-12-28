@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class KillLianaPoint : MonoBehaviour
 {
+    private ButtonHint hint;
     private Hero playerScript;
     private SpriteRenderer sprite;
 
@@ -11,13 +12,15 @@ public class KillLianaPoint : MonoBehaviour
     {
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         sprite = GetComponent<SpriteRenderer>();
+        hint = GetComponent<ButtonHint>();
     }
 
     private void Update()
     {
-        if (playerScript.inventory.ContainsKey("Flamethrower"))
-            sprite.enabled = true;
-        else
-            sprite.enabled = false;
+        sprite.enabled = playerScript.inventory.ContainsKey("Flamethrower");
+        hint.isOn = playerScript.inventory.ContainsKey("Flamethrower");
+
+        if (hint.isOn)
+            playerScript.ChangePointerAim(transform);
     }
 }

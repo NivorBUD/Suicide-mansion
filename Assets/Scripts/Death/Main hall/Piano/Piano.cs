@@ -11,6 +11,7 @@ public class Piano : MonoBehaviour
     public bool isEnd;
     public BoxCollider2D floorCollider;
     public Sprite[] breakSprites;
+    [SerializeField] private ChangeImage deathopediaImage;
 
     private Hero playerScript;
     private GameObject player;
@@ -52,6 +53,7 @@ public class Piano : MonoBehaviour
         if (!isEnd && playerScript.isCutScene && Math.Abs(playerScript.rb.velocity.x) <= 0.5f &&
             (Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 90) < 0.1f || Math.Abs(Math.Round(player.transform.rotation.eulerAngles.z, 1) - 270) < 0.1f))
         {
+            deathopediaImage.ChangeSprite();
             playerScript.Death();
             Invoke(nameof(ShowGhost), 2.5f);
             Invoke(nameof(TurnOnBlackOut), 3.5f);
@@ -82,6 +84,7 @@ public class Piano : MonoBehaviour
     {
         playerScript.ghostScript.Show();
         playerScript.ghostScript.ChangeDialog(dialog);
+        playerScript.ghostScript.mission = "Взять рогатку и какой-то патрон";
     }
 
     private void BreakDoor()

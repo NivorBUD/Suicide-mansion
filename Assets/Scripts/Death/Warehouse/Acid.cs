@@ -7,6 +7,7 @@ public class Acid : MonoBehaviour
     private bool isReady;
     [SerializeField] GameObject getPlace;
     [SerializeField] GameObject holdingPlace;
+    [SerializeField] Sprite fallSprite;
     private bool needToMove;
 
     void Update()
@@ -25,5 +26,10 @@ public class Acid : MonoBehaviour
         gameObject.SetActive(true);
         gameObject.transform.position = getPlace.transform.position;
         needToMove = true;
+    }
+
+    public void ChangeSpriteToFall()
+    {
+        GetComponent<SpriteRenderer>().sprite = fallSprite;
     }
 }

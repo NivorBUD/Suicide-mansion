@@ -10,6 +10,7 @@ public class Plant : MonoBehaviour
     
     [SerializeField] private Wardrobe wardrobe; 
     [SerializeField] private GameObject door, axe, body, blackOut;
+    [SerializeField] private ChangeImage deathopediaImage;
 
     private ParticleSystem smoke;
     private Acid acidScript;
@@ -66,6 +67,9 @@ public class Plant : MonoBehaviour
 
     void Update()
     {
+        if (playerScript.inventory.ContainsKey("Acid"))
+            playerScript.ChangePointerAim(transform);
+
         if (!playerScript.isCutScene && ReadyToStart())
             StartDeath();
 
@@ -85,6 +89,8 @@ public class Plant : MonoBehaviour
 
     IEnumerator CutScene1()
     {
+        InventoryLogic.UseItem(playerScript.inventory["Acid"]);
+        playerScript.StopPointerAiming();
         door.GetComponent<BoxCollider2D>().isTrigger = true;
         blackOut.SetActive(false);
 
@@ -113,24 +119,25 @@ public class Plant : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         needToMoveAcid = true;
-        InventoryLogic.UseItem(playerScript.inventory["Acid"]);
-
         upLianaScript.MoveUp();
         upLianaScript.trigger.transform.position = upPos.position;
         yield return new WaitForSeconds(1f);
 
         upLianaScript.trigger.enabled = true;
-
         while (!upLianaScript.isUp)
             yield return new WaitForSeconds(0.02f);
 
-
         acidAngle = 180;
+        while (acid.transform.rotation.eulerAngles.z <= 150)
+            yield return new WaitForSeconds(0.02f);
+        
+        acidScript.ChangeSpriteToFall();
         while (acid.transform.rotation.eulerAngles.z <= 176)
             yield return new WaitForSeconds(0.02f);
 
         playerScript.Acid();
         wardrobe.Acid();
+        deathopediaImage.ChangeSprite();
         yield return new WaitForSeconds(1f);
 
         downLianaScript.StartReverseMove();
@@ -159,6 +166,8 @@ public class Plant : MonoBehaviour
 
     IEnumerator CutScene2()
     {
+        InventoryLogic.UseItem(playerScript.inventory["Flamethrower"]);
+        playerScript.StopPointerAiming();
         cameraController.ZoomIn(2);
         cameraController.ChangeAim(cutscenePos);
         flamethrowerScript.GetAndMoveToHand();
@@ -189,7 +198,6 @@ public class Plant : MonoBehaviour
 
         axe.SetActive(true);
         playerScript.EndCutScene();
-        InventoryLogic.UseItem(playerScript.inventory["Flamethrower"]);
         axeCollider.enabled = true;
     }
 }

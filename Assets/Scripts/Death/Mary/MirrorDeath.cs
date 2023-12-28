@@ -1,17 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class MirrorDeath : MonoBehaviour
 {
     public GameObject mary, drawing, button, blackOut;
     public Trigger trigger;
+    public ButtonHint hint;
+    [SerializeField] private ChangeImage deathopediaImage;
 
     private GameObject mainCamera;
     private CameraController cameraController;
     private bool isPlay;
     private bool isEnd;
-    private Hero player;
+    private Hero playerScript;
 
     public void Prepare()
     {
@@ -20,7 +24,7 @@ public class MirrorDeath : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         isPlay = false;
         isEnd = false;
         mainCamera = GameObject.FindWithTag("MainCamera");
@@ -29,16 +33,17 @@ public class MirrorDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return trigger.isTriggered && !isPlay && player.inventory.ContainsKey("Marker") && player.inventory.ContainsKey("Candle");
+        return trigger.isTriggered && !isPlay && playerScript.inventory.ContainsKey("Marker") && playerScript.inventory.ContainsKey("Candle");
     }
 
     public void StartDeath()
     {
         blackOut.SetActive(false);
-        InventoryLogic.UseItem(player.inventory["Marker"]);
-        InventoryLogic.UseItem(player.inventory["Candle"]);
+        InventoryLogic.UseItem(playerScript.inventory["Marker"]);
+        InventoryLogic.UseItem(playerScript.inventory["Candle"]);
+        playerScript.StopPointerAiming();
         isPlay = true;
-        player.isCutScene = true;
+        playerScript.isCutScene = true;
         StartDraw();
     }
 
@@ -53,7 +58,10 @@ public class MirrorDeath : MonoBehaviour
     {
         cameraController.ZoomIn(5);
         mary.GetComponent<Mary>().Show();
-        player.DeadlyScare();
+
+        deathopediaImage.ChangeSprite();
+        playerScript.DeadlyScare();
+
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
         Invoke(nameof(TurnOnBlackOut), 5f);
@@ -71,6 +79,11 @@ public class MirrorDeath : MonoBehaviour
             button.SetActive(true);
             isEnd = true;
         }
+
+        hint.isOn = playerScript.inventory.ContainsKey("Marker") && playerScript.inventory.ContainsKey("Candle");
+
+        if (hint.isOn)
+            playerScript.ChangePointerAim(transform);
 
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
             StartDeath();

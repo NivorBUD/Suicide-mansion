@@ -12,11 +12,13 @@ public class Mary : MonoBehaviour
     private SpriteRenderer sprite;
     private string[] dialog;
     private GameObject player;
+    private static Hero playerScript;
     private bool needToHide, needToShow;
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<Hero>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
         sprite.color = new Color(255, 255, 255, 0);
 
@@ -44,6 +46,9 @@ public class Mary : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.isPause)
+            return;
+
         if (isDialog && Input.GetKeyDown(KeyCode.F))
             ChangePhrase();
 

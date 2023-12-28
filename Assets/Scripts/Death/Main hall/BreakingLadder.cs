@@ -8,6 +8,8 @@ public class BreakingLadder : MonoBehaviour
     [SerializeField] private Trigger breakTrigger, upTrigger, downTrigger, repairTrigger;
     [SerializeField] private PolygonCollider2D mainLadderCollider;
     [SerializeField] private BoxCollider2D floorCollider, screwdriverCollider, screwsCollider;
+    [SerializeField] private ButtonHint hint;
+    [SerializeField] private GameObject electricShield;
 
     private GameObject player;
     private Hero playerScript;
@@ -16,7 +18,7 @@ public class BreakingLadder : MonoBehaviour
     private bool needToSetAngularVelocity;
     private CameraController cameraController;
     private string[] dialog;
-
+    
 
     void Start()
     {
@@ -72,6 +74,13 @@ public class BreakingLadder : MonoBehaviour
         if (repairTrigger.isTriggered && isEnd && !isStart && playerScript.inventory.ContainsKey("Screws") 
             && playerScript.inventory.ContainsKey("Screwdriver") && Input.GetKeyUp(KeyCode.F))
             RepairStairs();
+
+        if (!hint.isOn && playerScript.inventory.ContainsKey("Screws")
+            && playerScript.inventory.ContainsKey("Screwdriver"))
+        {
+            hint.isOn = true;
+            playerScript.ChangePointerAim(repairTrigger.gameObject.transform);
+        }
     }
 
     private void StartGhostDialog()
@@ -82,6 +91,8 @@ public class BreakingLadder : MonoBehaviour
 
     private void Break()
     {
+        playerScript.StopPointerAiming();
+        hint.isOn = false;
         PlayBreakSound(); // звук поломки лестницы
         playerScript.StopLift();
         playerScript.isCutScene = true;
@@ -122,5 +133,6 @@ public class BreakingLadder : MonoBehaviour
         InventoryLogic.UseItem(playerScript.inventory["Screwdriver"]);
         GetComponent<SpriteRenderer>().sprite = fixedLadder;
         ladderInteraction.enabled = true;
+        playerScript.ChangePointerAim(electricShield.transform);
     }
 }

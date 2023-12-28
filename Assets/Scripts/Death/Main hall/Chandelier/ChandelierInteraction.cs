@@ -8,6 +8,7 @@ public class ChandelierInteraction : MonoBehaviour
     public Sprite breakSprite;
     public SpriteRenderer render;
     public bool isDrop = false;
+    [SerializeField] private ChangeImage deathopediaImage;
 
     private Hero playerScript;
     private GameObject player;
@@ -59,12 +60,16 @@ public class ChandelierInteraction : MonoBehaviour
     {
         playerScript.ghostScript.Show();
         playerScript.ghostScript.ChangeDialog(dialog);
+        
         isDrop = true;
         rb.simulated = false;
         GetComponent<BoxCollider2D>().enabled = false;
         PlayBreakSound(); // звук ломания люстры
+        
         render.sprite = breakSprite;
+        deathopediaImage.ChangeSprite();
         playerScript.Death();
+        
         GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
         Invoke(nameof(SpawnCandle), 0.25f);
     }

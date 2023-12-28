@@ -5,8 +5,9 @@ using UnityEngine;
 public class SettingNewDesk : MonoBehaviour
 {
     public Trigger trigger;
-    public GameObject desk;
+    public GameObject desk, bath;
     public Desk deskScript;
+
     private Hero playerScript;
 
     void Start()
@@ -23,8 +24,9 @@ public class SettingNewDesk : MonoBehaviour
     IEnumerator CutScene()
     {
         playerScript.isCutScene = true;
-
+        
         InventoryLogic.UseItem(playerScript.inventory["Board"]);
+        playerScript.StopPointerAiming();
         deskScript.GetAndMoveToHand();
         while (!deskScript.isReady)
             yield return new WaitForSeconds(0.1f);
@@ -36,5 +38,6 @@ public class SettingNewDesk : MonoBehaviour
         deskScript.rb.bodyType = RigidbodyType2D.Static;
         
         playerScript.isCutScene = false;
+        playerScript.ChangePointerAim(bath.transform);
     }
 }

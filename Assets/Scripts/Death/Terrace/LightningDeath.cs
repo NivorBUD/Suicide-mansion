@@ -6,6 +6,7 @@ public class LightningDeath : MonoBehaviour
     [SerializeField] private GameObject pantaloons, treasureKey, requestPlace;
     [SerializeField] private Clouds cloudsScript;     
     [SerializeField] private Sprite ropeSprite, lightningSprite;
+    [SerializeField] private ChangeImage deathopediaImage;
 
     private Hero playerScript;
     private Pantaloons pantaloonsScript;
@@ -14,6 +15,7 @@ public class LightningDeath : MonoBehaviour
     private Rigidbody2D keyrb;
     private SpriteRenderer sprite;
     private string[] dialog;
+    private ButtonHint hint;
 
     public void StartDeath()
     {
@@ -33,6 +35,7 @@ public class LightningDeath : MonoBehaviour
             "Ну вот, это было последнее задание", "Я <I>до конца смерти</I> тебе благодарна!", "Знаешь, я тут подумала…",
             "Нам всё равно уже ничего не нужно", "Возьми этот ключ", 
             "А откуда он… Я думаю, ты догадаешься", "Удачи, и спасибо тебе за всё!"};
+        hint = GetComponent<ButtonHint>();
     }
 
     private void Update()
@@ -42,6 +45,7 @@ public class LightningDeath : MonoBehaviour
             keyCollider.isTrigger = true;
             keyrb.bodyType = RigidbodyType2D.Static;
         }
+        hint.isOn = playerScript.inventory.ContainsKey("Pantaloons") && playerScript.inventory.ContainsKey("Rope");
     }
 
     IEnumerator CutScene()
@@ -88,6 +92,7 @@ public class LightningDeath : MonoBehaviour
         playerScript.EletricSchock();
         yield return new WaitForSeconds(3);
 
+        deathopediaImage.ChangeSprite();
         playerScript.NoRespawnDeath();
         cloudsScript.StopLightning();
         sprite.sprite = ropeSprite;

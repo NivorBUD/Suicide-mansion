@@ -7,15 +7,17 @@ public class Boiler : MonoBehaviour
     [SerializeField] GameObject gameArea;
     [SerializeField] GameObject acid;
     [SerializeField] Sprite emptySprite;
+    public bool isPlayerInArea;
+
     private Hero playerScript;
     private SpriteRenderer sr;
-
-    public bool isPlayerInArea;
+    private ButtonHint hint;
 
     void Start()
     {
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         sr = GetComponent<SpriteRenderer>();
+        hint = GetComponent<ButtonHint>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -36,9 +38,15 @@ public class Boiler : MonoBehaviour
             InventoryLogic.UseItem(playerScript.inventory["H2SO4"]);
             InventoryLogic.UseItem(playerScript.inventory["CaF2"]);
             gameArea.GetComponent<GameLogic>().StartGame();
+            playerScript.StopPointerAiming();
         }
 
         if (isPlayerInArea && Input.GetKeyDown(KeyCode.E) && sr.sprite.name == "BoilerAcid")
             sr.sprite = emptySprite;
+
+        hint.isOn = playerScript.inventory.ContainsKey("CaF2") && playerScript.inventory.ContainsKey("H2SO4");
+
+        if (hint.isOn)
+            playerScript.ChangePointerAim(transform);
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using TMPro;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
@@ -8,16 +8,18 @@ public class Hero : MonoBehaviour
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
     [SerializeField] private ParticleSystem respawnPoof;
+    [SerializeField] private TextMeshProUGUI missionText;
     [SerializeField] GameObject ghost;
     [SerializeField] GameObject getPlace, holdingPlace;
     public GameObject bullet;
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
     public Transform bulletPlace;
-    public bool isCutScene, isHandsUp, isHorizontalLift;
+    public bool isCutScene, isHandsUp, isHorizontalLift, isAtTerrace, isPause, canPause;
     public Ghost ghostScript;
+    public GameObject pointer;
 
-    private Vector3 liftPos;
+    private Vector3 liftPos, pointerAim;
     private bool isLift, isScared, isUppingHands, isAcid, isSit;
     private Animator anim;
     private SpriteRenderer sprite;
@@ -34,6 +36,8 @@ public class Hero : MonoBehaviour
         ghost = GameObject.FindWithTag("Ghost");
         ghostScript = ghost.GetComponent<Ghost>();
         standardSprite = sprite.sprite;
+        canPause = true;
+        ChangeMission("Войти в дом");
     }
 
     private void Run()
@@ -87,6 +91,9 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        if (isPause) 
+            return;
+
         if (transform.position.z != 0 && !isHorizontalLift)
         {
             var pos = transform.position;
@@ -100,6 +107,7 @@ public class Hero : MonoBehaviour
             transform.position = pos;
         }
 
+        ChangePointerAngle();
         ChangeSprite();
 
         if (!ghostScript.isDialog && !isCutScene && Input.GetButtonDown("Jump"))
@@ -119,6 +127,11 @@ public class Hero : MonoBehaviour
 
         getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
         holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
+    }
+
+    public void ChangeMission(string mission)
+    {
+        missionText.text = mission;
     }
 
     private void ChangeSprite()
@@ -150,6 +163,28 @@ public class Hero : MonoBehaviour
             else
                 State = States.handsUp;
         }
+    }
+
+    private void ChangePointerAngle()
+    {
+        if (!pointer.activeSelf)
+            return;
+
+        var zAngle = Math.Atan2(pointerAim.y - pointer.transform.position.y, 
+            pointerAim.x - pointer.transform.position.x) * 180 / Math.PI;
+
+        pointer.transform.rotation = Quaternion.Euler(0, 0, (float)zAngle);
+    }
+
+    public void ChangePointerAim(Transform pos)
+    {
+        pointerAim = pos.position;
+        pointer.SetActive(true);
+    }
+
+    public void StopPointerAiming()
+    {
+        pointer.SetActive(false);
     }
 
     public void EletricSchock()

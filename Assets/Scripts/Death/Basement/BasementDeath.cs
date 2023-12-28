@@ -9,6 +9,7 @@ public class BasementDeath : MonoBehaviour
     [SerializeField] private GameObject Button1, Button2, Button3, Button4;
     [SerializeField] private GameObject blackOut;
     [SerializeField] private GameObject shovel;
+    [SerializeField] private ChangeImage deathopediaImage;
 
     private Vector3 leftWallNewPos, rightWallNewPos;
     private Vector3 leftWallStartPos, rightWallStartPos;
@@ -28,6 +29,7 @@ public class BasementDeath : MonoBehaviour
 
     public void StartDeath()
     {
+        playerScript.canPause = false;
         ghostScript.isDialog = false;
         blackOut.SetActive(false);
         ghostScript.canChangePhraseByButton = false;
@@ -73,7 +75,10 @@ public class BasementDeath : MonoBehaviour
         }
 
         if (!isEnd && leftWall.transform.position.x >= leftWallNewPos.x && rightWall.transform.position.x <= rightWallNewPos.x)
+        {
+            deathopediaImage.ChangeSprite();
             DeathHero();
+        }
 
         if (isEnd)
             MoveWallToStart();
@@ -135,6 +140,7 @@ public class BasementDeath : MonoBehaviour
         }
 
         playerScript.RespawnPoof();
+        playerScript.canPause = true;
         ghostScript.canChangePhraseByButton = true;
 
         while (ghostScript.phraseIndex != 24)

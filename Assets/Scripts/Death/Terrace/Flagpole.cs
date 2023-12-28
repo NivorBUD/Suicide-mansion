@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Flagpole : MonoBehaviour
@@ -17,6 +15,10 @@ public class Flagpole : MonoBehaviour
 
     void Update()
     {
+        if (playerScript.isAtTerrace && playerScript.inventory.ContainsKey("Rope") && 
+            playerScript.inventory.ContainsKey("Pantaloons"))
+            playerScript.ChangePointerAim(transform);
+
         if (trigger.isTriggered && Input.GetKeyUp(KeyCode.F) && 
             playerScript.inventory.ContainsKey("Rope") && playerScript.inventory.ContainsKey("Pantaloons"))
             lightningDeath.StartDeath();

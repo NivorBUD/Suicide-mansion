@@ -7,10 +7,12 @@ public class Chest : MonoBehaviour
 
     private bool isPlayerInArea;
     private Hero playerScript;
+    private ButtonHint hint;
 
     private void Start()
     {
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        hint = GetComponent<ButtonHint>();
     }
 
     private void Update()
@@ -21,6 +23,8 @@ public class Chest : MonoBehaviour
             GetComponent<SpriteRenderer>().sprite = openSprite;
             Invoke(nameof(EndGame), 1);
         }
+
+        hint.isOn = playerScript.inventory.ContainsKey("Treasure key");
     }
 
     private void EndGame()

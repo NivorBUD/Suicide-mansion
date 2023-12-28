@@ -11,12 +11,14 @@ public class Ghost : MonoBehaviour
     public bool isDialog, needToStartDialog, needTerraceDialog, dialogIsStarting;
     public int phraseIndex = 0;
     public bool canChangePhraseByButton;
+    public string mission;
 
     private Transform aim;
     private float aimXDelta, aimYDelta;
     private SpriteRenderer sprite;
     private string[] actualDialog;
     private static GameObject player;
+    private static Hero playerScript;
     private bool needToHide, needToShow;
 
     void Start()
@@ -24,6 +26,7 @@ public class Ghost : MonoBehaviour
         needTerraceDialog = true;
         needToStartDialog = true;
         player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<Hero>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
         ChangeAim(gameObject.transform, 0, 0);
         canChangePhraseByButton = true;
@@ -75,6 +78,9 @@ public class Ghost : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.isPause)
+            return;
+
         var pos = aim.position;
         pos.x += aimXDelta;
         pos.y += aimYDelta;
@@ -122,6 +128,7 @@ public class Ghost : MonoBehaviour
         Hide();
         actualDialog = null;
         InventoryLogic.canGetItems = true;
+        playerScript.ChangeMission(mission);
     }
 
     public bool CheckIsNearTheAim()

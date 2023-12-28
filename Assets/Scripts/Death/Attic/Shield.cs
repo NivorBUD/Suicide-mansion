@@ -9,6 +9,7 @@ public class Shield : MonoBehaviour
     public BoxCollider2D ropeCollider, pantaloonsCollider;
     public Sprite playerElectric, skeletonElectric;
     public GameObject blackOut;
+    [SerializeField] private ChangeImage deathopediaImage;
 
     private CameraController mainCamera;
     private GameObject player;
@@ -30,6 +31,7 @@ public class Shield : MonoBehaviour
         if (!isUsed && trigger.isTriggered && Input.GetKeyDown(KeyCode.F))
         {
             isUsed = true;
+            trigger.gameObject.SetActive(false);
             playerScript.isCutScene = true;
             gameLogic.StartGame();
             mainCamera.ZoomIn(1);
@@ -52,6 +54,7 @@ public class Shield : MonoBehaviour
         playerScript.EletricSchock();
         yield return new WaitForSeconds(3);
 
+        deathopediaImage.ChangeSprite();
         playerScript.Death();
         terraceDoor.Open();
         pantaloonsCollider.enabled = true;
@@ -64,6 +67,11 @@ public class Shield : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         blackOut.SetActive(true);
+
+        while (playerScript.ghostScript.isDialog)
+            yield return new WaitForSeconds(0.1f);
+
+        playerScript.ChangePointerAim(terraceDoor.gameObject.transform);
     }
 
     private void PlayElectricShockSound()

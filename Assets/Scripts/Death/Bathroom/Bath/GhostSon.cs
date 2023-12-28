@@ -14,6 +14,7 @@ public class GhostSon : MonoBehaviour
     public bool isEnd;
 
     private GameObject player;
+    private static Hero playerScript;
     private bool needToCircleMove, needToMove, needToMoveToPlayer, needToDrawn, needToGoToMom, needToHide;
     private float radius;
     private double angle = 0;
@@ -23,6 +24,7 @@ public class GhostSon : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<Hero>();
         radius = Vector3.Distance(pos1.position, center.position);
         trigger.interactionName = gameObject.name;
         sprite = GetComponent<SpriteRenderer>();
@@ -30,6 +32,9 @@ public class GhostSon : MonoBehaviour
 
     void Update()
     {
+        if (playerScript.isPause)
+            return;
+
         if (needToMove)
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, pos1.position, speed * Time.deltaTime);
 
@@ -93,6 +98,9 @@ public class GhostSon : MonoBehaviour
 
         if (needToDrawn && gameObject.transform.position == bathPos.position)
             isEnd = true;
+
+        if (transform.localPosition.y >= 0.5f && !sprite.flipX) 
+            sprite.flipX = true;
     }
 
     public void GetOutAndMoveToPlayer()

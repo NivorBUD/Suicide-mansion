@@ -1,22 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
     [SerializeField] GameObject tpPlace;
 
-    private Hero hero;
+    private Hero playerScript;
     public GameObject ghost;
 
     private void Start()
     {
-        hero = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        hero.gameObject.transform.position = tpPlace.transform.position;
+        playerScript.gameObject.transform.position = tpPlace.transform.position;
+        playerScript.ChangeMission("Выслушать привидение");
         Invoke(nameof(ShowGhost), 2);
     }
 

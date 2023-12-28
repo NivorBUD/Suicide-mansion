@@ -15,12 +15,14 @@ public class TerraceDoor : MonoBehaviour
     private Hero playerScript;
     private GameObject mainCamera;
     private string[] dialog;
+    private ButtonHint hint;
 
     public void Open()
     {
         PlayOpenSound(); // звук открытия двери
         isOpened = true;
         GetComponent<SpriteRenderer>().sprite = openedDoor;
+        hint.isOn = true;
     }
 
     private void PlayOpenSound()
@@ -30,9 +32,8 @@ public class TerraceDoor : MonoBehaviour
 
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "Terrace and backyard")
-            isOpened = true;
         trigger = GetComponent<Trigger>();
+        hint = GetComponent<ButtonHint>();
 
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         mainCamera = GameObject.FindWithTag("MainCamera");
@@ -46,7 +47,8 @@ public class TerraceDoor : MonoBehaviour
         {
             playerPosition.position = playerScript.gameObject.transform.position;
             playerScript.gameObject.transform.position = anotherPlayerPosition.position;
-            
+            playerScript.isAtTerrace = !playerScript.isAtTerrace;
+
             var camPos = playerScript.gameObject.transform.position;
             camPos.y = mainCamera.transform.position.y;
             mainCamera.transform.position = camPos;
@@ -57,6 +59,7 @@ public class TerraceDoor : MonoBehaviour
                 playerScript.ghostScript.needTerraceDialog = false;
                 playerScript.ghostScript.Show();
                 pantaloonsDialogTrigger.SetActive(true);
+                playerScript.StopPointerAiming();
             }
         }
     }

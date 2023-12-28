@@ -11,17 +11,17 @@ public class ChandelierDeath : MonoBehaviour
     private ChandelierInteraction chandelierInteraction;
     private static bool isShoot = false;
     private static bool isPlayerInShootPlace = false;
-    private static Hero player;
+    private static Hero playerScript;
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         chandelierInteraction = gameObject.GetComponent<ChandelierInteraction>();
     }
 
     public bool ReadyToDeath()
     {
-        return !isShoot && isPlayerInShootPlace && player.inventory.ContainsKey("Keys") && player.inventory.ContainsKey("Slingshot");
+        return !isShoot && isPlayerInShootPlace && playerScript.inventory.ContainsKey("Keys") && playerScript.inventory.ContainsKey("Slingshot");
     }
 
     public static void EnterShootPlace()
@@ -38,13 +38,14 @@ public class ChandelierDeath : MonoBehaviour
     {
         blackOut1.SetActive(false);
         blackOut2.SetActive(false);
-        player.isCutScene = true;
+        playerScript.isCutScene = true;
 
-        InventoryLogic.UseItem(player.inventory["Keys"]);
-        InventoryLogic.UseItem(player.inventory["Slingshot"]);
+        InventoryLogic.UseItem(playerScript.inventory["Keys"]);
+        InventoryLogic.UseItem(playerScript.inventory["Slingshot"]);
+        playerScript.StopPointerAiming();
 
         isShoot = true;
-        bullet.transform.position = player.bulletPlace.position;
+        bullet.transform.position = playerScript.bulletPlace.position;
         bullet.GetComponent<Bullet>().isStart = true;
 
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ZoomIn(2);

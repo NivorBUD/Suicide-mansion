@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class PianoDeath : MonoBehaviour
@@ -9,6 +10,7 @@ public class PianoDeath : MonoBehaviour
     private static bool isPlayerInPlace = false;
     private Hero playerScript;
     private GameObject player;
+    private ButtonHint hint;
 
     public GameObject blackOut;
     public GameObject piano;
@@ -19,6 +21,7 @@ public class PianoDeath : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
+        hint = GetComponent<ButtonHint>();
     }
 
     public bool ReadyToDeath()
@@ -42,10 +45,15 @@ public class PianoDeath : MonoBehaviour
     {
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F) && !playerScript.isCutScene) 
             StartCoroutine(Death());
+
+        if (playerScript.inventory.ContainsKey("Shovel") && hint.isOn)
+            playerScript.ChangePointerAim(transform);
     }
 
     IEnumerator Death()
     {
+        hint.isOn = false;
+        playerScript.StopPointerAiming();
         playerScript.isCutScene = true;
         shovel.GetAndMoveToHand();
 

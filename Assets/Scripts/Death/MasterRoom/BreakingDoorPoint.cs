@@ -6,18 +6,21 @@ public class BreakingDoorPoint : MonoBehaviour
 {
     private Hero playerScript;
     private SpriteRenderer sprite;
+    private ButtonHint hint;
 
     private void Start()
     {
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         sprite = GetComponent<SpriteRenderer>();
+        hint = GetComponent<ButtonHint>();
     }
 
     private void Update()
     {
-        if (playerScript.inventory.ContainsKey("Axe"))
-            sprite.enabled = true;
-        else
-            sprite.enabled = false;
+        sprite.enabled = playerScript.inventory.ContainsKey("Axe");
+        hint.isOn = playerScript.inventory.ContainsKey("Axe");
+
+        if (hint.isOn)
+            playerScript.ChangePointerAim(transform);
     }
 }
