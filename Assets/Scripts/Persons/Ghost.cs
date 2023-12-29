@@ -84,7 +84,7 @@ public class Ghost : MonoBehaviour
         var pos = aim.position;
         pos.x += aimXDelta;
         pos.y += aimYDelta;
-        pos.z = -1;
+        pos.z = -4.5f;
         transform.position = Vector3.MoveTowards(transform.position, pos, speed * Time.deltaTime);
         sprite.flipX = transform.position.x > aim.position.x;
 
@@ -133,8 +133,8 @@ public class Ghost : MonoBehaviour
 
     public bool CheckIsNearTheAim()
     {
-        return gameObject && Math.Abs(transform.position.x - (aim.position.x + aimXDelta)) <= 0.3f && 
-            Math.Abs(transform.position.y - (aim.position.y + aimYDelta)) <= 0.3f && aim != transform;
+        return gameObject && Math.Abs(transform.position.x - (aim.position.x + aimXDelta)) <= 1f && 
+            Math.Abs(transform.position.y - (aim.position.y + aimYDelta)) <= 1f && aim != transform;
     }
 
     public void ChangeDialog(string[] newDialog)

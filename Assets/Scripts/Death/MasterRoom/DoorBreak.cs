@@ -104,5 +104,6 @@ public class DoorBreak : MonoBehaviour
         playerScript.ghostScript.Show();
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.StartDialog();
+        playerScript.ghostScript.mission = "Положить доску поперек дыры в ванной";
     }
 }

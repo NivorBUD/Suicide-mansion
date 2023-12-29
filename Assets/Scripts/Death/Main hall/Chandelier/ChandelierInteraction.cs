@@ -69,6 +69,7 @@ public class ChandelierInteraction : MonoBehaviour
         render.sprite = breakSprite;
         deathopediaImage.ChangeSprite();
         playerScript.Death();
+        playerScript.ghostScript.mission = "Найти маркер и свечу для призыва Мэри";
         
         GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
         Invoke(nameof(SpawnCandle), 0.25f);

@@ -36,8 +36,13 @@ public class SettingNewDesk : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
         deskScript.rb.bodyType = RigidbodyType2D.Static;
-        
+
+        playerScript.ChangeMission("Приготовить ванну, налив воду и кинув бомбочку");
         playerScript.isCutScene = false;
+
+        while (!playerScript.inventory.ContainsKey("Bath bomb"))
+            yield return new WaitForSeconds(0.1f);
+
         playerScript.ChangePointerAim(bath.transform);
     }
 }

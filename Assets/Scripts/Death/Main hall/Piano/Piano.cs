@@ -84,7 +84,7 @@ public class Piano : MonoBehaviour
     {
         playerScript.ghostScript.Show();
         playerScript.ghostScript.ChangeDialog(dialog);
-        playerScript.ghostScript.mission = "¬з€ть рогатку и какой-то патрон";
+        playerScript.ghostScript.mission = "Ќайти рогатку и снар€д,чтобы прогнать летучую мышь";
     }
 
     private void BreakDoor()

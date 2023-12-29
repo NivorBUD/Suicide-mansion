@@ -162,6 +162,7 @@ public class Plant : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         blackOut.SetActive(true);
+        playerScript.ChangeMission("—жечь растени€ огнемЄтом");
     }
 
     IEnumerator CutScene2()
@@ -195,6 +196,7 @@ public class Plant : MonoBehaviour
 
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
+        playerScript.ghostScript.mission = "—ломать дверь в покои топором";
 
         axe.SetActive(true);
         playerScript.EndCutScene();

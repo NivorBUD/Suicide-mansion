@@ -8,11 +8,11 @@ public class FallDeath : MonoBehaviour
 
     private Vector3 teleportPosition = new (59.39f, -2.7f, 0);
     private string[] dialog;
-    private Ghost ghost;
+    private Ghost ghostScript;
 
     private void Start()
     {
-        ghost = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
+        ghostScript = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
         dialog = new string[]{"Деревянный пол в ванной?", "Это провал… Да какой огромный!", 
             "Ты видишь? Растения оплели дверь!", "Нужно от них избавиться",
             "Тут есть пара склянок с химикатами", "Смешай их в котле", "Ничего сложного, правда?",
@@ -34,7 +34,8 @@ public class FallDeath : MonoBehaviour
     {
         character.transform.position = teleportPosition;
         character.SetActive(true);
-        ghost.ChangeDialog(dialog);
-        ghost.Show();
+        ghostScript.ChangeDialog(dialog);
+        ghostScript.Show();
+        ghostScript.mission = "Смешать в котле химикаты и вылить на растения";
     }
 }

@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class ChandelierDeath : MonoBehaviour
 {
-    public GameObject blackOut1;
-    public GameObject blackOut2;
-    public GameObject bullet;
+    public GameObject blackOut1, blackOut2, bullet;
+    public BoxCollider2D markerCollider;
 
     private ChandelierInteraction chandelierInteraction;
     private static bool isShoot = false;
@@ -43,6 +42,7 @@ public class ChandelierDeath : MonoBehaviour
         InventoryLogic.UseItem(playerScript.inventory["Keys"]);
         InventoryLogic.UseItem(playerScript.inventory["Slingshot"]);
         playerScript.StopPointerAiming();
+        markerCollider.enabled = true;
 
         isShoot = true;
         bullet.transform.position = playerScript.bulletPlace.position;
@@ -50,6 +50,7 @@ public class ChandelierDeath : MonoBehaviour
 
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ZoomIn(2);
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ChangeAim(bullet.transform);
+        
     }
 
     private void Update()

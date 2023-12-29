@@ -87,6 +87,7 @@ public class BreakingLadder : MonoBehaviour
     {
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
+        playerScript.ghostScript.mission = "Починить лестницу на чердак отвёрткой и болтами";
     }
 
     private void Break()
@@ -134,5 +135,6 @@ public class BreakingLadder : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = fixedLadder;
         ladderInteraction.enabled = true;
         playerScript.ChangePointerAim(electricShield.transform);
+        playerScript.ChangeMission("Включить рубильник на чердаке");
     }
 }

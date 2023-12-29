@@ -56,8 +56,6 @@ public class BathDeath : MonoBehaviour
     {
         blackOut.SetActive(false);
         respawnPlace = player.transform.position;
-
-        // достаем бомбочку, начинаем катсцену, подстраиваем камеру
         playerScript.isCutScene = true;
         cameraScript.ChangeAim(bathBomb.transform);
         cameraScript.ZoomIn(2);
@@ -67,9 +65,7 @@ public class BathDeath : MonoBehaviour
         while (!bathBomb.isReady) 
             yield return new WaitForSeconds(0.1f);
         
-        // кидаем бомбочку в ванну, вода закипает 
         bathBomb.ThrowToBath();
-
         while (bathBomb)
             yield return new WaitForSeconds(0.1f);
         
@@ -100,6 +96,7 @@ public class BathDeath : MonoBehaviour
         ghostSonScript.StopDrawn();
         player.transform.position = respawnPlace;
 
+        ghostScript.mission = "Попасть на чердак";
         ghostScript.ChangeDialog(dialog);
         ghostScript.Show();
         ghostScript.ChangeAim(ghostPlace.transform, 2, 0);

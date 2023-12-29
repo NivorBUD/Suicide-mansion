@@ -52,6 +52,7 @@ public class LightningDeath : MonoBehaviour
     {
         InventoryLogic.UseItem(playerScript.inventory["Pantaloons"]);
         InventoryLogic.UseItem(playerScript.inventory["Rope"]);
+        playerScript.StopPointerAiming();
 
         sprite.sprite = ropeSprite;
 
@@ -100,6 +101,7 @@ public class LightningDeath : MonoBehaviour
 
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
+        playerScript.ghostScript.mission = "Открыть ключом королевский сундук";
         playerScript.ghostScript.ChangeAim(requestPlace.transform, 0, 0);
         playerScript.ghostScript.canChangePhraseByButton = false;
         yield return new WaitForSeconds(5);

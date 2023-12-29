@@ -9,9 +9,8 @@ public class Hero : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private ParticleSystem respawnPoof;
     [SerializeField] private TextMeshProUGUI missionText;
-    [SerializeField] GameObject ghost;
-    [SerializeField] GameObject getPlace, holdingPlace;
-    public GameObject bullet;
+    [SerializeField] GameObject ghost, getPlace, holdingPlace;
+    public GameObject bullet, achivmentRedCircle;
     public Rigidbody2D rb;
     public Dictionary<string, GameObject> inventory = new();
     public Transform bulletPlace;

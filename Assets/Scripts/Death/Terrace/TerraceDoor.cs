@@ -58,6 +58,7 @@ public class TerraceDoor : MonoBehaviour
                 playerScript.ghostScript.ChangeDialog(dialog);
                 playerScript.ghostScript.needTerraceDialog = false;
                 playerScript.ghostScript.Show();
+                playerScript.ghostScript.mission = "Найти верёвку и флаг и поднять его на веранде";
                 pantaloonsDialogTrigger.SetActive(true);
                 playerScript.StopPointerAiming();
             }

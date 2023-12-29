@@ -1,23 +1,25 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseLogic : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI changeModButtonText;
-    [SerializeField] private GameObject missionWindow, dethopediaWindow, pauseMenu;
+    [SerializeField] private GameObject missionWindow, dethopediaWindow, pauseMenu, mainRedCircle, onPauseRedCircle;
 
     private Hero playerScript;
     private bool isMission;
 
     void Start()
     {
+        isMission = true;
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
     }
 
     void Update()
     {
-        
+        onPauseRedCircle.SetActive(mainRedCircle.activeSelf && isMission);
     }
 
     public void ChangeMod()
@@ -33,6 +35,7 @@ public class PauseLogic : MonoBehaviour
             changeModButtonText.text = "Достижения";
             missionWindow.SetActive(true);
             dethopediaWindow.SetActive(false);
+            mainRedCircle.SetActive(false);
         }
 
         isMission = !isMission;
@@ -51,5 +54,16 @@ public class PauseLogic : MonoBehaviour
     {
         playerScript.isPause = false;
         pauseMenu.SetActive(false);
+        if (!isMission) 
+            mainRedCircle.SetActive(false);
+    }
+
+    public void Quit()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
     }
 }

@@ -33,6 +33,7 @@ public class Shield : MonoBehaviour
             isUsed = true;
             trigger.gameObject.SetActive(false);
             playerScript.isCutScene = true;
+            playerScript.StopPointerAiming();
             gameLogic.StartGame();
             mainCamera.ZoomIn(1);
             mainCamera.ChangeAim(gameLogic.gameObject.transform);
@@ -64,6 +65,7 @@ public class Shield : MonoBehaviour
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.ChangeAimToPlayer();
         playerScript.ghostScript.Show();
+        playerScript.ghostScript.mission = "Выйти на веранду";
         yield return new WaitForSeconds(2);
 
         blackOut.SetActive(true);

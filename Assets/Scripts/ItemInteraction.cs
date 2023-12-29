@@ -23,7 +23,7 @@ public class ItemInteraction : MonoBehaviour
 
     void TryToTake()
     {
-        if (InventoryLogic.canGetItems && InventoryLogic.InventoryItems < 3)
+        if (InventoryLogic.canGetItems && InventoryLogic.InventoryItems < 2)
         {
             PlayGetSound(); // звук подбора предмета
             InventoryLogic.TakeItem(InventoryObject);

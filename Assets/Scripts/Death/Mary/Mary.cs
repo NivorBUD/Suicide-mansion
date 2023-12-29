@@ -31,6 +31,7 @@ public class Mary : MonoBehaviour
     public void Hide()
     {
         needToHide = true;
+        playerScript.ghostScript.canChangePhraseByButton = true;
     }
 
     public void Show()
@@ -42,6 +43,8 @@ public class Mary : MonoBehaviour
         transform.position = pos;
         needToShow = true;
         InventoryLogic.canGetItems = false;
+        playerScript.ghostScript.isDialog = true;
+        playerScript.ghostScript.canChangePhraseByButton = false;
     }
 
     private void Update()
@@ -85,8 +88,10 @@ public class Mary : MonoBehaviour
         string[] ghostDialog = new string[] { "Ну как она тебе?", "По-моему - <I>мертвецки</I> красивая", 
             "Ох, что-то я немного устала…", "Набери-ка мне ванную", "Она в ванной комнате… Как ни странно", 
             "Иди, чего встал-то?", "Ванная? Не для призрака? И слышать не хочу!"};
-        player.GetComponent<Hero>().ghostScript.ChangeDialog(ghostDialog);
-        player.GetComponent<Hero>().ghostScript.Show();
+        playerScript.ghostScript.isDialog = false;
+        playerScript.ghostScript.ChangeDialog(ghostDialog);
+        playerScript.ghostScript.Show();
+        playerScript.ghostScript.mission = "Попасть в ванную";
     }
 
     public void ChangePhrase()
