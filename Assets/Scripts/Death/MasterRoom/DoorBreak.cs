@@ -82,7 +82,7 @@ public class DoorBreak : MonoBehaviour
         doorRigidbody.bodyType = RigidbodyType2D.Dynamic;
         axe.gameObject.SetActive(false);
 
-        PlayBreakSound(); //звук удара топором по двери
+        PlayBreakSound(); //звук ломания двери
 
         force.force = new Vector2(-0.5f, 0);
         yield return new WaitForSeconds(1f);
@@ -104,7 +104,6 @@ public class DoorBreak : MonoBehaviour
 
         playerScript.ghostScript.Show();
         playerScript.ghostScript.ChangeDialog(dialog);
-        playerScript.ghostScript.StartDialog();
         playerScript.ghostScript.mission = "Положить доску поперек дыры в ванной";
     }
 }

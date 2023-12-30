@@ -40,7 +40,7 @@ public class Boiler : MonoBehaviour
             playerScript.StopPointerAiming();
         }
 
-        if (isPlayerInArea && Input.GetKeyDown(KeyCode.E) && sr.sprite.name == "BoilerAcid")
+        if (isPlayerInArea && Input.GetKeyDown(KeyCode.F) && sr.sprite.name == "BoilerAcid")
         {
             sr.sprite = emptySprite;
             playerScript.StopPointerAiming();

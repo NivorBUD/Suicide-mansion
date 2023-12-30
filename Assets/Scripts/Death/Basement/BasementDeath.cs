@@ -130,7 +130,6 @@ public class BasementDeath : MonoBehaviour
 
         ghostScript.speed = 2;
 
-        LadderInteraction.canUseLadders = true;
         while (!isEnd)
             yield return new WaitForSeconds(0.1f);
 
@@ -153,6 +152,7 @@ public class BasementDeath : MonoBehaviour
         while (shovel != null)
             yield return new WaitForSeconds(0.1f);
 
+        LadderInteraction.canUseLadders = true;
         navigationButton.SetActive(true);
         blackOut.SetActive(true);
         ghostScript.ChangePhrase();

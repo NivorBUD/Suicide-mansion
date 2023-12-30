@@ -5,7 +5,7 @@ using UnityEngine;
 public class Piano : MonoBehaviour
 {
     public BrokenDoorInteraction door;
-    public GameObject key, slingshot;
+    public GameObject key, slingshot, downPosMainLadder;
     public Transform keyPos;
     public PianoDeath deathScript;
     public bool isEnd;
@@ -56,6 +56,8 @@ public class Piano : MonoBehaviour
             deathopediaImage.ChangeSprite();
             playerScript.Death();
             playerScript.ChangePointerAim(slingshot.transform);
+            InventoryLogic.canGetItems = true;
+            LadderInteraction.canUseLadders = true;
             Invoke(nameof(ShowGhost), 2.5f);
             Invoke(nameof(TurnOnBlackOut), 3.5f);
         }
@@ -90,6 +92,7 @@ public class Piano : MonoBehaviour
 
     private void BreakDoor()
     {
+        InventoryLogic.canGetItems = false;
         var speed = rb.velocity;
         speed.x /= 2;
         rb.velocity = speed;

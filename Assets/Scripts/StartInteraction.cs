@@ -26,7 +26,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     void Update()
     {
-        if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))
+        if (IsHeroInArea && Input.GetKeyDown(KeyCode.F))
         {
             PlayRingSound();
             Invoke(nameof(Teleport), 0.5f);

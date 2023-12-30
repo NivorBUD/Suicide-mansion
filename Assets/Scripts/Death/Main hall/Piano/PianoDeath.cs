@@ -53,6 +53,7 @@ public class PianoDeath : MonoBehaviour
         playerScript.StopPointerAiming();
         playerScript.isCutScene = true;
         shovel.GetAndMoveToHand();
+        LadderInteraction.canUseLadders = false;
 
         while (!shovel.isReady)
             yield return new WaitForSeconds(0.1f);

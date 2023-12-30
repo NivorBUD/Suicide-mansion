@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class LadderHorizontalInteraction : MonoBehaviour
@@ -41,7 +38,8 @@ public class LadderHorizontalInteraction : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerInArea && Input.GetKeyDown(KeyCode.F))
+        if (isPlayerInArea && Input.GetKeyDown(KeyCode.F) && 
+            !playerScript.isCutScene && LadderInteraction.canUseLadders)
         {
             var pos = isUseMidPos ? midLadderPos.transform.position : anotherLadderPlace.transform.position;
             pos.z = player.transform.position.z;

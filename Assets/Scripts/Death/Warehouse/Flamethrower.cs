@@ -30,14 +30,14 @@ public class Flamethrower : MonoBehaviour
         if (needToRotate)
             gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.Euler(0, 0, zAngle), Time.deltaTime);
 
-        if (needToRotate && gameObject.transform.rotation.eulerAngles.z <= 330.3)
+        if (needToRotate && gameObject.transform.rotation.eulerAngles.z <= 331)
         {
             zAngle = 30;
             rotateNum++;
         }
             
 
-        if (needToRotate && gameObject.transform.rotation.eulerAngles.z >= 359.7 && rotateNum % 2 == 1)
+        if (needToRotate && gameObject.transform.rotation.eulerAngles.z >= 358 && rotateNum % 2 == 1)
         {
             zAngle = -30;
             rotateNum++;

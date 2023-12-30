@@ -29,10 +29,10 @@ public class Axe : MonoBehaviour
         if (needToHit)
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, zAngle), 5 * Time.deltaTime);
 
-        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 330) <= 0.5f)
+        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 330) <= 2)
             zAngle = 40;
 
-        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 30) <= 0.5f)
+        if (needToHit && Math.Abs(transform.rotation.eulerAngles.z - 30) <= 2)
         {
             isReady = true;
             needToHit = false;

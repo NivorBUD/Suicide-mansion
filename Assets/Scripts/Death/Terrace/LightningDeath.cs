@@ -119,7 +119,7 @@ public class LightningDeath : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         playerScript.ghostScript.canChangePhraseByButton = true;
 
-        while (playerScript.ghostScript.phraseIndex != 6)
+        while (playerScript.ghostScript.phraseIndex < 6)
             yield return new WaitForSeconds(0.1f);
 
         treasureKey.SetActive(true);

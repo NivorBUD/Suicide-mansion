@@ -164,6 +164,7 @@ public class Plant : MonoBehaviour
 
     IEnumerator CutScene2()
     {
+        trigger.gameObject.SetActive(false);
         InventoryLogic.UseItem(playerScript.inventory["Flamethrower"]);
         playerScript.StopPointerAiming();
         cameraController.ZoomIn(2);
@@ -175,7 +176,7 @@ public class Plant : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
         flamethrowerScript.Fire();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
         smoke.Play();
         yield return new WaitForSeconds(3f);
