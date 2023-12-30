@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Boiler : MonoBehaviour
 {
-    [SerializeField] GameObject gameArea;
-    [SerializeField] GameObject acid;
+    [SerializeField] GameObject gameArea, acid;
     [SerializeField] Sprite emptySprite;
     public bool isPlayerInArea;
 
@@ -42,11 +41,11 @@ public class Boiler : MonoBehaviour
         }
 
         if (isPlayerInArea && Input.GetKeyDown(KeyCode.E) && sr.sprite.name == "BoilerAcid")
+        {
             sr.sprite = emptySprite;
-
+            playerScript.StopPointerAiming();
+        }
+            
         hint.isOn = playerScript.inventory.ContainsKey("CaF2") && playerScript.inventory.ContainsKey("H2SO4");
-
-        if (hint.isOn)
-            playerScript.ChangePointerAim(transform);
     }
 }

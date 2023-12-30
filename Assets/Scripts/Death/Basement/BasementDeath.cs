@@ -9,6 +9,7 @@ public class BasementDeath : MonoBehaviour
     [SerializeField] private GameObject Button1, Button2, Button3, Button4;
     [SerializeField] private GameObject blackOut;
     [SerializeField] private GameObject shovel;
+    [SerializeField] private GameObject navigationButton;
     [SerializeField] private ChangeImage deathopediaImage;
 
     private Vector3 leftWallNewPos, rightWallNewPos;
@@ -152,13 +153,14 @@ public class BasementDeath : MonoBehaviour
         while (shovel != null)
             yield return new WaitForSeconds(0.1f);
 
+        navigationButton.SetActive(true);
         blackOut.SetActive(true);
         ghostScript.ChangePhrase();
-
         while (ghostScript.phraseIndex != 26)
             yield return new WaitForSeconds(0.1f);
 
         yield return new WaitForSeconds(1.5f);
+
         ghostScript.ChangePhrase();
     }
 }

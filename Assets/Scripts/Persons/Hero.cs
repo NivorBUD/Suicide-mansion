@@ -10,16 +10,18 @@ public class Hero : MonoBehaviour
     [SerializeField] private ParticleSystem respawnPoof;
     [SerializeField] private TextMeshProUGUI missionText;
     [SerializeField] GameObject ghost, getPlace, holdingPlace;
+    [SerializeField] CyanCircle cyanCircle;
     public GameObject bullet, achivmentRedCircle;
     public Rigidbody2D rb;
+    public BoxCollider2D col;
     public Dictionary<string, GameObject> inventory = new();
-    public Transform bulletPlace;
-    public bool isCutScene, isHandsUp, isHorizontalLift, isAtTerrace, isPause, canPause;
+    public Transform bulletPlace, pointerAimTransform;
+    public bool isCutScene, isHandsUp, isHorizontalLift, isAtTerrace, isPause, canPause, isReadyToShot;
     public Ghost ghostScript;
     public GameObject pointer;
 
     private Vector3 liftPos, pointerAim;
-    private bool isLift, isScared, isUppingHands, isAcid, isSit;
+    private bool isLift, isScared, isUppingHands, isAcid, isSit, isSlingshot;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
@@ -46,6 +48,8 @@ public class Hero : MonoBehaviour
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
+        col.offset = new Vector2(-0.05326271f, -0.0412395f);
+        col.size = new Vector2(2.506526f, 4.292479f);
     }
 
     public void StartLift(bool isHorizontalLadder, Vector3 anotherLadderPos)
@@ -78,14 +82,27 @@ public class Hero : MonoBehaviour
         isSit = false;
     }
 
+    public void StartSlingshot()
+    {
+        isSlingshot = true;
+        State = States.slingshot;
+    }
+
+    public void StopSlingshot()
+    {
+        isSlingshot = false;
+    }
+
     public void AddToInventiry([SerializeField] GameObject InventoryObject)
     {
         inventory[InventoryObject.name] = InventoryObject;
+        cyanCircle.previousUseTime = Time.time;
     }
 
     public void DelFromInventiry([SerializeField] GameObject InventoryObject)
     {
         inventory.Remove(InventoryObject.name);
+        cyanCircle.previousUseTime = Time.time;
     }
 
     void Update()
@@ -126,6 +143,9 @@ public class Hero : MonoBehaviour
 
         getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
         holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
+        
+        if (isCutScene || pointer.activeSelf || ghostScript.isDialog)
+            cyanCircle.previousUseTime = Time.time;
     }
 
     public void ChangeMission(string mission)
@@ -135,7 +155,13 @@ public class Hero : MonoBehaviour
 
     private void ChangeSprite()
     {
-        if (!isSit && !isAcid && !isUppingHands && !isScared && State != States.electric)
+        if (State != States.walk)
+        {
+            col.offset = new Vector2(-0.05326271f, -0.07494116f);
+            col.size = new Vector2(2.506526f, 4.359882f);
+        }
+
+        if (!isSlingshot && !isSit && !isAcid && !isUppingHands && !isScared && State != States.electric)
             State = States.idle;
 
         else if (isScared)
@@ -162,6 +188,12 @@ public class Hero : MonoBehaviour
             else
                 State = States.handsUp;
         }
+        else if (isSlingshot)
+        {
+            State = States.slingshot;
+            if (sprite.sprite.name == "9")
+                isReadyToShot = true;
+        }
     }
 
     private void ChangePointerAngle()
@@ -177,8 +209,8 @@ public class Hero : MonoBehaviour
 
     public void ChangePointerAim(Transform pos)
     {
+        pointerAimTransform = pos;
         pointerAim = pos.position;
-        pointer.SetActive(true);
     }
 
     public void StopPointerAiming()
@@ -318,5 +350,6 @@ public enum States
     handsUp, 
     handsUpStand,
     acid,
-    sit
+    sit,
+    slingshot
 }

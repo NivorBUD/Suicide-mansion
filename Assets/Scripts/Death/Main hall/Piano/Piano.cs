@@ -5,7 +5,7 @@ using UnityEngine;
 public class Piano : MonoBehaviour
 {
     public BrokenDoorInteraction door;
-    public GameObject key;
+    public GameObject key, slingshot;
     public Transform keyPos;
     public PianoDeath deathScript;
     public bool isEnd;
@@ -55,6 +55,7 @@ public class Piano : MonoBehaviour
         {
             deathopediaImage.ChangeSprite();
             playerScript.Death();
+            playerScript.ChangePointerAim(slingshot.transform);
             Invoke(nameof(ShowGhost), 2.5f);
             Invoke(nameof(TurnOnBlackOut), 3.5f);
         }

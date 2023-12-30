@@ -45,9 +45,6 @@ public class PianoDeath : MonoBehaviour
     {
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F) && !playerScript.isCutScene) 
             StartCoroutine(Death());
-
-        if (playerScript.inventory.ContainsKey("Shovel") && hint.isOn)
-            playerScript.ChangePointerAim(transform);
     }
 
     IEnumerator Death()

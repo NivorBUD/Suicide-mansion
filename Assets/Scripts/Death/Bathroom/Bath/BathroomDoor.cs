@@ -21,11 +21,7 @@ public class BathroomDoor : MonoBehaviour
             openedDoor.SetActive(true);
             gameObject.SetActive(false);
             PlayOpenSound(); // звук открытия двери
-            playerScript.StopPointerAiming();
         }
-
-        if (playerScript.inventory.ContainsKey("Bathroom key"))
-            playerScript.ChangePointerAim(transform);
     }
 
     private void PlayOpenSound()

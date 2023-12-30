@@ -19,8 +19,5 @@ public class SettingNewDeskPoint : MonoBehaviour
     {
         hint.isOn = playerScript.inventory.ContainsKey("Board");
         sprite.enabled = playerScript.inventory.ContainsKey("Board");
-
-        if (hint.isOn)
-            playerScript.ChangePointerAim(transform);
     }
 }

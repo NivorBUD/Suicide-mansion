@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChandelierDeath : MonoBehaviour
 {
-    public GameObject blackOut1, blackOut2, bullet;
+    public GameObject blackOut1, blackOut2, bullet, candle;
     public BoxCollider2D markerCollider;
 
     private ChandelierInteraction chandelierInteraction;
@@ -33,30 +33,40 @@ public class ChandelierDeath : MonoBehaviour
         isPlayerInShootPlace = false;
     }
 
-    public void StartDeath()
+    IEnumerator StartDeath()
     {
         blackOut1.SetActive(false);
         blackOut2.SetActive(false);
         playerScript.isCutScene = true;
+        GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().
+            ChangeAim(playerScript.gameObject.transform);
+        GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().
+            ZoomIn(2);
 
         InventoryLogic.UseItem(playerScript.inventory["Keys"]);
         InventoryLogic.UseItem(playerScript.inventory["Slingshot"]);
+        
         playerScript.StopPointerAiming();
         markerCollider.enabled = true;
+        playerScript.ChangePointerAim(candle.transform);
+        playerScript.StartSlingshot();
+
+        while (!playerScript.isReadyToShot)
+            yield return new WaitForSeconds(0.1f);
 
         isShoot = true;
         bullet.transform.position = playerScript.bulletPlace.position;
         bullet.GetComponent<Bullet>().isStart = true;
+        playerScript.StopSlingshot();
 
-        GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ZoomIn(2);
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().ChangeAim(bullet.transform);
-        
+        yield return null;
     }
 
     private void Update()
     {
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
-            StartDeath();
+            StartCoroutine(StartDeath());
 
         if (chandelierInteraction.isDrop)
         {

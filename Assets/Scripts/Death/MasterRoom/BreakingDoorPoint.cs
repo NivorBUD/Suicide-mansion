@@ -19,8 +19,5 @@ public class BreakingDoorPoint : MonoBehaviour
     {
         sprite.enabled = playerScript.inventory.ContainsKey("Axe");
         hint.isOn = playerScript.inventory.ContainsKey("Axe");
-
-        if (hint.isOn)
-            playerScript.ChangePointerAim(transform);
     }
 }

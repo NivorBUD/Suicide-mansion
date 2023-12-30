@@ -6,7 +6,7 @@ using UnityEngine;
 public class Ghost : MonoBehaviour
 {
     [SerializeField] GameObject speechBox;
-    [SerializeField] TextMeshPro textBox;
+    [SerializeField] TextMeshPro textBox, dialogHint;
     public float speed = 3f;
     public bool isDialog, needToStartDialog, needTerraceDialog, dialogIsStarting;
     public int phraseIndex = 0;
@@ -81,6 +81,8 @@ public class Ghost : MonoBehaviour
         if (playerScript.isPause)
             return;
 
+        CheckDialogHint();
+
         var pos = aim.position;
         pos.x += aimXDelta;
         pos.y += aimYDelta;
@@ -107,6 +109,11 @@ public class Ghost : MonoBehaviour
             if (sprite.color.a == 1)
                 needToShow = false;
         }
+    }
+
+    private void CheckDialogHint()
+    {
+        dialogHint.enabled = canChangePhraseByButton && speechBox.activeSelf;
     }
 
     public void StartDialog()

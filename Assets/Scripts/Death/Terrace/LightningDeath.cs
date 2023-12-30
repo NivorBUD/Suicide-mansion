@@ -53,6 +53,7 @@ public class LightningDeath : MonoBehaviour
         InventoryLogic.UseItem(playerScript.inventory["Pantaloons"]);
         InventoryLogic.UseItem(playerScript.inventory["Rope"]);
         playerScript.StopPointerAiming();
+        playerScript.ChangePointerAim(treasureKey.transform);
 
         sprite.sprite = ropeSprite;
 

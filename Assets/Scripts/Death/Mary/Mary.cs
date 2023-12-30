@@ -36,6 +36,7 @@ public class Mary : MonoBehaviour
 
     public void Show()
     {
+        playerScript.ChangePointerAim(bathroomKey.transform);
         var pos = player.transform.position;
         pos.x += 1.5f;
         pos.y += 1;

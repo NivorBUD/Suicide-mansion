@@ -91,6 +91,7 @@ public class DoorBreak : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         
         board.SetActive(true);
+        playerScript.ChangePointerAim(board.transform);
         GetComponent<BoxCollider2D>().isTrigger = true;
         rb.simulated = false;
 

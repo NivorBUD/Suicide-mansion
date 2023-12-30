@@ -5,7 +5,7 @@ using UnityEngine;
 public class SettingNewDesk : MonoBehaviour
 {
     public Trigger trigger;
-    public GameObject desk, bath;
+    public GameObject desk, bath, bathBomb;
     public Desk deskScript;
 
     private Hero playerScript;
@@ -39,6 +39,9 @@ public class SettingNewDesk : MonoBehaviour
 
         playerScript.ChangeMission("Приготовить ванну, налив воду и кинув бомбочку");
         playerScript.isCutScene = false;
+
+        if (!playerScript.inventory.ContainsKey("Bath bomb"))
+            playerScript.ChangePointerAim(bathBomb.transform);
 
         while (!playerScript.inventory.ContainsKey("Bath bomb"))
             yield return new WaitForSeconds(0.1f);

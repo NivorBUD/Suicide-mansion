@@ -8,6 +8,13 @@ public class Wardrobe : MonoBehaviour
     [SerializeField] GameObject flamethrower;
     [SerializeField] GameObject bathBomb;
 
+    private Hero playerScript;
+
+    private void Start()
+    {
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
+    }
+
     public void Break()
     {
         gameObject.GetComponent<SpriteRenderer>().sprite = brakeSprite;
@@ -20,6 +27,7 @@ public class Wardrobe : MonoBehaviour
 
     public void DropFlamethrower()
     {
+        playerScript.ChangePointerAim(flamethrower.transform);
         flamethrower.SetActive(true);
         bathBomb.SetActive(true);
     }

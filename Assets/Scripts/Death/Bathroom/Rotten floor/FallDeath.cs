@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class FallDeath : MonoBehaviour
 {
-    public GameObject character;
+    public GameObject CaF2;
     public AudioClip triggerSound;
     private bool isTriggered = false;
 
+    private GameObject player;
     private Vector3 teleportPosition = new (59.39f, -2.7f, 0);
     private string[] dialog;
     private Ghost ghostScript;
 
     private void Start()
     {
+        player = GameObject.FindWithTag("Player");
         ghostScript = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
         dialog = new string[]{"Деревянный пол в ванной?", "Это провал… Да какой огромный!", 
             "Ты видишь? Растения оплели дверь!", "Нужно от них избавиться",
@@ -21,10 +23,11 @@ public class FallDeath : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == character && !isTriggered)
+        if (collision.gameObject == player && !isTriggered)
         {
             isTriggered = true;
-            character.SetActive(false);
+            player.SetActive(false);
+            player.GetComponent<Hero>().StopPointerAiming();
             AudioSource.PlayClipAtPoint(triggerSound, transform.position);
             Invoke(nameof(ResetTrigger), 2f);
         }
@@ -32,8 +35,9 @@ public class FallDeath : MonoBehaviour
 
     private void ResetTrigger()
     {
-        character.transform.position = teleportPosition;
-        character.SetActive(true);
+        player.transform.position = teleportPosition;
+        player.SetActive(true);
+        player.GetComponent<Hero>().ChangePointerAim(CaF2.transform);
         ghostScript.ChangeDialog(dialog);
         ghostScript.Show();
         ghostScript.mission = "Смешать в котле химикаты и вылить на растения";

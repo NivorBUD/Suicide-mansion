@@ -77,10 +77,7 @@ public class BreakingLadder : MonoBehaviour
 
         if (!hint.isOn && playerScript.inventory.ContainsKey("Screws")
             && playerScript.inventory.ContainsKey("Screwdriver"))
-        {
             hint.isOn = true;
-            playerScript.ChangePointerAim(repairTrigger.gameObject.transform);
-        }
     }
 
     private void StartGhostDialog()
@@ -93,6 +90,7 @@ public class BreakingLadder : MonoBehaviour
     private void Break()
     {
         playerScript.StopPointerAiming();
+        playerScript.ChangePointerAim(screwdriverCollider.gameObject.transform);
         hint.isOn = false;
         PlayBreakSound(); // звук поломки лестницы
         playerScript.StopLift();
@@ -134,6 +132,7 @@ public class BreakingLadder : MonoBehaviour
         InventoryLogic.UseItem(playerScript.inventory["Screwdriver"]);
         GetComponent<SpriteRenderer>().sprite = fixedLadder;
         ladderInteraction.enabled = true;
+        playerScript.StopPointerAiming();
         playerScript.ChangePointerAim(electricShield.transform);
         playerScript.ChangeMission("¬ключить рубильник на чердаке");
     }

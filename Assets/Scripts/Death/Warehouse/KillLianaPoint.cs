@@ -19,8 +19,5 @@ public class KillLianaPoint : MonoBehaviour
     {
         sprite.enabled = playerScript.inventory.ContainsKey("Flamethrower");
         hint.isOn = playerScript.inventory.ContainsKey("Flamethrower");
-
-        if (hint.isOn)
-            playerScript.ChangePointerAim(transform);
     }
 }

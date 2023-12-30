@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class ShootPlaceLogic : MonoBehaviour
@@ -21,7 +18,6 @@ public class ShootPlaceLogic : MonoBehaviour
         if (playerScript.inventory.ContainsKey("Keys") && playerScript.inventory.ContainsKey("Slingshot"))
         {
             hint.isOn = true;
-            playerScript.ChangePointerAim(transform);
             sprite.enabled = true;
         }
         else

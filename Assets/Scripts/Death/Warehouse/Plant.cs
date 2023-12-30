@@ -67,9 +67,6 @@ public class Plant : MonoBehaviour
 
     void Update()
     {
-        if (playerScript.inventory.ContainsKey("Acid"))
-            playerScript.ChangePointerAim(transform);
-
         if (!playerScript.isCutScene && ReadyToStart())
             StartDeath();
 
@@ -183,7 +180,6 @@ public class Plant : MonoBehaviour
         smoke.Play();
         yield return new WaitForSeconds(3f);
 
-
         while (flamethrowerScript.needToRotate || flamethrowerScript.rotateNum != 4)
             yield return new WaitForSeconds(0.1f);
         
@@ -200,6 +196,7 @@ public class Plant : MonoBehaviour
 
         axe.SetActive(true);
         playerScript.EndCutScene();
+        playerScript.ChangePointerAim(axe.gameObject.transform);
         axeCollider.enabled = true;
     }
 }

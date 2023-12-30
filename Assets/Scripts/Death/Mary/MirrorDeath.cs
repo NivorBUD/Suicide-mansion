@@ -82,9 +82,6 @@ public class MirrorDeath : MonoBehaviour
 
         hint.isOn = playerScript.inventory.ContainsKey("Marker") && playerScript.inventory.ContainsKey("Candle");
 
-        if (hint.isOn)
-            playerScript.ChangePointerAim(transform);
-
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
             StartDeath();
     }

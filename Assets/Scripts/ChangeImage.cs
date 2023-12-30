@@ -18,9 +18,9 @@ public class ChangeImage : MonoBehaviour
 
     void Update()
     {
-        individualRedCircle.SetActive(isNew);
-
         if (isNew && !mainRedCircle.activeSelf) 
             isNew = false;
+
+        individualRedCircle.SetActive(isNew);
     }
 }

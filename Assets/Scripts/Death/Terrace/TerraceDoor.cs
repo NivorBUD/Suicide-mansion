@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TerraceDoor : MonoBehaviour
 {
     public Transform anotherPlayerPosition;
     public Transform playerPosition;
-    public GameObject pantaloonsDialogTrigger;
+    public GameObject pantaloonsDialogTrigger, rope;
 
     [SerializeField] private Sprite openedDoor;
     public bool isOpened;
@@ -53,6 +50,9 @@ public class TerraceDoor : MonoBehaviour
             camPos.y = mainCamera.transform.position.y;
             mainCamera.transform.position = camPos;
 
+            if (playerScript.pointerAimTransform == transform)
+                playerScript.StopPointerAiming();
+
             if (playerScript.ghostScript.needTerraceDialog)
             {
                 playerScript.ghostScript.ChangeDialog(dialog);
@@ -61,6 +61,7 @@ public class TerraceDoor : MonoBehaviour
                 playerScript.ghostScript.mission = "Найти верёвку и флаг и поднять его на веранде";
                 pantaloonsDialogTrigger.SetActive(true);
                 playerScript.StopPointerAiming();
+                playerScript.ChangePointerAim(rope.transform);
             }
         }
     }

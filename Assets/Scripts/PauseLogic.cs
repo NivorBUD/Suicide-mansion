@@ -7,6 +7,8 @@ public class PauseLogic : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI changeModButtonText;
     [SerializeField] private GameObject missionWindow, dethopediaWindow, pauseMenu, mainRedCircle, onPauseRedCircle;
+    [SerializeField] private Button navigationButton;
+    [SerializeField] private Image navigationButtonImage;
 
     private Hero playerScript;
     private bool isMission;
@@ -20,6 +22,8 @@ public class PauseLogic : MonoBehaviour
     void Update()
     {
         onPauseRedCircle.SetActive(mainRedCircle.activeSelf && isMission);
+        navigationButtonImage.color = playerScript.pointer.activeSelf ? new Color32(63, 208, 200, 128) : new Color32(63, 208, 200, 255);
+        navigationButton.enabled = !playerScript.pointer.activeSelf;
     }
 
     public void ChangeMod()
@@ -28,13 +32,11 @@ public class PauseLogic : MonoBehaviour
         {
             changeModButtonText.text = "Задание";
             missionWindow.SetActive(false);
-            dethopediaWindow.SetActive(true);
         }
         else
         {
             changeModButtonText.text = "Достижения";
             missionWindow.SetActive(true);
-            dethopediaWindow.SetActive(false);
             mainRedCircle.SetActive(false);
         }
 
@@ -65,5 +67,10 @@ public class PauseLogic : MonoBehaviour
         #else
         Application.Quit();
         #endif
+    }
+
+    public void TurnOnNavigation()
+    {
+        playerScript.pointer.SetActive(true);
     }
 }
