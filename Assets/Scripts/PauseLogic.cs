@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,11 +13,13 @@ public class PauseLogic : MonoBehaviour
 
     private Hero playerScript;
     private bool isMission;
+    private ChangeImage[] changeImages;
 
     void Start()
     {
         isMission = true;
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        changeImages = pauseMenu.gameObject.GetComponentsInChildren<ChangeImage>();
     }
 
     void Update()
@@ -38,6 +41,9 @@ public class PauseLogic : MonoBehaviour
             changeModButtonText.text = "Достижения";
             missionWindow.SetActive(true);
             mainRedCircle.SetActive(false);
+
+            foreach (var death in changeImages)
+                death.isNew = false;
         }
 
         isMission = !isMission;
@@ -56,8 +62,12 @@ public class PauseLogic : MonoBehaviour
     {
         playerScript.isPause = false;
         pauseMenu.SetActive(false);
-        if (!isMission) 
+        if (!isMission)
+        {
             mainRedCircle.SetActive(false);
+            foreach (var death in changeImages)
+                death.isNew = false;
+        }
     }
 
     public void Quit()

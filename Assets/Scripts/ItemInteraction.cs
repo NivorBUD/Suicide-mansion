@@ -74,7 +74,7 @@ public class ItemInteraction : MonoBehaviour
 
     void Update()
     {
-        if (IsHeroInArea && Input.GetKeyDown(KeyCode.F))
+        if (IsHeroInArea && Input.GetKeyUp(KeyCode.F))
             TryToTake();
     }
 }

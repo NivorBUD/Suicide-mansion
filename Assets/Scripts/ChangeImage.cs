@@ -6,7 +6,7 @@ public class ChangeImage : MonoBehaviour
     [SerializeField] private Sprite nonShadowSprite;
     [SerializeField] private GameObject mainRedCircle, individualRedCircle;
     private Image image;
-    private bool isNew;
+    public bool isNew;
 
     public void ChangeSprite()
     {
@@ -18,9 +18,6 @@ public class ChangeImage : MonoBehaviour
 
     void Update()
     {
-        if (isNew && !mainRedCircle.activeSelf) 
-            isNew = false;
-
         individualRedCircle.SetActive(isNew);
     }
 }
