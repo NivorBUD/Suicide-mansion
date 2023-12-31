@@ -5,7 +5,7 @@ public class BathDeath : MonoBehaviour
 {
     [SerializeField] private Trigger trigger, scaleTrigger;
     [SerializeField] private BathBomb bathBomb;
-    [SerializeField] private ParticleSystem steam, bubbles;
+    [SerializeField] private ParticleSystem bubbles;
     [SerializeField] private GameObject ghostSon, blackOut, downPosAtticLadder, ghostPlace, electricShield;
     [SerializeField] private Bath bath;
     [SerializeField] private ChangeImage deathopediaImage;
@@ -83,25 +83,29 @@ public class BathDeath : MonoBehaviour
 
         ghostSonScript.DrawnPlayer();
         while (!scaleTrigger.isTriggered)
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
 
         player.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         while (!ghostSonScript.isEnd)
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
+
         yield return new WaitForSeconds(1.5f);
 
         deathopediaImage.ChangeSprite();
         playerScript.Death();
-        steam.Stop();
         ghostSonScript.StopDrawn();
         player.transform.position = respawnPlace;
-
-        ghostScript.mission = "Попасть на чердак";
+        ghostScript = playerScript.ghostScript;
+        dialog = new string[] {"Опять ты за своё?!", "Выходи, не прячься!", "Сколько можно?!",
+            "Тебе уже как никак 163 года!", "Прости его, любит он поиграть…", "<I>До смерти</I>", "Выйди на веранду, отдышись",
+            "Только включи рубильник на чердаке", "Иначе на веранду ты не попадёшь"};
         ghostScript.ChangeDialog(dialog);
         ghostScript.Show();
+        bubbles.Stop();
+        ghostScript.mission = "Попасть на чердак";
         ghostScript.ChangeAim(ghostPlace.transform, 2, 0);
-        while (ghostScript.phraseIndex != 1)
-            yield return new WaitForSeconds(0.1f);
+        while (ghostScript.phraseIndex < 1)
+            yield return null;
 
         ghostScript.speed = 2;
         ghostSonScript.GoToMom();
