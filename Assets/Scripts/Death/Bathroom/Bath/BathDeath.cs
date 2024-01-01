@@ -55,6 +55,7 @@ public class BathDeath : MonoBehaviour
 
     IEnumerator CutScene1()
     {   
+        playerScript.TurnRight();
         AudioSource.PlayClipAtPoint(BathDeathSound, transform.position);
         blackOut.SetActive(false);
         respawnPlace = player.transform.position;

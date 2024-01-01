@@ -40,6 +40,7 @@ public class ChandelierDeath : MonoBehaviour
         blackOut2.SetActive(false);
         AudioSource.PlayClipAtPoint(startDeathSound, transform.position);
         playerScript.isCutScene = true;
+        playerScript.TurnRight();
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().
             ChangeAim(playerScript.gameObject.transform);
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().

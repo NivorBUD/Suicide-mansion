@@ -53,7 +53,7 @@ public class DoorBreak : MonoBehaviour
     private IEnumerator BreakDoor()
     {
         playerScript.isCutScene = true;
-
+        playerScript.TurnLeft();
         cameraController.ChangeAim(playerScript.gameObject.transform);
         cameraController.ZoomIn(3);
 

@@ -25,6 +25,7 @@ public class SettingNewDesk : MonoBehaviour
     IEnumerator CutScene()
     {
         playerScript.isCutScene = true;
+        playerScript.TurnRight();
         AudioSource.PlayClipAtPoint(putBoard, transform.position);
         InventoryLogic.UseItem(playerScript.inventory["Board"]);
         playerScript.StopPointerAiming();

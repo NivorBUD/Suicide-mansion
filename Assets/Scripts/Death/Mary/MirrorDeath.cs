@@ -39,6 +39,7 @@ public class MirrorDeath : MonoBehaviour
 
     public void StartDeath()
     {
+        playerScript.TurnLeft();
         blackOut.SetActive(false);
         InventoryLogic.UseItem(playerScript.inventory["Marker"]);
         InventoryLogic.UseItem(playerScript.inventory["Candle"]);

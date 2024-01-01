@@ -168,6 +168,7 @@ public class Plant : MonoBehaviour
 
     IEnumerator CutScene2()
     {
+        playerScript.TurnLeft();
         trigger.gameObject.SetActive(false);
         InventoryLogic.UseItem(playerScript.inventory["Flamethrower"]);
         playerScript.StopPointerAiming();

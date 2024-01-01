@@ -196,6 +196,16 @@ public class Hero : MonoBehaviour
         }
     }
 
+    public void TurnRight()
+    {
+        sprite.flipX = false;
+    }
+
+    public void TurnLeft()
+    {
+        sprite.flipX = true;
+    }
+
     private void ChangePointerAngle()
     {
         if (!pointer.activeSelf)
