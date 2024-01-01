@@ -7,6 +7,7 @@ public class SettingNewDesk : MonoBehaviour
     public Trigger trigger;
     public GameObject desk, bath, bathBomb;
     public Desk deskScript;
+    public AudioClip putBoard;
 
     private Hero playerScript;
 
@@ -24,7 +25,7 @@ public class SettingNewDesk : MonoBehaviour
     IEnumerator CutScene()
     {
         playerScript.isCutScene = true;
-        
+        AudioSource.PlayClipAtPoint(putBoard, transform.position);
         InventoryLogic.UseItem(playerScript.inventory["Board"]);
         playerScript.StopPointerAiming();
         deskScript.GetAndMoveToHand();
@@ -37,7 +38,7 @@ public class SettingNewDesk : MonoBehaviour
 
         deskScript.rb.bodyType = RigidbodyType2D.Static;
 
-        playerScript.ChangeMission("Приготовить ванну, налив воду и кинув бомбочку");
+        playerScript.ChangeMission("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         playerScript.isCutScene = false;
 
         if (!playerScript.inventory.ContainsKey("Bath bomb"))

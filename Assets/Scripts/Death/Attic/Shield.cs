@@ -9,6 +9,7 @@ public class Shield : MonoBehaviour
     public BoxCollider2D ropeCollider, pantaloonsCollider;
     public Sprite playerElectric, skeletonElectric;
     public GameObject blackOut;
+    public AudioClip ElectroDeathSound;
     [SerializeField] private ChangeImage deathopediaImage;
 
     private CameraController mainCamera;
@@ -22,8 +23,8 @@ public class Shield : MonoBehaviour
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
-        dialog = new string[] {"Да, похоже ты не лучший электрик…", "<I>Среди нас</I>", 
-            "Но дело сделано, встретимся на веранде"};
+        dialog = new string[] {"пїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "<I>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ</I>", 
+            "пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"};
     }
 
     void Update()
@@ -41,9 +42,10 @@ public class Shield : MonoBehaviour
     }
 
     public void StartDeath()
-    {
+    {   
+        AudioSource.PlayClipAtPoint(ElectroDeathSound, transform.position);
         blackOut.SetActive(false);
-        PlayElectricShockSound(); // звук удара током на 3 секунды
+        PlayElectricShockSound(); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         mainCamera.ZoomIn(2);
         mainCamera.ChangeAim(player.transform);
 
@@ -65,7 +67,7 @@ public class Shield : MonoBehaviour
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.ChangeAimToPlayer();
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "Выйти на веранду";
+        playerScript.ghostScript.mission = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
         yield return new WaitForSeconds(2);
 
         blackOut.SetActive(true);

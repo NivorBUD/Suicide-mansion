@@ -9,11 +9,5 @@ public class ButtonLogic : MonoBehaviour
     private void OnMouseDown()
     {
         gameObject.GetComponentInParent<MirrorDeath>().SpawnMary();
-        PlayCastSound();// звук произнесения заклинания - ПОФИКСИ
-    }
-
-    private void PlayCastSound()
-    {
-        cast.Play();
     }
 }

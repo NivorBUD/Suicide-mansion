@@ -5,6 +5,7 @@ public class LadderHorizontalInteraction : MonoBehaviour
     public GameObject anotherLadderPlace;
     public GameObject midLadderPos;
     public GameObject Railing;
+    public AudioClip woodLadderSound;
     public static bool isUseMidPos;
 
     private Hero playerScript;
@@ -40,7 +41,8 @@ public class LadderHorizontalInteraction : MonoBehaviour
     {
         if (isPlayerInArea && Input.GetKeyDown(KeyCode.F) && 
             !playerScript.isCutScene && LadderInteraction.canUseLadders)
-        {
+        {   
+            AudioSource.PlayClipAtPoint(woodLadderSound, transform.position);
             var pos = isUseMidPos ? midLadderPos.transform.position : anotherLadderPlace.transform.position;
             pos.z = player.transform.position.z;
             playerScript.StartLift(true, pos);

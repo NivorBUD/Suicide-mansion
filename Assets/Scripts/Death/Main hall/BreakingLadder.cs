@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 
 public class BreakingLadder : MonoBehaviour
-{
+{   
+    public AudioClip FallLadderSound;
     [SerializeField] private Sprite brokenLadder, fixedLadder;
     [SerializeField] private LadderInteraction ladderInteraction;
     [SerializeField] private Trigger breakTrigger, upTrigger, downTrigger, repairTrigger;
@@ -26,8 +27,8 @@ public class BreakingLadder : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        dialog = new string[] {"Вот это <I>смертельный</I> трюк", "Кажется, куда-то пропал болтик", 
-            "В доме есть инструмент", "Найди всё это и почини лестницу"};
+        dialog = new string[] {"пїЅпїЅпїЅ пїЅпїЅпїЅ <I>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</I> пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ", 
+            "пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"};
     }
 
     void Update()
@@ -40,6 +41,7 @@ public class BreakingLadder : MonoBehaviour
 
         if (!isStart && !isEnd && !ladderInteraction.enabled && playerScript.rb.velocity.y == 0 && player.transform.position.y < 3.6)
         {
+            AudioSource.PlayClipAtPoint(FallLadderSound, transform.position);
             needToSetAngularVelocity = true;
             isStart = true;
             player.GetComponent<BoxCollider2D>().enabled = false;
@@ -84,7 +86,7 @@ public class BreakingLadder : MonoBehaviour
     {
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "Починить лестницу на чердак отвёрткой и болтами";
+        playerScript.ghostScript.mission = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
     }
 
     private void Break()
@@ -92,7 +94,6 @@ public class BreakingLadder : MonoBehaviour
         playerScript.StopPointerAiming();
         playerScript.ChangePointerAim(screwdriverCollider.gameObject.transform);
         hint.isOn = false;
-        PlayBreakSound(); // звук поломки лестницы
         playerScript.StopLift();
         playerScript.isCutScene = true;
         cameraController.ZoomIn(2);
@@ -101,11 +102,6 @@ public class BreakingLadder : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = brokenLadder;
         ladderInteraction.enabled = false;
         playerScript.StartSit();
-    }
-
-    private void PlayBreakSound()
-    {
-
     }
 
     private void EndCutScene()
@@ -134,6 +130,6 @@ public class BreakingLadder : MonoBehaviour
         ladderInteraction.enabled = true;
         playerScript.StopPointerAiming();
         playerScript.ChangePointerAim(electricShield.transform);
-        playerScript.ChangeMission("Включить рубильник на чердаке");
+        playerScript.ChangeMission("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
     }
 }

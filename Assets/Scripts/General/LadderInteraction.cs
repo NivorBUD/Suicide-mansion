@@ -4,6 +4,7 @@ public class LadderInteraction : MonoBehaviour
 {
     [SerializeField] GameObject anotherLadderPlace;
     public static bool canUseLadders = false;
+    public AudioClip LadderSound;
 
     private Hero playerScript;
     private GameObject player;
@@ -19,7 +20,8 @@ public class LadderInteraction : MonoBehaviour
     private void Update()
     {
         if (isPlayerInArea && canUseLadders && Input.GetKeyDown(KeyCode.F))
-        {
+        {   
+            AudioSource.PlayClipAtPoint(LadderSound, transform.position);
             var pos = anotherLadderPlace.transform.position;
             pos.z = player.transform.position.z;
             pos.x = player.transform.position.x;

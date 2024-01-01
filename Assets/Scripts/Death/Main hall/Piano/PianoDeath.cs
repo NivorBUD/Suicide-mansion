@@ -7,6 +7,7 @@ public class PianoDeath : MonoBehaviour
     public Heap heap;
     public Shovel shovel;
     public AudioClip shovelSwingSound; // The sound clip for swinging the shovel
+    
 
     private static bool isPlayerInPlace = false;
     private Hero playerScript;
