@@ -62,11 +62,11 @@ public class Plant : MonoBehaviour
         smoke = gameObject.GetComponent<ParticleSystem>();
         downLianaScript = downLiana.GetComponent<LianaHead>();
         upLianaScript = upLiana.GetComponent<LianaHead>();
-        dialog = new string[] { "�������� ������!", "������ � ���� ������?", "�� � ���� ������ �������� � �����",
-            "������, � ������ �������", "���, ��� �� �������� ��� ������!", "��� ���� ����������",
-            "������ ����� ����������� ����� ���� �������", "������ ���-�� ����� � �����",
-            "� ������ ����� ������ �������", "��, � ��������", "����� ������� ����� �...", 
-            "���� ���� ��������", "�����, ��� ��� �� ���������"};
+        dialog = new string[] { "Отличная работа!", "Откуда у меня огнемёт?", "Ну у меня немало скелетов в шкафу",
+            "Вернее, в разных шкафах…", "Ого, это же бомбочка для ванной!", "Она тебе пригодится",
+            "Теперь нужно перебраться через дыру наверху", "Сломай чем-то дверь в покои",
+            "И положи доску поперёк пролома", "Да, я разрешаю", "Потом наполни ванну и...",
+            "Кинь туда бомбочку", "Давай, мне уже не терпится…"};
     }
 
     void Update()
@@ -163,7 +163,7 @@ public class Plant : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         blackOut.SetActive(true);
-        playerScript.ChangeMission("����� �������� ��������");
+        playerScript.ChangeMission("Сжечь растения огнемётом");
     }
 
     IEnumerator CutScene2()
@@ -197,7 +197,7 @@ public class Plant : MonoBehaviour
 
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "������� ����� � ����� �������";
+        playerScript.ghostScript.mission = "Сломать дверь в покои топором";
 
         axe.SetActive(true);
         playerScript.EndCutScene();

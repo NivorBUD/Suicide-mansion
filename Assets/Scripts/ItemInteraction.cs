@@ -14,24 +14,24 @@ public class ItemInteraction : MonoBehaviour
 
     private void Start()
     {
-        names["Shovel"] = "������";
-        names["Screwdriver"] = "�������";
-        names["Marker"] = "������";
-        names["Slingshot"] = "�������";
-        names["Bathroom Key"] = "���� �� ������";
-        names["Pantaloons"] = "���������";
-        names["Rope"] = "������";
-        names["Bath bomb"] = "�������� ��� �����";
-        names["H2SO4"] = "������� (H2SO4)";
-        names["CaF2"] = "������� (CaF2)";
-        names["Acid"] = "�������";
-        names["Flamethrower"] = "������";
-        names["Screws"] = "�����";
-        names["Key"] = "������� �����";
-        names["Candle"] = "������";
-        names["Board"] = "�����";
-        names["Axe"] = "�����";
-        names["Treasure key"] = "���� �� ��������";
+        names["Shovel"] = "лопата";
+        names["Screwdriver"] = "отвёртка";
+        names["Marker"] = "маркер";
+        names["Slingshot"] = "рогатка";
+        names["Bathroom Key"] = "ключ от ванной";
+        names["Pantaloons"] = "панталоны";
+        names["Rope"] = "верёвка";
+        names["Bath bomb"] = "бомбочка для ванны";
+        names["H2SO4"] = "химикат (H2SO4)";
+        names["CaF2"] = "химикат (CaF2)";
+        names["Acid"] = "кислота";
+        names["Flamethrower"] = "огнемёт";
+        names["Screws"] = "болты";
+        names["Key"] = "клавиша рояля";
+        names["Candle"] = "свечка";
+        names["Board"] = "доска";
+        names["Axe"] = "топор";
+        names["Treasure key"] = "ключ от сокровищ";
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

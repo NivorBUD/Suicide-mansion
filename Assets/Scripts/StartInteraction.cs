@@ -35,7 +35,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     void Update()
     {
-        if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))
+        if (IsHeroInArea && Input.GetKeyDown(KeyCode.F))
         {
             PlayRingSound();
             Invoke(nameof(Teleport), 1.5f); // Delayed teleportation after 1.1 seconds

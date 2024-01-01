@@ -21,11 +21,11 @@ public class ChandelierInteraction : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        dialog = new string[] {"��� ��������", "������ �������", "�� ��������� ���������� �������", "�� ������",
-            "������ ���� ����� �������� ��� ������", "����� ��������� ������������ �����?", 
-            "��� ���������������� ��������?", "...", "������, ����� � �� ������ ���� �����", "����� ��������� �",
-            "������ ������", "����� ��� ����� ����������", "�� � ������ ��� ������ �������", 
-            "������ ��� �� ������� � �������", "��� �������, ���� ���� ����������"};
+        dialog = new string[] {"Вот незадача", "Вернее задача…", "На ускорение свободного падения", "Ну ничего…",
+            "Теперь есть повод поменять эту люстру", "Может поставить светодиодные свечи?",
+            "Или воскосберегающие лампочки?", "...", "Знаешь, давно я не видела свою дочь…", "Нужно навестить её",
+            "Возьми свечку", "Найди чем можно порисовать", "Ну и обведи мой старый рисунок",
+            "Сделай это на зеркале в детской", "Мне кажется, Мэри тебе понравится"};
     }
 
     public void Fall()
@@ -72,7 +72,7 @@ public class ChandelierInteraction : MonoBehaviour
         render.sprite = breakSprite;
         deathopediaImage.ChangeSprite();
         playerScript.Death();
-        playerScript.ghostScript.mission = "����� ������ � ����� ��� ������� ����";
+        playerScript.ghostScript.mission = "Найти маркер и свечу для призыва Мэри";
         
         GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
         Invoke(nameof(SpawnCandle), 0.25f);
