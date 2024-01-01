@@ -1,7 +1,8 @@
 using UnityEngine;
 
 public class Chest : MonoBehaviour
-{
+{   
+    public AudioClip openedChestSound;
     public Sprite openSprite;
     public EndCutScene endCutScene;
 
@@ -20,6 +21,7 @@ public class Chest : MonoBehaviour
         if (isPlayerInArea && playerScript.inventory.ContainsKey("Treasure key") && Input.GetKeyUp(KeyCode.F))
         {
             InventoryLogic.UseItem(playerScript.inventory["Treasure key"]);
+            AudioSource.PlayClipAtPoint(openedChestSound, transform.position);
             GetComponent<SpriteRenderer>().sprite = openSprite;
             Invoke(nameof(EndGame), 1);
         }

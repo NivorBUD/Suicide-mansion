@@ -5,6 +5,7 @@ public class TerraceDoor : MonoBehaviour
     public Transform anotherPlayerPosition;
     public Transform playerPosition;
     public GameObject pantaloonsDialogTrigger, rope;
+    public AudioClip TeleportDoorSound;
 
     [SerializeField] private Sprite openedDoor;
     public bool isOpened;
@@ -16,7 +17,7 @@ public class TerraceDoor : MonoBehaviour
 
     public void Open()
     {
-        PlayOpenSound(); // звук открытия двери
+        PlayOpenSound(); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         isOpened = true;
         GetComponent<SpriteRenderer>().sprite = openedDoor;
         hint.isOn = true;
@@ -34,14 +35,15 @@ public class TerraceDoor : MonoBehaviour
 
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         mainCamera = GameObject.FindWithTag("MainCamera");
-        dialog = new string[] {"О нет, наш флаг!", "Нужно восстановить честь нашего рода!", "Найди веревку и...", 
-            "Какой-то флаг", "Или что-то похожее", "В ванной точно есть что-то", "Возвращайся с этим сюда"};
+        dialog = new string[] {"пїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ...", 
+            "пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"};
     }
 
     void Update()
     {
         if (isOpened && trigger.isTriggered && Input.GetKeyDown(KeyCode.F) && !playerScript.ghostScript.isDialog)
-        {
+        {   
+            AudioSource.PlayClipAtPoint(TeleportDoorSound, transform.position);
             playerPosition.position = playerScript.gameObject.transform.position;
             playerScript.gameObject.transform.position = anotherPlayerPosition.position;
             playerScript.isAtTerrace = !playerScript.isAtTerrace;
@@ -58,7 +60,7 @@ public class TerraceDoor : MonoBehaviour
                 playerScript.ghostScript.ChangeDialog(dialog);
                 playerScript.ghostScript.needTerraceDialog = false;
                 playerScript.ghostScript.Show();
-                playerScript.ghostScript.mission = "Найти верёвку и флаг и поднять его на веранде";
+                playerScript.ghostScript.mission = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
                 pantaloonsDialogTrigger.SetActive(true);
                 playerScript.StopPointerAiming();
                 playerScript.ChangePointerAim(rope.transform);

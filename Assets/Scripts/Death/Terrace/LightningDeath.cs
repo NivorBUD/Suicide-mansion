@@ -2,7 +2,8 @@ using System.Collections;
 using UnityEngine;
 
 public class LightningDeath : MonoBehaviour
-{
+{   
+    public AudioClip RainDeathSound;
     [SerializeField] private GameObject pantaloons, treasureKey, requestPlace;
     [SerializeField] private Clouds cloudsScript;     
     [SerializeField] private Sprite ropeSprite, lightningSprite;
@@ -24,17 +25,17 @@ public class LightningDeath : MonoBehaviour
     }
 
     void Start()
-    {
+    {   
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         pantaloonsScript = pantaloons.GetComponent<Pantaloons>();
         keyCollider = treasureKey.GetComponent<BoxCollider2D>();
         keyrb = treasureKey.GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        dialog = new string[] {"Простите, о великие души предков", "Я верю, он это не со зла", 
-            "Ну вот, это было последнее задание", "Я <I>до конца смерти</I> тебе благодарна!", "Знаешь, я тут подумала…",
-            "Нам всё равно уже ничего не нужно", "Возьми этот ключ", 
-            "А откуда он… Я думаю, ты догадаешься", "Удачи, и спасибо тебе за всё!"};
+        dialog = new string[] {"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ", 
+            "пїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅ <I>пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</I> пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", "пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+            "пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ", 
+            "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ!"};
         hint = GetComponent<ButtonHint>();
     }
 
@@ -52,6 +53,7 @@ public class LightningDeath : MonoBehaviour
     {
         InventoryLogic.UseItem(playerScript.inventory["Pantaloons"]);
         InventoryLogic.UseItem(playerScript.inventory["Rope"]);
+        AudioSource.PlayClipAtPoint(RainDeathSound, transform.position);
         playerScript.StopPointerAiming();
         playerScript.ChangePointerAim(treasureKey.transform);
 
@@ -102,7 +104,7 @@ public class LightningDeath : MonoBehaviour
 
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "Открыть ключом королевский сундук";
+        playerScript.ghostScript.mission = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
         playerScript.ghostScript.ChangeAim(requestPlace.transform, 0, 0);
         playerScript.ghostScript.canChangePhraseByButton = false;
         yield return new WaitForSeconds(5);
