@@ -35,8 +35,8 @@ public class TerraceDoor : MonoBehaviour
 
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
         mainCamera = GameObject.FindWithTag("MainCamera");
-        dialog = new string[] {"� ���, ��� ����!", "����� ������������ ����� ������ ����!", "����� ������� �...", 
-            "�����-�� ����", "��� ���-�� �������", "� ������ ����� ���� ���-��", "����������� � ���� ����"};
+        dialog = new string[] {"О нет, наш флаг!", "Нужно восстановить честь нашего рода!", "Найди веревку и...",
+            "Какой-то флаг", "Или что-то похожее", "В ванной точно есть что-то", "Возвращайся с этим сюда"};
     }
 
     void Update()
@@ -60,7 +60,7 @@ public class TerraceDoor : MonoBehaviour
                 playerScript.ghostScript.ChangeDialog(dialog);
                 playerScript.ghostScript.needTerraceDialog = false;
                 playerScript.ghostScript.Show();
-                playerScript.ghostScript.mission = "����� ������ � ���� � ������� ��� �� �������";
+                playerScript.ghostScript.mission = "Найти верёвку и флаг и поднять его на веранде";
                 pantaloonsDialogTrigger.SetActive(true);
                 playerScript.StopPointerAiming();
                 playerScript.ChangePointerAim(rope.transform);

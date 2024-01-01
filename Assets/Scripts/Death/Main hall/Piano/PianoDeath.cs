@@ -54,6 +54,7 @@ public class PianoDeath : MonoBehaviour
         hint.isOn = false;
         playerScript.StopPointerAiming();
         playerScript.isCutScene = true;
+        playerScript.TurnRight();
 
         AudioSource.PlayClipAtPoint(shovelSwingSound, transform.position);
 

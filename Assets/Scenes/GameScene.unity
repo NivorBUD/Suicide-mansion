@@ -35607,7 +35607,7 @@ Transform:
   m_GameObject: {fileID: 703084811}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.715, y: -1.7, z: 0}
+  m_LocalPosition: {x: -2.42, y: -1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38721,6 +38721,7 @@ MonoBehaviour:
   playerPosition: {fileID: 264967052}
   pantaloonsDialogTrigger: {fileID: 1602721066}
   rope: {fileID: 1848864884}
+  TeleportDoorSound: {fileID: 8300000, guid: 070d17165e746b5478cb15baf1d01ae5, type: 3}
   openedDoor: {fileID: 0}
   isOpened: 1
 --- !u!212 &741198082
@@ -50535,6 +50536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184b2808491f09b4e92ea94780e0627f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openedChestSound: {fileID: 8300000, guid: e10300d2ee98c154692d3a2b363e7d85, type: 3}
   openSprite: {fileID: 21300000, guid: d318834e12dea8d4895ce90a230f48fe, type: 3}
   endCutScene: {fileID: 1362786300}
 --- !u!114 &962606050
@@ -97283,6 +97285,7 @@ MonoBehaviour:
   playerPosition: {fileID: 642620346}
   pantaloonsDialogTrigger: {fileID: 1602721066}
   rope: {fileID: 1848864884}
+  TeleportDoorSound: {fileID: 8300000, guid: 070d17165e746b5478cb15baf1d01ae5, type: 3}
   openedDoor: {fileID: 21300000, guid: 83ef637d846faa4469c643891948eae4, type: 3}
   isOpened: 0
 --- !u!114 &1560120407
@@ -105780,7 +105783,7 @@ Transform:
   m_GameObject: {fileID: 1684688591}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.54, y: -3.38, z: 0.1}
+  m_LocalPosition: {x: -4.08, y: -3.38, z: 0.1}
   m_LocalScale: {x: 0.2, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -141942,6 +141945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c70d1bd0c63aa4d985fc0fb0936fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RainDeathSound: {fileID: 8300000, guid: 2a822759f936f5e4a97cdea623e66d2b, type: 3}
   pantaloons: {fileID: 76275580}
   treasureKey: {fileID: 1471706906}
   requestPlace: {fileID: 421639352}

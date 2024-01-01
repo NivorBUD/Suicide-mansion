@@ -32,10 +32,10 @@ public class LightningDeath : MonoBehaviour
         keyCollider = treasureKey.GetComponent<BoxCollider2D>();
         keyrb = treasureKey.GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        dialog = new string[] {"��������, � ������� ���� �������", "� ����, �� ��� �� �� ���", 
-            "�� ���, ��� ���� ��������� �������", "� <I>�� ����� ������</I> ���� ����������!", "������, � ��� ���������",
-            "��� �� ����� ��� ������ �� �����", "������ ���� ����", 
-            "� ������ �� � �����, �� �����������", "�����, � ������� ���� �� ��!"};
+        dialog = new string[] {"Простите, о великие души предков", "Я верю, он это не со зла",
+            "Ну вот, это было последнее задание", "Я <I>до конца смерти</I> тебе благодарна!", "Знаешь, я тут подумала…",
+            "Нам всё равно уже ничего не нужно", "Возьми этот ключ",
+            "А откуда он… Я думаю, ты догадаешься", "Удачи, и спасибо тебе за всё!"};
         hint = GetComponent<ButtonHint>();
     }
 
@@ -104,7 +104,7 @@ public class LightningDeath : MonoBehaviour
 
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "������� ������ ����������� ������";
+        playerScript.ghostScript.mission = "Открыть ключом королевский сундук";
         playerScript.ghostScript.ChangeAim(requestPlace.transform, 0, 0);
         playerScript.ghostScript.canChangePhraseByButton = false;
         yield return new WaitForSeconds(5);
