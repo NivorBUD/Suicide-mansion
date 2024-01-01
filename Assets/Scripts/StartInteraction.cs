@@ -9,9 +9,18 @@ public class NewBehaviourScript : MonoBehaviour
     private SpriteRenderer sprite;
     private bool IsHeroInArea = false;
 
+    // Add an AudioSource variable to play the sound
+    private AudioSource audioSource;
+
+    // Add a reference to your sound effect clip
+    [SerializeField] AudioClip ringSound;
+
     private void Awake()
     {
         sprite = GetComponentInChildren<SpriteRenderer>();
+
+        // Get the AudioSource component attached to this GameObject
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -26,10 +35,10 @@ public class NewBehaviourScript : MonoBehaviour
 
     void Update()
     {
-        if (IsHeroInArea && Input.GetKeyDown(KeyCode.F))
+        if (IsHeroInArea && Input.GetKeyDown(KeyCode.E))
         {
             PlayRingSound();
-            Invoke(nameof(Teleport), 0.5f);
+            Invoke(nameof(Teleport), 1.5f); // Delayed teleportation after 1.1 seconds
         }
     }
 
@@ -40,6 +49,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void PlayRingSound()
     {
-
+        audioSource.clip = ringSound;
+        audioSource.Play();
     }
 }

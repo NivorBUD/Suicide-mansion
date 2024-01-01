@@ -4,6 +4,8 @@ using UnityEngine;
 public class Plant : MonoBehaviour
 {
     public BoxCollider2D axeCollider;
+    public AudioClip PlantCutSceneSound;
+    public AudioClip PlantFire;
 
     [SerializeField] private Trigger trigger;
     [SerializeField] private GameObject acid, flamethrower, downLiana, upLiana, downLianaWay, upLianaWay;
@@ -34,6 +36,7 @@ public class Plant : MonoBehaviour
     {
         playerScript.isCutScene = true;
         acidAngle = 0;
+        AudioSource.PlayClipAtPoint(PlantCutSceneSound, transform.position);
         StartCoroutine(CutScene1());
     }
     
@@ -43,7 +46,8 @@ public class Plant : MonoBehaviour
     }
 
     private void KillThePlant()
-    {
+    {   
+        AudioSource.PlayClipAtPoint(PlantFire, transform.position);
         playerScript.isCutScene = true;
         StartCoroutine(CutScene2());
     }
@@ -58,11 +62,11 @@ public class Plant : MonoBehaviour
         smoke = gameObject.GetComponent<ParticleSystem>();
         downLianaScript = downLiana.GetComponent<LianaHead>();
         upLianaScript = upLiana.GetComponent<LianaHead>();
-        dialog = new string[] { "Отличная работа!", "Откуда у меня огнемёт?", "Ну у меня немало скелетов в шкафу",
-            "Вернее, в разных шкафах…", "Ого, это же бомбочка для ванной!", "Она тебе пригодится",
-            "Теперь нужно перебраться через дыру наверху", "Сломай чем-то дверь в покои",
-            "И положи доску поперёк пролома", "Да, я разрешаю", "Потом наполни ванну и...", 
-            "Кинь туда бомбочку", "Давай, мне уже не терпится…"};
+        dialog = new string[] { "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ?", "пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ",
+            "пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+            "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ",
+            "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ...", 
+            "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"};
     }
 
     void Update()
@@ -159,7 +163,7 @@ public class Plant : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         blackOut.SetActive(true);
-        playerScript.ChangeMission("Сжечь растения огнемётом");
+        playerScript.ChangeMission("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
     }
 
     IEnumerator CutScene2()
@@ -193,7 +197,7 @@ public class Plant : MonoBehaviour
 
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "Сломать дверь в покои топором";
+        playerScript.ghostScript.mission = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
 
         axe.SetActive(true);
         playerScript.EndCutScene();

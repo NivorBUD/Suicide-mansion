@@ -6,6 +6,7 @@ public class PianoDeath : MonoBehaviour
 {
     public Heap heap;
     public Shovel shovel;
+    public AudioClip shovelSwingSound; // The sound clip for swinging the shovel
 
     private static bool isPlayerInPlace = false;
     private Hero playerScript;
@@ -47,11 +48,14 @@ public class PianoDeath : MonoBehaviour
             StartCoroutine(Death());
     }
 
-    IEnumerator Death()
+    private IEnumerator Death()
     {
         hint.isOn = false;
         playerScript.StopPointerAiming();
         playerScript.isCutScene = true;
+
+        AudioSource.PlayClipAtPoint(shovelSwingSound, transform.position);
+
         shovel.GetAndMoveToHand();
         LadderInteraction.canUseLadders = false;
 

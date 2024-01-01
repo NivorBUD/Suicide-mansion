@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
 
             if (gameObject.transform.position == targets[targetindex])
             {
-                PlayRicochetSound(); // звук рикошета
+                PlayRicochetSound(); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 if (targetindex == targets.Length - 1)
                 {
                     chandelierInteraction.Fall();

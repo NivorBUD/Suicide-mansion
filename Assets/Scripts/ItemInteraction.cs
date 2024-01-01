@@ -6,6 +6,7 @@ public class ItemInteraction : MonoBehaviour
 {
     [SerializeField] GameObject inventoryObject, nextActionPlace, anotherObject;
     [SerializeField] InfoDesk infoDesk;
+    [SerializeField] AudioSource pickUpSound; 
     public bool IsHeroInArea = false;
 
     private Hero playerScript;
@@ -13,24 +14,24 @@ public class ItemInteraction : MonoBehaviour
 
     private void Start()
     {
-        names["Shovel"] = "лопата";
-        names["Screwdriver"] = "отвёртка";
-        names["Marker"] = "маркер";
-        names["Slingshot"] = "рогатка";
-        names["Bathroom Key"] = "ключ от ванной";
-        names["Pantaloons"] = "панталоны";
-        names["Rope"] = "верёвка";
-        names["Bath bomb"] = "бомбочка для ванны";
-        names["H2SO4"] = "химикат (H2SO4)";
-        names["CaF2"] = "химикат (CaF2)";
-        names["Acid"] = "кислота";
-        names["Flamethrower"] = "огнемёт";
-        names["Screws"] = "болты";
-        names["Key"] = "клавиша рояля";
-        names["Candle"] = "свечка";
-        names["Board"] = "доска";
-        names["Axe"] = "топор";
-        names["Treasure key"] = "ключ от сокровищ";
+        names["Shovel"] = "пїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Screwdriver"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Marker"] = "пїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Slingshot"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Bathroom Key"] = "пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Pantaloons"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Rope"] = "пїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Bath bomb"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ";
+        names["H2SO4"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (H2SO4)";
+        names["CaF2"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (CaF2)";
+        names["Acid"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Flamethrower"] = "пїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Screws"] = "пїЅпїЅпїЅпїЅпїЅ";
+        names["Key"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ";
+        names["Candle"] = "пїЅпїЅпїЅпїЅпїЅпїЅ";
+        names["Board"] = "пїЅпїЅпїЅпїЅпїЅ";
+        names["Axe"] = "пїЅпїЅпїЅпїЅпїЅ";
+        names["Treasure key"] = "пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -51,9 +52,9 @@ public class ItemInteraction : MonoBehaviour
         if (InventoryLogic.canGetItems && InventoryLogic.InventoryItems < 2)
         {
             playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
-            PlayGetSound(); // звук подбора предмета
             InventoryLogic.TakeItem(inventoryObject);
             infoDesk.Show(names[gameObject.name]);
+            pickUpSound.PlayOneShot(pickUpSound.clip);
             Destroy(gameObject);
 
 
@@ -65,11 +66,6 @@ public class ItemInteraction : MonoBehaviour
             else if (nextActionPlace != null)
                 playerScript.ChangePointerAim(nextActionPlace.transform);
         }
-    }
-
-    private void PlayGetSound()
-    {
-
     }
 
     void Update()

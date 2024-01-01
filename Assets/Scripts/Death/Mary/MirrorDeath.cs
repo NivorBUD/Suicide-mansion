@@ -6,12 +6,15 @@ public class MirrorDeath : MonoBehaviour
     public Trigger trigger;
     public ButtonHint hint;
     [SerializeField] private ChangeImage deathopediaImage;
+    public AudioClip spawnSound; // The sound clip to play when Mary spawns
 
     private GameObject mainCamera;
     private CameraController cameraController;
     private bool isPlay;
     private bool isEnd;
     private Hero playerScript;
+
+    private AudioSource audioSource; // Add this line
 
     public void Prepare()
     {
@@ -25,6 +28,8 @@ public class MirrorDeath : MonoBehaviour
         isEnd = false;
         mainCamera = GameObject.FindWithTag("MainCamera");
         cameraController = mainCamera.GetComponent<CameraController>();
+
+        audioSource = GetComponent<AudioSource>(); // Add this line
     }
 
     public bool ReadyToDeath()
@@ -51,7 +56,7 @@ public class MirrorDeath : MonoBehaviour
     }
 
     public void SpawnMary()
-    {
+    {   
         cameraController.ZoomIn(5);
         mary.GetComponent<Mary>().Show();
 
@@ -60,7 +65,14 @@ public class MirrorDeath : MonoBehaviour
 
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
+        PlaySpawnSound(); // Add this line to delay the sound
+
         Invoke(nameof(TurnOnBlackOut), 5f);
+    }
+
+    private void PlaySpawnSound() // Add this method
+    {
+        audioSource.PlayOneShot(spawnSound);
     }
 
     private void TurnOnBlackOut()

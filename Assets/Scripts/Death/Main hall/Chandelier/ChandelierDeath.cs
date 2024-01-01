@@ -6,6 +6,7 @@ public class ChandelierDeath : MonoBehaviour
 {
     public GameObject blackOut1, blackOut2, bullet, candle;
     public BoxCollider2D markerCollider;
+    public AudioClip startDeathSound;
 
     private ChandelierInteraction chandelierInteraction;
     private static bool isShoot = false;
@@ -37,6 +38,7 @@ public class ChandelierDeath : MonoBehaviour
     {
         blackOut1.SetActive(false);
         blackOut2.SetActive(false);
+        AudioSource.PlayClipAtPoint(startDeathSound, transform.position);
         playerScript.isCutScene = true;
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().
             ChangeAim(playerScript.gameObject.transform);

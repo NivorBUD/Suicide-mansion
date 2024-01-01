@@ -6,6 +6,7 @@ public class BasementDeath : MonoBehaviour
     public GameObject leftWall, rightWall;
     public static float speed = 0.0f;
     public bool isStart,isEnd;
+    public AudioClip wallsShiftingSound;
     [SerializeField] private GameObject Button1, Button2, Button3, Button4;
     [SerializeField] private GameObject blackOut;
     [SerializeField] private GameObject shovel;
@@ -29,13 +30,14 @@ public class BasementDeath : MonoBehaviour
     }
 
     public void StartDeath()
-    {
+    {   
         playerScript.canPause = false;
         ghostScript.isDialog = false;
         blackOut.SetActive(false);
         ghostScript.canChangePhraseByButton = false;
         isStart = true;
         StartCoroutine(Ghost_COR());
+        AudioSource.PlayClipAtPoint(wallsShiftingSound, transform.position);
         leftWallStartPos = leftWall.transform.position;
         rightWallStartPos = rightWall.transform.position;
 
@@ -95,7 +97,7 @@ public class BasementDeath : MonoBehaviour
         ghostScript.speed = 3.5f;
         ghostScript.ChangeAim(Button1.transform, -0.55f, -0.2f);
         yield return new WaitForSeconds(1f);
-        ghostScript.ChangePhrase(); //2 - индекс фразы 
+        ghostScript.ChangePhrase(); //2 - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 
         yield return new WaitForSeconds(1f);
         ghostScript.ChangePhrase(); //3
         yield return new WaitForSeconds(1.5f);

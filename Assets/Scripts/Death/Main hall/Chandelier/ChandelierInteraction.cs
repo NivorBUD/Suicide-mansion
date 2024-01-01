@@ -8,6 +8,7 @@ public class ChandelierInteraction : MonoBehaviour
     public Sprite breakSprite;
     public SpriteRenderer render;
     public bool isDrop = false;
+    public AudioClip fallSound;
     [SerializeField] private ChangeImage deathopediaImage;
 
     private Hero playerScript;
@@ -20,20 +21,22 @@ public class ChandelierInteraction : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        dialog = new string[] {"Вот незадача", "Вернее задача…", "На ускорение свободного падения", "Ну ничего…",
-            "Теперь есть повод поменять эту люстру", "Может поставить светодиодные свечи?", 
-            "Или воскосберегающие лампочки?", "...", "Знаешь, давно я не видела свою дочь…", "Нужно навестить её",
-            "Возьми свечку", "Найди чем можно порисовать", "Ну и обведи мой старый рисунок", 
-            "Сделай это на зеркале в детской", "Мне кажется, Мэри тебе понравится"};
+        dialog = new string[] {"пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ",
+            "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ?", 
+            "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?", "...", "пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ",
+            "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", 
+            "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"};
     }
 
     public void Fall()
     {
         gameObject.GetComponent<Rigidbody2D>().simulated = true;
+        AudioSource.PlayClipAtPoint(fallSound, transform.position);
     }
 
     private void SpawnCandle()
-    {
+    {   
+        
         candle.SetActive(true);
         var pos = transform.position;
         pos.x += 1.5f;
@@ -43,8 +46,9 @@ public class ChandelierInteraction : MonoBehaviour
 
     private void Update()
     {
+        
         if (rb.simulated && transform.position.y <= -1.8 && transform.position.y > -3.6)
-        {
+        {   
             var sc = player.transform.localScale;
             var mult = (1.8f - Math.Abs(-1.8f - transform.localPosition.y)) / 1.8f;
             sc.y = 0.4f * mult;
@@ -64,12 +68,11 @@ public class ChandelierInteraction : MonoBehaviour
         isDrop = true;
         rb.simulated = false;
         GetComponent<BoxCollider2D>().enabled = false;
-        PlayBreakSound(); // звук ломания люстры
         
         render.sprite = breakSprite;
         deathopediaImage.ChangeSprite();
         playerScript.Death();
-        playerScript.ghostScript.mission = "Найти маркер и свечу для призыва Мэри";
+        playerScript.ghostScript.mission = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ";
         
         GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
         Invoke(nameof(SpawnCandle), 0.25f);

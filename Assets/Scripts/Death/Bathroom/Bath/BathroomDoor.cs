@@ -6,6 +6,7 @@ public class BathroomDoor : MonoBehaviour
 {
     [SerializeField] private BathroomDoorTrigger trig;
     [SerializeField] private GameObject openedDoor;
+    public AudioClip doorOpenSound;
     private Hero playerScript;
 
     private void Start()
@@ -20,12 +21,7 @@ public class BathroomDoor : MonoBehaviour
             InventoryLogic.UseItem(playerScript.inventory["Bathroom key"]);
             openedDoor.SetActive(true);
             gameObject.SetActive(false);
-            PlayOpenSound(); // звук открытия двери
+            AudioSource.PlayClipAtPoint(doorOpenSound, transform.position);
         }
-    }
-
-    private void PlayOpenSound()
-    {
-
     }
 }
