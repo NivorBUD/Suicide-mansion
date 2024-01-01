@@ -23,8 +23,8 @@ public class Shield : MonoBehaviour
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
-        dialog = new string[] {"��, ������ �� �� ������ ��������", "<I>����� ���</I>", 
-            "�� ���� �������, ���������� �� �������"};
+        dialog = new string[] {"Да, похоже ты не лучший электрик…", "<I>Среди нас</I>",
+            "Но дело сделано, встретимся на веранде"};
     }
 
     void Update()
@@ -67,7 +67,7 @@ public class Shield : MonoBehaviour
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.ChangeAimToPlayer();
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "����� �� �������";
+        playerScript.ghostScript.mission = "Выйти на веранду";
         yield return new WaitForSeconds(2);
 
         blackOut.SetActive(true);

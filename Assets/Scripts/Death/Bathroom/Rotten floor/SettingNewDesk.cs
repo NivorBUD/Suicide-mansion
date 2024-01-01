@@ -38,7 +38,7 @@ public class SettingNewDesk : MonoBehaviour
 
         deskScript.rb.bodyType = RigidbodyType2D.Static;
 
-        playerScript.ChangeMission("����������� �����, ����� ���� � ����� ��������");
+        playerScript.ChangeMission("Приготовить ванну, налив воду и кинув бомбочку");
         playerScript.isCutScene = false;
 
         if (!playerScript.inventory.ContainsKey("Bath bomb"))

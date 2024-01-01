@@ -37,9 +37,9 @@ public class BathDeath : MonoBehaviour
         ghostScript = playerScript.ghostScript;
         ghostSonScript = ghostSon.GetComponent<GhostSon>();
         cameraScript = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        dialog = new string[] {"����� �� �� ���?!", "������, �� �������!", "������� �����?!", 
-            "���� ��� ��� ����� 163 ����!", "������ ���, ����� �� ���������", "<I>�� ������</I>", "����� �� �������, ��������",
-            "������ ������ ��������� �� �������", "����� �� ������� �� �� �������"};
+        dialog = new string[] {"Опять ты за своё?!", "Выходи, не прячься!", "Сколько можно?!",
+            "Тебе уже как никак 163 года!", "Прости его, любит он поиграть…", "<I>До смерти</I>", "Выйди на веранду, отдышись",
+            "Только включи рубильник на чердаке", "Иначе на веранду ты не попадёшь"};
         hint = trigger.gameObject.GetComponent<ButtonHint>();
     }
 
@@ -98,13 +98,13 @@ public class BathDeath : MonoBehaviour
         ghostSonScript.StopDrawn();
         player.transform.position = respawnPlace;
         ghostScript = playerScript.ghostScript;
-        dialog = new string[] {"����� �� �� ���?!", "������, �� �������!", "������� �����?!",
-            "���� ��� ��� ����� 163 ����!", "������ ���, ����� �� ���������", "<I>�� ������</I>", "����� �� �������, ��������",
-            "������ ������ ��������� �� �������", "����� �� ������� �� �� �������"};
+        dialog = new string[] {"Опять ты за своё?!", "Выходи, не прячься!", "Сколько можно?!",
+            "Тебе уже как никак 163 года!", "Прости его, любит он поиграть…", "<I>До смерти</I>", "Выйди на веранду, отдышись",
+            "Только включи рубильник на чердаке", "Иначе на веранду ты не попадёшь"};
         ghostScript.ChangeDialog(dialog);
         ghostScript.Show();
         bubbles.Stop();
-        ghostScript.mission = "������� �� ������";
+        ghostScript.mission = "Попасть на чердак";
         ghostScript.ChangeAim(ghostPlace.transform, 2, 0);
         while (ghostScript.phraseIndex < 1)
             yield return null;

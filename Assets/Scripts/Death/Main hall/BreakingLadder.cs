@@ -27,8 +27,8 @@ public class BreakingLadder : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
-        dialog = new string[] {"��� ��� <I>�����������</I> ����", "�������, ����-�� ������ ������", 
-            "� ���� ���� ����������", "����� �� ��� � ������ ��������"};
+        dialog = new string[] {"Вот это <I>смертельный</I> трюк", "Кажется, куда-то пропал болтик",
+            "В доме есть инструмент", "Найди всё это и почини лестницу"};
     }
 
     void Update()
@@ -86,7 +86,7 @@ public class BreakingLadder : MonoBehaviour
     {
         playerScript.ghostScript.ChangeDialog(dialog);
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "�������� �������� �� ������ �������� � �������";
+        playerScript.ghostScript.mission = "Починить лестницу на чердак отвёрткой и болтами";
     }
 
     private void Break()
@@ -130,6 +130,6 @@ public class BreakingLadder : MonoBehaviour
         ladderInteraction.enabled = true;
         playerScript.StopPointerAiming();
         playerScript.ChangePointerAim(electricShield.transform);
-        playerScript.ChangeMission("�������� ��������� �� �������");
+        playerScript.ChangeMission("Включить рубильник на чердаке");
     }
 }
