@@ -81,8 +81,23 @@ public class PauseLogic : MonoBehaviour
     }
 
     public void TurnOnNavigation()
-    {   
-        YandexGame.FullscreenShow();
+    {
+        YandexGame.RewVideoShow(1);
+        
+    }
+
+    private void Reward(int id)
+    {
         playerScript.pointer.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        YandexGame.RewardVideoEvent += Reward;
+    }
+
+    private void OnDisable()
+    {
+        YandexGame.RewardVideoEvent -= Reward;
     }
 }
