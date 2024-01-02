@@ -1,11 +1,13 @@
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using YG;
 
 public class MainMenuController : MonoBehaviour
 {
     public void StartGame()
     {
+        YandexGame.FullscreenShow();
         SceneManager.LoadScene("GameScene");
     }
 
@@ -23,14 +25,8 @@ public class SettingsMenuController : MonoBehaviour
 {
     public Dropdown resolutinonDropDown;
 
-    // Метод для перехода на сцену настроек
-    public void GoToSettingsMenu()
-    {
-        SceneManager.LoadScene("SettingsMenu");
-    }
-
     public void GoToMainMenu()
-    {
-        SceneManager.LoadScene("MainMenuScene"); // Замените "MainMenuScene" на имя вашей основной сцены
+    {   
+        SceneManager.LoadScene("MainMenuScene"); 
     }
 }

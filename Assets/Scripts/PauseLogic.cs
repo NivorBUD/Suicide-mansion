@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YG;
 
 public class PauseLogic : MonoBehaviour
 {
@@ -33,12 +34,12 @@ public class PauseLogic : MonoBehaviour
     {
         if (isMission)
         {
-            changeModButtonText.text = "Задание";
+            changeModButtonText.text = "Р—Р°РґР°РЅРёСЏ";
             missionWindow.SetActive(false);
         }
         else
         {
-            changeModButtonText.text = "Достижения";
+            changeModButtonText.text = "Р”РѕСЃС‚РёР¶РµРЅРёСЏ";
             missionWindow.SetActive(true);
             mainRedCircle.SetActive(false);
 
@@ -80,7 +81,8 @@ public class PauseLogic : MonoBehaviour
     }
 
     public void TurnOnNavigation()
-    {
+    {   
+        YandexGame.FullscreenShow();
         playerScript.pointer.SetActive(true);
     }
 }
