@@ -1,17 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using YG;
 
 public class Hero : MonoBehaviour
 {
+    public int levelComplete; // 1 - пройдена смерть в подвале, 2 - от рояля, 3 - от люстры, 4 - от мэри,
+                              // 5 - от растения, 6 - от утопленя, 7 - на чердаке, 8 - от молнии,
+                              // 9 - игра пройдена
+
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
     [SerializeField] private ParticleSystem respawnPoof;
     [SerializeField] private TextMeshProUGUI missionText;
     [SerializeField] GameObject ghost, getPlace, holdingPlace;
     [SerializeField] CyanCircle cyanCircle;
-    public GameObject bullet, achivmentRedCircle;
+    [SerializeField] private GameObject piano, bathKey, bathBomb, acid, flamethrower, key, candle, board, treasureKey;
+    public GameObject bullet;
     public Rigidbody2D rb;
     public BoxCollider2D col;
     public Dictionary<string, GameObject> inventory = new();
@@ -19,6 +26,8 @@ public class Hero : MonoBehaviour
     public bool isCutScene, isHandsUp, isHorizontalLift, isAtTerrace, isPause, canPause, isReadyToShot;
     public Ghost ghostScript;
     public GameObject pointer;
+    public Dictionary<string, GameObject> inventoryObjects = new();
+    public Dictionary<string, int> inventoryObjectsIndex = new();
 
     private Vector3 liftPos, pointerAim;
     private bool isLift, isScared, isUppingHands, isAcid, isSit, isSlingshot;
@@ -29,6 +38,7 @@ public class Hero : MonoBehaviour
 
     private void Start()
     {
+        InitilizeInventoryObjects();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -39,6 +49,135 @@ public class Hero : MonoBehaviour
         standardSprite = sprite.sprite;
         canPause = true;
         ChangeMission("Войти в дом");
+        if (!YandexGame.savesData.isFirstSession)
+            LoadSave();
+    }
+
+    private void InitilizeInventoryObjects()
+    {
+        inventoryObjects["Shovel"] = GameObject.FindWithTag("Shovel");
+        inventoryObjects["Screwdriver"] = GameObject.FindWithTag("Screwdriver");
+        inventoryObjects["Marker"] = GameObject.FindWithTag("Marker");
+        inventoryObjects["Slingshot"] = GameObject.FindWithTag("Slingshot");
+        inventoryObjects["Bathroom Key"] = bathKey;
+        inventoryObjects["Pantaloons"] = GameObject.FindWithTag("Pantaloons");
+        inventoryObjects["Rope"] = GameObject.FindWithTag("Rope");
+        inventoryObjects["Bath bomb"] = bathBomb;
+        inventoryObjects["H2SO4"] = GameObject.FindWithTag("H2SO4");
+        inventoryObjects["CaF2"] = GameObject.FindWithTag("CaF2");
+        inventoryObjects["Acid"] = acid;
+        inventoryObjects["Flamethrower"] = flamethrower;
+        inventoryObjects["Screws"] = GameObject.FindWithTag("Screws");
+        inventoryObjects["Key"] = key;
+        inventoryObjects["Candle"] = candle;
+        inventoryObjects["Board"] = board;
+        inventoryObjects["Axe"] = GameObject.FindWithTag("Axe");
+        inventoryObjects["Treasure key"] = treasureKey;
+        
+        inventoryObjectsIndex["Shovel"] = 0;
+        inventoryObjectsIndex["Screwdriver"] = 1;
+        inventoryObjectsIndex["Marker"] = 2;
+        inventoryObjectsIndex["Slingshot"] = 3;
+        inventoryObjectsIndex["Bathroom Key"] = 4;
+        inventoryObjectsIndex["Pantaloons"] = 5;
+        inventoryObjectsIndex["Rope"] = 6;
+        inventoryObjectsIndex["Bath bomb"] = 7;
+        inventoryObjectsIndex["H2SO4"] = 8;
+        inventoryObjectsIndex["CaF2"] = 9;
+        inventoryObjectsIndex["Acid"] = 10;
+        inventoryObjectsIndex["Flamethrower"] = 11;
+        inventoryObjectsIndex["Screws"] = 12;
+        inventoryObjectsIndex["Key"] = 13;
+        inventoryObjectsIndex["Candle"] = 14;
+        inventoryObjectsIndex["Board"] = 15;
+        inventoryObjectsIndex["Axe"] = 16;
+        inventoryObjectsIndex["Treasure key"] = 17;
+    }
+
+    public void LoadSave()
+    {
+        var data = YandexGame.savesData;
+        transform.position = new Vector3(data.playerPos[0], data.playerPos[1], 0);
+        pointerAim = new Vector3(data.playerHintDirection[0], data.playerHintDirection[1]);
+        ghostScript.ChangeDialog(data.ghostDialog);
+        levelComplete = data.levelComplete;
+        if (data.inventoryItems[0] != null && data.inventoryItems[0] != "")
+            AddToInventory(inventoryObjects[data.inventoryItems[0]]);
+        if (data.inventoryItems[1] != null && data.inventoryItems[1] != "")
+            AddToInventory(inventoryObjects[data.inventoryItems[1]]);
+        var inventoryObjectsKeys = inventoryObjects.Keys.ToArray();
+
+        for (int i = 0; i < 18; i++)
+        {
+            if (data.isUsedInventoryItems[i])
+            {
+                Destroy(inventoryObjects[inventoryObjectsKeys[i]]);
+                continue;
+            }
+            if (data.activeColliderInventoryItems[i])
+                inventoryObjects[inventoryObjectsKeys[i]].GetComponent<BoxCollider2D>().enabled = true;
+        }
+
+        if (levelComplete == 1)
+        {
+            ghostScript.isDialog = true;
+            ghostScript.transform.position = new Vector3(data.ghostPos[0], data.ghostPos[1], data.ghostPos[2]);
+            ghostScript.sprite.color = new Color(255, 255, 255, 1);
+            ghostScript.phraseIndex = data.ghostPhraseIndex;
+            ghostScript.StartDialog();
+        }
+        else if (levelComplete >= 2)
+        {
+            piano.transform.position = new Vector3(data.pianoPos[0], data.pianoPos[1], data.pianoPos[2]);
+        }
+        else if (levelComplete == 3)
+        {
+
+        }
+        else if (levelComplete == 4)
+        {
+
+        }
+        else if (levelComplete == 5)
+        {
+
+        }
+        else if (levelComplete == 6)
+        {
+
+        }
+        else if (levelComplete == 7)
+        {
+
+        }
+        else if (levelComplete == 8)
+        {
+
+        }
+    }
+
+    public void SaveSave()
+    {
+        YandexGame.savesData.playerPos = new float[] { transform.position.x, transform.position.y, 0 };
+        YandexGame.savesData.playerHintDirection = new float[] { pointerAim.x, pointerAim.y, 0 };
+        YandexGame.savesData.ghostDialog = ghostScript.GetDialog();
+        YandexGame.savesData.levelComplete = levelComplete;
+        var inventoryKeys = inventory.Keys.ToArray();
+        if (inventoryKeys.Length == 0)
+        {
+            YandexGame.savesData.inventoryItems[0] = "";
+            YandexGame.savesData.inventoryItems[1] = "";
+        }
+        else if (inventoryKeys.Length == 1)
+        {
+            YandexGame.savesData.inventoryItems[0] = inventoryKeys[0];
+            YandexGame.savesData.inventoryItems[1] = "";
+        }
+        else
+        {
+            YandexGame.savesData.inventoryItems[0] = inventoryKeys[0];
+            YandexGame.savesData.inventoryItems[1] = inventoryKeys[1];
+        }
     }
 
     private void Run()
@@ -93,13 +232,17 @@ public class Hero : MonoBehaviour
         isSlingshot = false;
     }
 
-    public void AddToInventiry([SerializeField] GameObject InventoryObject)
+    public void AddToInventory([SerializeField] GameObject InventoryObject)
     {
         inventory[InventoryObject.name] = InventoryObject;
         cyanCircle.previousUseTime = Time.time;
+        if (InventoryObject.name == "Shovel")
+            return;
+        SaveSave();
+        YandexGame.savesData.isUsedInventoryItems[inventoryObjectsIndex[InventoryObject.name]] = true;
     }
 
-    public void DelFromInventiry([SerializeField] GameObject InventoryObject)
+    public void DelFromInventory([SerializeField] GameObject InventoryObject)
     {
         inventory.Remove(InventoryObject.name);
         cyanCircle.previousUseTime = Time.time;
@@ -107,14 +250,14 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
-        if (isPause) 
+        if (isPause)
             return;
 
         if (transform.position.z != 0 && !isHorizontalLift)
         {
             var pos = transform.position;
             pos.z = 0;
-            transform.position = pos;   
+            transform.position = pos;
         }
         else if (isHorizontalLift)
         {
@@ -143,7 +286,7 @@ public class Hero : MonoBehaviour
 
         getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
         holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
-        
+
         if (isCutScene || pointer.activeSelf || ghostScript.isDialog)
             cyanCircle.previousUseTime = Time.time;
     }
@@ -211,7 +354,7 @@ public class Hero : MonoBehaviour
         if (!pointer.activeSelf)
             return;
 
-        var zAngle = Math.Atan2(pointerAim.y - pointer.transform.position.y, 
+        var zAngle = Math.Atan2(pointerAim.y - pointer.transform.position.y,
             pointerAim.x - pointer.transform.position.x) * 180 / Math.PI;
 
         pointer.transform.rotation = Quaternion.Euler(0, 0, (float)zAngle);
@@ -346,18 +489,18 @@ public class Hero : MonoBehaviour
     private void Jump()
     {
         if (rb.velocity.y == 0)
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);        
+            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
 }
 
-public enum States 
+public enum States
 {
     idle,
     walk,
     lift,
     electric,
     scare,
-    handsUp, 
+    handsUp,
     handsUpStand,
     acid,
     sit,

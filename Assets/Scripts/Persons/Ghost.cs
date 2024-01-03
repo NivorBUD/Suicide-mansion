@@ -12,10 +12,10 @@ public class Ghost : MonoBehaviour
     public int phraseIndex = 0;
     public bool canChangePhraseByButton;
     public string mission;
+    public SpriteRenderer sprite;
 
     private Transform aim;
     private float aimXDelta, aimYDelta;
-    private SpriteRenderer sprite;
     private string[] actualDialog;
     private static GameObject player;
     private static Hero playerScript;
@@ -150,6 +150,11 @@ public class Ghost : MonoBehaviour
     {
         actualDialog = newDialog;
         phraseIndex = 0;
+    }
+
+    public string[] GetDialog()
+    {
+        return actualDialog;
     }
 
     public void ChangePhrase()

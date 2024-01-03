@@ -15289,7 +15289,7 @@ GameObject:
   - component: {fileID: 334343466}
   m_Layer: 0
   m_Name: Screwdriver
-  m_TagString: Untagged
+  m_TagString: Screwdriver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16616,7 +16616,7 @@ GameObject:
   - component: {fileID: 360770210}
   m_Layer: 0
   m_Name: Candle
-  m_TagString: Untagged
+  m_TagString: Candle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28772,7 +28772,7 @@ GameObject:
   - component: {fileID: 581162598}
   m_Layer: 0
   m_Name: H2SO4
-  m_TagString: Untagged
+  m_TagString: H2SO4
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33664,7 +33664,7 @@ GameObject:
   - component: {fileID: 664410631}
   m_Layer: 0
   m_Name: CaF2
-  m_TagString: Untagged
+  m_TagString: CaF2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34756,7 +34756,7 @@ GameObject:
   - component: {fileID: 685560257}
   m_Layer: 0
   m_Name: Shovel
-  m_TagString: Untagged
+  m_TagString: Shovel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36820,7 +36820,7 @@ GameObject:
   - component: {fileID: 714791259}
   m_Layer: 0
   m_Name: Bathroom Key
-  m_TagString: Untagged
+  m_TagString: Bathroom Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54094,7 +54094,7 @@ GameObject:
   - component: {fileID: 1031406920}
   m_Layer: 0
   m_Name: Flamethrower
-  m_TagString: Untagged
+  m_TagString: Flamethrower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54649,7 +54649,7 @@ GameObject:
   - component: {fileID: 1047754651}
   m_Layer: 0
   m_Name: Board
-  m_TagString: Untagged
+  m_TagString: Board
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60380,7 +60380,7 @@ GameObject:
   - component: {fileID: 1163458618}
   m_Layer: 0
   m_Name: Slingshot
-  m_TagString: Untagged
+  m_TagString: Slingshot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69843,7 +69843,7 @@ GameObject:
   - component: {fileID: 1335086110}
   m_Layer: 0
   m_Name: Axe
-  m_TagString: Untagged
+  m_TagString: Axe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70586,7 +70586,7 @@ GameObject:
   - component: {fileID: 1341458899}
   m_Layer: 0
   m_Name: Marker
-  m_TagString: Untagged
+  m_TagString: Marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79860,7 +79860,7 @@ GameObject:
   - component: {fileID: 1421487295}
   m_Layer: 0
   m_Name: Key
-  m_TagString: Untagged
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87093,7 +87093,7 @@ GameObject:
   - component: {fileID: 1471706912}
   m_Layer: 0
   m_Name: Treasure key
-  m_TagString: Untagged
+  m_TagString: Treasure key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94051,7 +94051,7 @@ GameObject:
   - component: {fileID: 1521707372}
   m_Layer: 0
   m_Name: Screws
-  m_TagString: Untagged
+  m_TagString: Screws
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121589,7 +121589,7 @@ GameObject:
   - component: {fileID: 1786366222}
   m_Layer: 0
   m_Name: Bath bomb
-  m_TagString: Untagged
+  m_TagString: Bath bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123969,7 +123969,7 @@ GameObject:
   - component: {fileID: 1816180535}
   m_Layer: 0
   m_Name: Pantaloons
-  m_TagString: Untagged
+  m_TagString: Pantaloons
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130310,7 +130310,7 @@ GameObject:
   - component: {fileID: 1848864889}
   m_Layer: 0
   m_Name: Rope
-  m_TagString: Untagged
+  m_TagString: Rope
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131848,7 +131848,7 @@ GameObject:
   - component: {fileID: 1871476082}
   m_Layer: 0
   m_Name: Acid
-  m_TagString: Untagged
+  m_TagString: Acid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151562,6 +151562,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1033310812}
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: key
+      value: 
+      objectReference: {fileID: 1421487290}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: acid
+      value: 
+      objectReference: {fileID: 1871476077}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: board
+      value: 
+      objectReference: {fileID: 1047754646}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: ghost
       value: 
       objectReference: {fileID: 538904901}
@@ -151574,9 +151586,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 428611871}
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: candle
+      value: 
+      objectReference: {fileID: 360770205}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: bathKey
+      value: 
+      objectReference: {fileID: 714791254}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: pointer
       value: 
       objectReference: {fileID: 863625226}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: bathBomb
+      value: 
+      objectReference: {fileID: 1786366215}
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: cyanCircle
       value: 
@@ -151589,6 +151613,14 @@ PrefabInstance:
       propertyPath: respawnPoof
       value: 
       objectReference: {fileID: 1939323272}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: treasureKey
+      value: 
+      objectReference: {fileID: 1471706906}
+    - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
+      propertyPath: flamethrower
+      value: 
+      objectReference: {fileID: 1031406915}
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: yellowCircle
       value: 

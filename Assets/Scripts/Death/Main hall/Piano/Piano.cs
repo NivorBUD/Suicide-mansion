@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using YG;
 
 public class Piano : MonoBehaviour
 {
@@ -55,11 +56,13 @@ public class Piano : MonoBehaviour
         {
             deathopediaImage.ChangeSprite();
             playerScript.Death();
+            StartCoroutine(WaitForSave());
             playerScript.ChangePointerAim(slingshot.transform);
             InventoryLogic.canGetItems = true;
             LadderInteraction.canUseLadders = true;
             Invoke(nameof(ShowGhost), 2.5f);
             Invoke(nameof(TurnOnBlackOut), 3.5f);
+
         }
 
         if (!isEnd && transform.localPosition.x < -11 && rb.velocity.x == 0)
@@ -81,6 +84,19 @@ public class Piano : MonoBehaviour
             spriteRender.sprite = sprite;
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    IEnumerator WaitForSave()
+    {
+        while (!playerScript.ghostScript.isDialog)
+            yield return null;
+
+        while (playerScript.ghostScript.isDialog)
+            yield return null;
+
+        playerScript.levelComplete = 2;
+        YandexGame.savesData.pianoPos = new float[3] { transform.position.x, transform.position.y, transform.position.z };
+        playerScript.SaveSave();
     }
 
     private void ShowGhost()
@@ -110,7 +126,8 @@ public class Piano : MonoBehaviour
         floorCollider.enabled = true;
         key.transform.position = keyPos.position;
         key.SetActive(true);
-        
+        YandexGame.savesData.pianoPos = new float[3] { transform.position.x, transform.position.y, transform.position.z };
+
         isEnd = true;
         rb.simulated = false;
         col.enabled = false;

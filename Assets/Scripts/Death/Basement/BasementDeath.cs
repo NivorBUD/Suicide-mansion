@@ -143,6 +143,8 @@ public class BasementDeath : MonoBehaviour
 
         playerScript.RespawnPoof();
         playerScript.canPause = true;
+        playerScript.levelComplete = 1;
+        playerScript.SaveSave();
         ghostScript.canChangePhraseByButton = true;
 
         while (ghostScript.phraseIndex != 24)
