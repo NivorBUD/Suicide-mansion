@@ -17,7 +17,9 @@ namespace YG
         public bool[] openLevels = new bool[3];
 
         // Ваши сохранения
-        public float[] playerPos = new float[3];
+        public bool needToLoadSave = false;
+
+        public float[] playerPos = new float[3] { -14.94f, -3.14f, 0f};
         public float[] playerHintDirection = new float[3];
         public bool canUseLadders;
         public bool canGetItems;
@@ -26,10 +28,20 @@ namespace YG
                                   // 9 - игра пройдена
 
         public string[] inventoryItems = new string[2];
+        public string mission = "Войти в дом";
         public bool[] isUsedInventoryItems = new bool[18];
         public bool[] activeColliderInventoryItems = new bool[18];
 
-        public string[] ghostDialog;
+        public string[] ghostDialog = new string[] { "У-у-у-у-у!", "Зря ты очутился в этом доме!", "Приготовься к своей погибели!",
+            "Злостный... доставщик пиццы?", "Прошу меня извинить, сейчас я...", "Как же это остановить...",
+            "Не та кнопка...", "А может та?", "А, вот!", "Упс... Извини", "Так-так-так, как же там было… ",
+            "Воскресни, несчастный, приди в этот мир!", "Абракадабра симсалабим!",
+            "Ух ты, вот и пригодились бабушкины заклинания!", "Итак, Доставщик…", "Ты, наверное, хочешь выбраться отсюда?",
+            "Что ж, я тебя отпущу…", "Как только ты выполнишь все мои задания",
+            "Моё родовое поместье пришло в запустение", "И ты должен привести его в порядок", "Ты согласен?",
+            "Не отвечай, я знаю, что да!", "Итак, нужно расчистить проход на второй этаж",
+            "Убери кучу хлама на лестнице", "Подбери лопату с помощью кнопки F", "Теперь подойди к мусору на лестнице",
+            "Используй F чтобы применить предмет"};
         public float[] ghostPos = new float[3];
         public bool isGhostDialog;
         public int ghostPhraseIndex;
@@ -40,7 +52,6 @@ namespace YG
 
         public float[] pianoPos = new float[3];
         public float[] chandelierPos = new float[3];
-        public float[] childRoomDoorPos = new float[3];
         public float[] masterRoomDoorPos = new float[3];
 
         // Поля (сохранения) можно удалять и создавать новые. При обновлении игры сохранения ломаться не должны
@@ -50,7 +61,6 @@ namespace YG
         public SavesYG()
         {
             // Допустим, задать значения по умолчанию для отдельных элементов массива
-
             openLevels[1] = true;
         }
     }

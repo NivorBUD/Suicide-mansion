@@ -15,7 +15,7 @@ public class ShootPlaceLogic : MonoBehaviour
 
     private void Update()
     {
-        if (playerScript.inventory.ContainsKey("Keys") && playerScript.inventory.ContainsKey("Slingshot"))
+        if (playerScript.inventory.ContainsKey("Key") && playerScript.inventory.ContainsKey("Slingshot"))
         {
             hint.isOn = true;
             sprite.enabled = true;

@@ -9,10 +9,16 @@ public class Bat : MonoBehaviour
     public Bullet bullet;
 
     private bool needToGoToPosition1 = true;
+    private Hero playerScript;
+
+    private void Start()
+    {
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
+    }
 
     void Update()
     {
-        if (bullet.targetindex >= 1)
+        if (bullet.targetindex >= 1 || playerScript.levelComplete >= 3)
             Destroy(gameObject);
 
         if (needToGoToPosition1)

@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class ChangeImage : MonoBehaviour
 {
-    [SerializeField] private Sprite nonShadowSprite;
+    [SerializeField] public Sprite nonShadowSprite;
     [SerializeField] private GameObject mainRedCircle, individualRedCircle;
-    private Image image;
+    public Image image;
     public bool isNew;
 
     public void ChangeSprite()

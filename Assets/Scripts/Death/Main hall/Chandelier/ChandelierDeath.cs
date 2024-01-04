@@ -21,7 +21,8 @@ public class ChandelierDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return !isShoot && isPlayerInShootPlace && playerScript.inventory.ContainsKey("Keys") && playerScript.inventory.ContainsKey("Slingshot");
+        return !isShoot && isPlayerInShootPlace && playerScript.inventory.ContainsKey("Key") && 
+            playerScript.inventory.ContainsKey("Slingshot");
     }
 
     public static void EnterShootPlace()
@@ -46,7 +47,7 @@ public class ChandelierDeath : MonoBehaviour
         GameObject.FindWithTag("MainCamera").GetComponent<CameraController>().
             ZoomIn(2);
 
-        InventoryLogic.UseItem(playerScript.inventory["Keys"]);
+        InventoryLogic.UseItem(playerScript.inventory["Key"]);
         InventoryLogic.UseItem(playerScript.inventory["Slingshot"]);
         
         playerScript.StopPointerAiming();
@@ -68,6 +69,9 @@ public class ChandelierDeath : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.levelComplete >= 3 && markerCollider != null)
+            markerCollider.enabled = true;
+
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
             StartCoroutine(StartDeath());
 

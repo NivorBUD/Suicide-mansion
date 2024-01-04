@@ -19,6 +19,7 @@ public class BasementDeath : MonoBehaviour
     private GameObject ghost, player;
     private Ghost ghostScript;
     private Hero playerScript;
+    private bool isDeathopediaChacked;
 
 
     private void Start()
@@ -37,6 +38,10 @@ public class BasementDeath : MonoBehaviour
         ghostScript.canChangePhraseByButton = false;
         isStart = true;
         StartCoroutine(Ghost_COR());
+
+        if (playerScript.levelComplete != 0)
+            return;
+
         AudioSource.PlayClipAtPoint(wallsShiftingSound, transform.position);
         leftWallStartPos = leftWall.transform.position;
         rightWallStartPos = rightWall.transform.position;
@@ -68,7 +73,15 @@ public class BasementDeath : MonoBehaviour
 
     private void Update()
     {
-        if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
+        if (playerScript.levelComplete >= 1 && !isDeathopediaChacked)
+        {
+            deathopediaImage.ChangeSprite();
+            isDeathopediaChacked = true;
+            navigationButton.SetActive(true);
+        }
+            
+
+        if ((ReadyToDeath() && Input.GetKeyDown(KeyCode.F)) || (playerScript.levelComplete == 1 && !isStart))
             StartDeath();
 
         if (isStart && !isEnd)
@@ -80,6 +93,7 @@ public class BasementDeath : MonoBehaviour
         if (!isEnd && leftWall.transform.position.x >= leftWallNewPos.x && rightWall.transform.position.x <= rightWallNewPos.x)
         {
             deathopediaImage.ChangeSprite();
+            isDeathopediaChacked = true;
             DeathHero();
         }
 
@@ -94,77 +108,88 @@ public class BasementDeath : MonoBehaviour
 
     IEnumerator Ghost_COR()
     {
-        ghostScript.speed = 3.5f;
-        ghostScript.ChangeAim(Button1.transform, -0.55f, -0.2f);
-        yield return new WaitForSeconds(1f);
-        ghostScript.ChangePhrase(); //2 - ������ ����� 
-        yield return new WaitForSeconds(1f);
-        ghostScript.ChangePhrase(); //3
-        yield return new WaitForSeconds(1.5f);
-        Destroy(Button1);
-        speed = 0.5f;
-        ghostScript.ChangeAim(Button2.transform, 0.7f, 0.2f);
-
-        ghostScript.ChangePhrase(); //4
-        yield return new WaitForSeconds(1.5f);
-        ghostScript.ChangePhrase(); //5
-        yield return new WaitForSeconds(1.5f);
-        Destroy(Button2);
-        speed = 1.3f;
-        ghostScript.ChangeAim(Button3.transform, 0.55f, 0);
-
-        ghostScript.ChangePhrase(); //6
-        yield return new WaitForSeconds(1.5f);
-        ghostScript.ChangePhrase(); //7
-        yield return new WaitForSeconds(1.5f);
-        Destroy(Button3);
-        speed = 0.6f;
-        ghostScript.ChangeAim(Button4.transform, -0.7f, -0.4f);
-
-        ghostScript.ChangePhrase(); //8
-        yield return new WaitForSeconds(1.5f);
-        Destroy(Button4);
-        speed = 10f;
-        ghostScript.ChangeAimToPlayer();
-
-        ghostScript.ChangePhrase();
-        yield return new WaitForSeconds(1.5f);
-
-        ghostScript.speed = 2;
-
-        while (!isEnd)
-            yield return new WaitForSeconds(0.1f);
-
-        for (int i = 0; i < 3; i++)
+        if (playerScript.levelComplete == 0)
         {
+            if (ghostScript.phraseIndex == 0)
+                ghostScript.ChangePhrase();
+            ghostScript.speed = 3.5f;
+            ghostScript.ChangeAim(Button1.transform, -0.55f, -0.2f);
+            yield return new WaitForSeconds(1f);
+            ghostScript.ChangePhrase(); //2 - ������ ����� 
+            yield return new WaitForSeconds(1f);
+            ghostScript.ChangePhrase(); //3
+            yield return new WaitForSeconds(1.5f);
+            Destroy(Button1);
+            speed = 0.5f;
+            ghostScript.ChangeAim(Button2.transform, 0.7f, 0.2f);
+
+            ghostScript.ChangePhrase(); //4
+            yield return new WaitForSeconds(1.5f);
+            ghostScript.ChangePhrase(); //5
+            yield return new WaitForSeconds(1.5f);
+            Destroy(Button2);
+            speed = 1.3f;
+            ghostScript.ChangeAim(Button3.transform, 0.55f, 0);
+
+            ghostScript.ChangePhrase(); //6
+            yield return new WaitForSeconds(1.5f);
+            ghostScript.ChangePhrase(); //7
+            yield return new WaitForSeconds(1.5f);
+            Destroy(Button3);
+            speed = 0.6f;
+            ghostScript.ChangeAim(Button4.transform, -0.7f, -0.4f);
+
+            ghostScript.ChangePhrase(); //8
+            yield return new WaitForSeconds(1.5f);
+            Destroy(Button4);
+            speed = 10f;
+            ghostScript.ChangeAimToPlayer();
+
             ghostScript.ChangePhrase();
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
+
+            ghostScript.speed = 2;
+
+            while (!isEnd)
+                yield return new WaitForSeconds(0.1f);
+
+            for (int i = 0; i < 3; i++)
+            {
+                ghostScript.ChangePhrase();
+                yield return new WaitForSeconds(2f);
+            }
+
+            playerScript.RespawnPoof();
+            playerScript.canPause = true;
+            playerScript.levelComplete = 1;
+            ghostScript.canChangePhraseByButton = true;
+            playerScript.SaveSave();
         }
 
-        playerScript.RespawnPoof();
-        playerScript.canPause = true;
-        playerScript.levelComplete = 1;
-        playerScript.SaveSave();
-        ghostScript.canChangePhraseByButton = true;
+        if (ghostScript.GetDialog().Length == 27)
+        {
+            playerScript.canPause = true;
+            ghostScript.canChangePhraseByButton = true;
 
-        while (ghostScript.phraseIndex != 24)
-            yield return new WaitForSeconds(0.1f);
+            while (ghostScript.phraseIndex < 24)
+                yield return new WaitForSeconds(0.1f);
 
-        ghostScript.canChangePhraseByButton = false;
-        InventoryLogic.canGetItems = true;
+            ghostScript.canChangePhraseByButton = false;
+            InventoryLogic.canGetItems = true;
 
-        while (shovel != null)
-            yield return new WaitForSeconds(0.1f);
+            while (shovel != null)
+                yield return new WaitForSeconds(0.1f);
 
-        LadderInteraction.canUseLadders = true;
-        navigationButton.SetActive(true);
-        blackOut.SetActive(true);
-        ghostScript.ChangePhrase();
-        while (ghostScript.phraseIndex != 26)
-            yield return new WaitForSeconds(0.1f);
+            LadderInteraction.canUseLadders = true;
+            navigationButton.SetActive(true);
+            blackOut.SetActive(true);
+            ghostScript.ChangePhrase();
+            while (ghostScript.phraseIndex != 26)
+                yield return new WaitForSeconds(0.1f);
 
-        yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.5f);
 
-        ghostScript.ChangePhrase();
+            ghostScript.ChangePhrase();
+        }
     }
 }

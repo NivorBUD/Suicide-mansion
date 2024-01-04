@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private bool isAimPlayer = true;
     private Camera cam;
     private float newCamSize;
-    private bool needToZoom;
+    private bool needToZoom, needToTp;
 
     public GameObject player;
 
@@ -34,6 +34,12 @@ public class CameraController : MonoBehaviour
         isAimPlayer = true;
         speed = 1.0f;
         ZoomIn(5);
+    }
+
+    public void TPToPlayer()
+    {
+        ChangeAimToPlayer();
+        needToTp = true;
     }
 
     public void ZoomIn(float size)
@@ -61,7 +67,12 @@ public class CameraController : MonoBehaviour
         if (isAimPlayer) 
             pos.y += 2.4f;
         pos.z = -10f;
-
-        transform.position = Vector3.Lerp(transform.position, pos, speed * Time.deltaTime);
+        if (needToTp)
+        {
+            transform.position = player.transform.position;
+            needToTp = false;
+        }
+        else
+            transform.position = Vector3.Lerp(transform.position, pos, speed * Time.deltaTime);
     }
 }

@@ -14,7 +14,7 @@ public class Hero : MonoBehaviour
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
     [SerializeField] private ParticleSystem respawnPoof;
-    [SerializeField] private TextMeshProUGUI missionText;
+    [SerializeField] private TextMeshProUGUI missionText, levelText;
     [SerializeField] GameObject ghost, getPlace, holdingPlace;
     [SerializeField] CyanCircle cyanCircle;
     [SerializeField] private GameObject piano, bathKey, bathBomb, acid, flamethrower, key, candle, board, treasureKey;
@@ -38,6 +38,7 @@ public class Hero : MonoBehaviour
 
     private void Start()
     {
+
         InitilizeInventoryObjects();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -49,8 +50,18 @@ public class Hero : MonoBehaviour
         standardSprite = sprite.sprite;
         canPause = true;
         ChangeMission("Войти в дом");
+
         if (!YandexGame.savesData.isFirstSession)
+        {
+            if (YandexGame.savesData.needToLoadSave)
+            {
+                YandexGame.ResetSaveProgress();
+                YandexGame.savesData.needToLoadSave = false;
+            }
+                
             LoadSave();
+        }
+            
     }
 
     private void InitilizeInventoryObjects()
@@ -96,11 +107,23 @@ public class Hero : MonoBehaviour
 
     public void LoadSave()
     {
+        
         var data = YandexGame.savesData;
         transform.position = new Vector3(data.playerPos[0], data.playerPos[1], 0);
+        mainCamera.TPToPlayer();
         pointerAim = new Vector3(data.playerHintDirection[0], data.playerHintDirection[1]);
+
         ghostScript.ChangeDialog(data.ghostDialog);
+        ghostScript.phraseIndex = data.ghostPhraseIndex;
+        ghostScript.canChangePhraseByButton = data.ghostCanChangePhraseByButton;
+
         levelComplete = data.levelComplete;
+        LadderInteraction.canUseLadders = data.canUseLadders;
+        InventoryLogic.canGetItems = data.canGetItems;
+        ChangeMission(data.mission);
+
+        levelText.text = levelComplete.ToString();
+
         if (data.inventoryItems[0] != null && data.inventoryItems[0] != "")
             AddToInventory(inventoryObjects[data.inventoryItems[0]]);
         if (data.inventoryItems[1] != null && data.inventoryItems[1] != "")
@@ -120,37 +143,18 @@ public class Hero : MonoBehaviour
 
         if (levelComplete == 1)
         {
+            levelText.text = "1 load";
+            ghostScript.gameObject.SetActive(true);
             ghostScript.isDialog = true;
             ghostScript.transform.position = new Vector3(data.ghostPos[0], data.ghostPos[1], data.ghostPos[2]);
             ghostScript.sprite.color = new Color(255, 255, 255, 1);
             ghostScript.phraseIndex = data.ghostPhraseIndex;
             ghostScript.StartDialog();
-        }
-        else if (levelComplete >= 2)
-        {
-            piano.transform.position = new Vector3(data.pianoPos[0], data.pianoPos[1], data.pianoPos[2]);
+            ghostScript.ChangeAimToPlayer();
+            levelText.text = "1 load complete";
+            mainCamera.ChangeAim(ghost.transform);
         }
         else if (levelComplete == 3)
-        {
-
-        }
-        else if (levelComplete == 4)
-        {
-
-        }
-        else if (levelComplete == 5)
-        {
-
-        }
-        else if (levelComplete == 6)
-        {
-
-        }
-        else if (levelComplete == 7)
-        {
-
-        }
-        else if (levelComplete == 8)
         {
 
         }
@@ -158,10 +162,26 @@ public class Hero : MonoBehaviour
 
     public void SaveSave()
     {
+        YandexGame.savesData.isFirstSession = false;
+
+        //YandexGame.savesData.needToLoadSave = true;
         YandexGame.savesData.playerPos = new float[] { transform.position.x, transform.position.y, 0 };
         YandexGame.savesData.playerHintDirection = new float[] { pointerAim.x, pointerAim.y, 0 };
-        YandexGame.savesData.ghostDialog = ghostScript.GetDialog();
         YandexGame.savesData.levelComplete = levelComplete;
+        YandexGame.savesData.mission = missionText.text;
+
+        YandexGame.savesData.ghostDialog = ghostScript.GetDialog();
+        YandexGame.savesData.ghostPos = new float[3] { ghostScript.transform.position.x, ghostScript.transform.position.y, ghostScript.transform.position.z };
+        YandexGame.savesData.ghostPhraseIndex = ghostScript.phraseIndex;
+        YandexGame.savesData.ghostCanChangePhraseByButton = ghostScript.canChangePhraseByButton;
+        
+        YandexGame.savesData.canGetItems = InventoryLogic.canGetItems;
+        YandexGame.savesData.canUseLadders = LadderInteraction.canUseLadders;
+        
+        YandexGame.savesData.pianoPos = new float[3] { piano.transform.position.x, 
+            piano.transform.position.y, piano.transform.position.z };
+        
+
         var inventoryKeys = inventory.Keys.ToArray();
         if (inventoryKeys.Length == 0)
         {
@@ -178,6 +198,10 @@ public class Hero : MonoBehaviour
             YandexGame.savesData.inventoryItems[0] = inventoryKeys[0];
             YandexGame.savesData.inventoryItems[1] = inventoryKeys[1];
         }
+
+        YandexGame.SaveProgress();
+        YandexGame.SaveLocal();
+        YandexGame.SaveCloud();
     }
 
     private void Run()
@@ -238,7 +262,8 @@ public class Hero : MonoBehaviour
         cyanCircle.previousUseTime = Time.time;
         if (InventoryObject.name == "Shovel")
             return;
-        SaveSave();
+        StopPointerAiming();
+        //SaveSave();
         YandexGame.savesData.isUsedInventoryItems[inventoryObjectsIndex[InventoryObject.name]] = true;
     }
 

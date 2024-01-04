@@ -1,0 +1,98 @@
+{
+  "idSave": 3,
+  "isFirstSession": false,
+  "language": "ru",
+  "promptDone": false,
+  "money": 1,
+  "newPlayerName": "Hello!",
+  "openLevels": [
+    false,
+    true,
+    false
+  ],
+  "needToLoadSave": true,
+  "playerPos": [
+    44.6475868,
+    -3.537942,
+    0.0
+  ],
+  "playerHintDirection": [
+    46.4897,
+    -3.82786417,
+    0.0
+  ],
+  "canUseLadders": true,
+  "canGetItems": true,
+  "levelComplete": 3,
+  "inventoryItems": [
+    "",
+    ""
+  ],
+  "mission": "Найти рогатку и снаряд,чтобы прогнать летучую мышь",
+  "isUsedInventoryItems": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+  ],
+  "activeColliderInventoryItems": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "ghostDialog": null,
+  "ghostPos": [
+    57.503067,
+    7.205955,
+    -4.5
+  ],
+  "isGhostDialog": false,
+  "ghostPhraseIndex": 10,
+  "ghostCanChangePhraseByButton": true,
+  "isMaryActive": false,
+  "maryPhraseIndex": 0,
+  "pianoPos": [
+    27.9361019,
+    -2.65454745,
+    2.0
+  ],
+  "chandelierPos": [
+    44.6297,
+    -3.20849,
+    0.726
+  ],
+  "masterRoomDoorPos": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

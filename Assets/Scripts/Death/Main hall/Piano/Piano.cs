@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.U2D;
 using YG;
 
 public class Piano : MonoBehaviour
 {
     public BrokenDoorInteraction door;
-    public GameObject key, slingshot, downPosMainLadder;
+    public GameObject key, slingshot, downPosMainLadder, heap;
     public Transform keyPos;
     public PianoDeath deathScript;
     public bool isEnd;
@@ -18,6 +20,7 @@ public class Piano : MonoBehaviour
     private GameObject player;
     private Rigidbody2D rb;
     private PolygonCollider2D col;
+    private SpriteRenderer spriteRender;
     private string[] dialog = new string[] { "Ого!", "Спустить рояль было следующим заданием…",
         "Но ты схватываешь всё на лету!", "Молодец, слушай дальше", "Видишь ту летучую мышь на перилах?",
         "За эти 150 лет она меня уже достала!", "Можешь прогнать её оттуда?", "Кажется в детской лежит рогатка",
@@ -30,12 +33,33 @@ public class Piano : MonoBehaviour
         playerScript = player.GetComponent<Hero>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         col = gameObject.GetComponent<PolygonCollider2D>();
+        spriteRender = GetComponent<SpriteRenderer>();
 
         rb.centerOfMass = new Vector2(0, -1.5f);
     }
 
     void Update()
     {
+        if (playerScript.levelComplete >= 2 && spriteRender.sprite != breakSprites.Last())
+        {
+            transform.position = new Vector3(YandexGame.savesData.pianoPos[0], 
+                YandexGame.savesData.pianoPos[1], YandexGame.savesData.pianoPos[2]);
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            spriteRender.sprite = breakSprites.Last();
+            door.transform.localPosition = new Vector3(1.1f, -0.04f, -0.1f);
+            door.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            deathopediaImage.ChangeSprite();
+            EndDeath();
+            LadderHorizontalInteraction.StopUsingMidPos();
+            Destroy(heap);
+            door.isBroke = true;
+            if (playerScript.levelComplete == 2)
+                ShowGhost();
+        }
+
+        if (playerScript.levelComplete >= 2)
+            return;
+
         if (transform.localPosition.x <= -10.7f && transform.localPosition.x > -11.35f)
         {
             var sc = player.transform.localScale;
@@ -56,11 +80,13 @@ public class Piano : MonoBehaviour
         {
             deathopediaImage.ChangeSprite();
             playerScript.Death();
-            StartCoroutine(WaitForSave());
+            playerScript.levelComplete = 2;
             playerScript.ChangePointerAim(slingshot.transform);
             InventoryLogic.canGetItems = true;
             LadderInteraction.canUseLadders = true;
+
             Invoke(nameof(ShowGhost), 2.5f);
+            playerScript.SaveSave();
             Invoke(nameof(TurnOnBlackOut), 3.5f);
 
         }
@@ -77,26 +103,12 @@ public class Piano : MonoBehaviour
     IEnumerator Breaking()
     {
         LadderHorizontalInteraction.StopUsingMidPos();
-        var spriteRender = GetComponent<SpriteRenderer>();
 
         foreach (var sprite in breakSprites)
         {
             spriteRender.sprite = sprite;
             yield return new WaitForSeconds(0.1f);
         }
-    }
-
-    IEnumerator WaitForSave()
-    {
-        while (!playerScript.ghostScript.isDialog)
-            yield return null;
-
-        while (playerScript.ghostScript.isDialog)
-            yield return null;
-
-        playerScript.levelComplete = 2;
-        YandexGame.savesData.pianoPos = new float[3] { transform.position.x, transform.position.y, transform.position.z };
-        playerScript.SaveSave();
     }
 
     private void ShowGhost()
@@ -124,9 +136,12 @@ public class Piano : MonoBehaviour
     private void EndDeath()
     {
         floorCollider.enabled = true;
-        key.transform.position = keyPos.position;
-        key.SetActive(true);
-        YandexGame.savesData.pianoPos = new float[3] { transform.position.x, transform.position.y, transform.position.z };
+        if (key != null)
+        {
+            key.transform.position = keyPos.position;
+            key.SetActive(true);
+        }
+        
 
         isEnd = true;
         rb.simulated = false;

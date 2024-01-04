@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using YG;
 
 public class ChandelierInteraction : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class ChandelierInteraction : MonoBehaviour
     private GameObject player;
     private Rigidbody2D rb;
     private string[] dialog;
+    private bool isEnd;
 
     private void Start()
     {
@@ -46,7 +48,13 @@ public class ChandelierInteraction : MonoBehaviour
 
     private void Update()
     {
-        
+        if (playerScript.levelComplete >= 3 && !isEnd)
+        {
+            transform.position = new Vector3(YandexGame.savesData.chandelierPos[0],
+                YandexGame.savesData.chandelierPos[1], YandexGame.savesData.chandelierPos[2]);
+            EndDeath();
+        }
+
         if (rb.simulated && transform.position.y <= -1.8 && transform.position.y > -3.6)
         {   
             var sc = player.transform.localScale;
@@ -57,25 +65,43 @@ public class ChandelierInteraction : MonoBehaviour
         }
 
         if (rb.simulated && !isDrop && transform.position.y < -3.1)
+        {
+            playerScript.levelComplete = 3;
+            playerScript.Death();
+            YandexGame.savesData.chandelierPos = new float[3] { transform.position.x, 
+                transform.position.y , transform.position.z };
+            playerScript.SaveSave();
             EndDeath();
+        }
+            
     }
 
     private void EndDeath()
     {
-        playerScript.ghostScript.Show();
-        playerScript.ghostScript.ChangeDialog(dialog);
+        if (playerScript.levelComplete == 3)
+        {
+            isEnd = true;
+            playerScript.ghostScript.Show();
+            playerScript.ghostScript.ChangeDialog(dialog);
+
+            isDrop = true;
+            rb.simulated = false;
+            GetComponent<BoxCollider2D>().enabled = false;
+
+            render.sprite = breakSprite;
+            deathopediaImage.ChangeSprite();
+
+            playerScript.ghostScript.mission = "Найти маркер и свечу для призыва Мэри";
+
+            GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
+            Invoke(nameof(SpawnCandle), 0.25f);
+        }
         
-        isDrop = true;
-        rb.simulated = false;
-        GetComponent<BoxCollider2D>().enabled = false;
-        
-        render.sprite = breakSprite;
-        deathopediaImage.ChangeSprite();
-        playerScript.Death();
-        playerScript.ghostScript.mission = "Найти маркер и свечу для призыва Мэри";
-        
-        GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().Prepare();
-        Invoke(nameof(SpawnCandle), 0.25f);
+        if (playerScript.levelComplete > 3) 
+        {
+            render.sprite = breakSprite;
+            deathopediaImage.ChangeSprite();
+        }
     }
 
     private void PlayBreakSound() 
