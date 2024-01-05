@@ -77,6 +77,19 @@ public class Plant : MonoBehaviour
         if (!playerScript.isCutScene && ReadyToKillThePlant() && Input.GetKeyUp(KeyCode.F))
             KillThePlant();
 
+        if (playerScript.levelComplete >= 6 && !wardrobe.isBreak)
+        {
+            deathopediaImage.ChangeSprite();
+            wardrobe.Break();
+        }
+
+        if (playerScript.levelComplete >= 7 && body.activeSelf)
+        {
+            body.SetActive(false);
+            door.SetActive(false);
+            deathopediaImage.ChangeSprite();
+        }
+
         if (needToMoveAcid)
         {
             var pos = upLianaScript.lianaHead.transform.position;
@@ -164,6 +177,8 @@ public class Plant : MonoBehaviour
 
         blackOut.SetActive(true);
         playerScript.ChangeMission("Сжечь растения огнемётом");
+        playerScript.levelComplete = 6;
+        playerScript.SaveSave();
     }
 
     IEnumerator CutScene2()

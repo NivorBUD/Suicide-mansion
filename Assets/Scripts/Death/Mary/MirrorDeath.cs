@@ -57,12 +57,20 @@ public class MirrorDeath : MonoBehaviour
     }
 
     public void SpawnMary()
-    {   
+    {
+        Start();
+        if (playerScript.levelComplete != 4)
+        {
+            playerScript.levelComplete = 4;
+            playerScript.DeadlyScare();
+            playerScript.ChangePointerAim(mary.GetComponent<Mary>().bathroomKey.transform);
+            playerScript.SaveSave();
+        }
+
+        playerScript.ChangePointerAim(mary.GetComponent<Mary>().bathroomKey.transform);
+        deathopediaImage.ChangeSprite();
         cameraController.ZoomIn(5);
         mary.GetComponent<Mary>().Show();
-
-        deathopediaImage.ChangeSprite();
-        playerScript.DeadlyScare();
 
         mary.GetComponent<Mary>().StartDialog();
         button.SetActive(false);
@@ -83,6 +91,12 @@ public class MirrorDeath : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.levelComplete >= 4 && !isEnd)
+        {
+            isEnd = true;
+            deathopediaImage.ChangeSprite();
+        }
+
         if (!isEnd && DrawingLogic.paintedPartsCount == 36)
         {
             button.SetActive(true);

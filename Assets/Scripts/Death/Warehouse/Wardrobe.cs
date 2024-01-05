@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Wardrobe : MonoBehaviour
 {
+    public bool isBreak;
+
     [SerializeField] Sprite brakeSprite, acidSprite;
-    [SerializeField] GameObject flamethrower;
-    [SerializeField] GameObject bathBomb;
+    [SerializeField] GameObject flamethrower, bathBomb;
+    [SerializeField] Plant plant;
 
     private Hero playerScript;
 
@@ -15,8 +17,17 @@ public class Wardrobe : MonoBehaviour
         playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
     }
 
+    private void Update()
+    {
+        if (playerScript.levelComplete >= 6 && flamethrower != null)
+        {
+            DropFlamethrower();
+        }
+    }
+
     public void Break()
     {
+        isBreak = true;
         gameObject.GetComponent<SpriteRenderer>().sprite = brakeSprite;
     }
     

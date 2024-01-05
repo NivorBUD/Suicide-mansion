@@ -45,6 +45,11 @@ public class PianoDeath : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.levelComplete >= 2 && midPos != null)
+        {
+            Destroy(midPos.gameObject);
+        }
+
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F) && !playerScript.isCutScene) 
             StartCoroutine(Death());
     }

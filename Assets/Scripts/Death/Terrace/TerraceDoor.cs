@@ -17,7 +17,7 @@ public class TerraceDoor : MonoBehaviour
 
     public void Open()
     {
-        PlayOpenSound(); // ���� �������� �����
+        PlayOpenSound(); 
         isOpened = true;
         GetComponent<SpriteRenderer>().sprite = openedDoor;
         hint.isOn = true;

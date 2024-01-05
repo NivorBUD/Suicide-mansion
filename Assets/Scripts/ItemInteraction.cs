@@ -18,7 +18,7 @@ public class ItemInteraction : MonoBehaviour
         names["Screwdriver"] = "отвёртка";
         names["Marker"] = "маркер";
         names["Slingshot"] = "рогатка";
-        names["Bathroom Key"] = "ключ от ванной";
+        names["Bathroom key"] = "ключ от ванной";
         names["Pantaloons"] = "панталоны";
         names["Rope"] = "верёвка";
         names["Bath bomb"] = "бомбочка для ванны";

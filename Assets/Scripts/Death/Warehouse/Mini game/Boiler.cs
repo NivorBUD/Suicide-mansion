@@ -31,7 +31,7 @@ public class Boiler : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerInArea && playerScript.inventory.ContainsKey("CaF2") 
+        if (isPlayerInArea && playerScript.inventory.ContainsKey("CaF2")
             && playerScript.inventory.ContainsKey("H2SO4") && Input.GetKeyDown(KeyCode.F))
         {
             InventoryLogic.UseItem(playerScript.inventory["H2SO4"]);
@@ -40,7 +40,8 @@ public class Boiler : MonoBehaviour
             playerScript.StopPointerAiming();
         }
 
-        if (isPlayerInArea && Input.GetKeyDown(KeyCode.F) && sr.sprite.name == "BoilerAcid")
+        if ((isPlayerInArea && Input.GetKeyDown(KeyCode.F) && sr.sprite.name == "BoilerAcid") || 
+            (playerScript.levelComplete >= 6 && sr.sprite != emptySprite))
         {
             sr.sprite = emptySprite;
             playerScript.StopPointerAiming();

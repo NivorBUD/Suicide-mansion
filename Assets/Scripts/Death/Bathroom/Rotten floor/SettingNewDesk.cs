@@ -18,6 +18,11 @@ public class SettingNewDesk : MonoBehaviour
 
     void Update()
     {
+        if (playerScript.levelComplete >= 7 && !desk.activeSelf)
+        {
+            desk.SetActive(true);
+        }
+
         if (trigger.isTriggered && playerScript.inventory.ContainsKey("Board") && Input.GetKeyUp(KeyCode.F))
             StartCoroutine(CutScene());
     }

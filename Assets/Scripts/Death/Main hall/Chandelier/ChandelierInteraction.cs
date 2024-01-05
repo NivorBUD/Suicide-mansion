@@ -70,6 +70,7 @@ public class ChandelierInteraction : MonoBehaviour
             playerScript.Death();
             YandexGame.savesData.chandelierPos = new float[3] { transform.position.x, 
                 transform.position.y , transform.position.z };
+            playerScript.ChangePointerAim(candle.transform);
             playerScript.SaveSave();
             EndDeath();
         }
@@ -97,7 +98,7 @@ public class ChandelierInteraction : MonoBehaviour
             Invoke(nameof(SpawnCandle), 0.25f);
         }
         
-        if (playerScript.levelComplete > 3) 
+        if (playerScript.levelComplete > 3 && render.sprite != breakSprite) 
         {
             render.sprite = breakSprite;
             deathopediaImage.ChangeSprite();

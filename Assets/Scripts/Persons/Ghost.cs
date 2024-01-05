@@ -14,21 +14,22 @@ public class Ghost : MonoBehaviour
     public string mission;
     public SpriteRenderer sprite;
 
-    private Transform aim;
+    public Transform aim;
     private float aimXDelta, aimYDelta;
     private string[] actualDialog;
     private static GameObject player;
     private static Hero playerScript;
     private bool needToHide, needToShow;
 
-    void Start()
+    public void Start()
     {
         needTerraceDialog = true;
         needToStartDialog = true;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Hero>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
-        ChangeAim(gameObject.transform, 0, 0);
+        if (playerScript.levelComplete == 0)
+            ChangeAim(gameObject.transform, 0, 0);
         canChangePhraseByButton = true;
         actualDialog = new string[] { "У-у-у-у-у!", "Зря ты очутился в этом доме!", "Приготовься к своей погибели!",
             "Злостный... доставщик пиццы?", "Прошу меня извинить, сейчас я...", "Как же это остановить...",
@@ -142,8 +143,8 @@ public class Ghost : MonoBehaviour
 
     public bool CheckIsNearTheAim()
     {
-        return gameObject && Math.Abs(transform.position.x - (aim.position.x + aimXDelta)) <= 1f && 
-            Math.Abs(transform.position.y - (aim.position.y + aimYDelta)) <= 1f && aim != transform;
+        return gameObject && Math.Abs(transform.position.x - (aim.position.x + aimXDelta)) <= 1.2f && 
+            Math.Abs(transform.position.y - (aim.position.y + aimYDelta)) <= 1.2f && aim != transform;
     }
 
     public void ChangeDialog(string[] newDialog)

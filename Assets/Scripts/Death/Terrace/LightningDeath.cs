@@ -17,6 +17,7 @@ public class LightningDeath : MonoBehaviour
     private SpriteRenderer sprite;
     private string[] dialog;
     private ButtonHint hint;
+    private bool isEnd;
 
     public void StartDeath()
     {
@@ -41,6 +42,20 @@ public class LightningDeath : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.levelComplete >= 9 && !isEnd)
+        {
+            isEnd = true;
+            playerScript.ghostScript.needTerraceDialog = false;
+
+            if (playerScript.levelComplete == 9)
+            {
+                StartCoroutine(DialogAfterDeath());
+                playerScript.ghostScript.ChangeDialog(dialog);
+                playerScript.ghostScript.Show();
+            }
+            deathopediaImage.ChangeSprite();
+        }
+
         if (treasureKey != null && treasureKey.transform.localPosition.y <= -3 && keyrb.velocity.y == 0)
         {
             keyCollider.isTrigger = true;
@@ -51,6 +66,7 @@ public class LightningDeath : MonoBehaviour
 
     IEnumerator CutScene()
     {
+        isEnd = true;
         InventoryLogic.UseItem(playerScript.inventory["Pantaloons"]);
         InventoryLogic.UseItem(playerScript.inventory["Rope"]);
         AudioSource.PlayClipAtPoint(RainDeathSound, transform.position);
@@ -115,15 +131,24 @@ public class LightningDeath : MonoBehaviour
         playerScript.ghostScript.ChangeAimToPlayer();
         playerScript.ghostScript.ChangePhrase();
         playerScript.RespawnPoof();
+        playerScript.levelComplete = 9;
+        playerScript.SaveSave();
         playerScript.EndCutScene();
         cloudsScript.StopRain();
 
         yield return new WaitForSeconds(1.5f);
+        StartCoroutine(DialogAfterDeath());
         playerScript.ghostScript.canChangePhraseByButton = true;
+    }
 
+    IEnumerator DialogAfterDeath()
+    {
+        playerScript.isCutScene = true;
+        playerScript.ghostScript.canChangePhraseByButton = true;
         while (playerScript.ghostScript.phraseIndex < 6)
             yield return new WaitForSeconds(0.1f);
 
         treasureKey.SetActive(true);
+        playerScript.isCutScene = false;
     }
 }

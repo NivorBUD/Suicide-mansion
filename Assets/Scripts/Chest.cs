@@ -6,7 +6,7 @@ public class Chest : MonoBehaviour
     public Sprite openSprite;
     public EndCutScene endCutScene;
 
-    private bool isPlayerInArea;
+    private bool isPlayerInArea, isEnd;
     private Hero playerScript;
     private ButtonHint hint;
 
@@ -18,12 +18,22 @@ public class Chest : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.levelComplete == 10 && !isEnd)
+        {
+            isEnd = true;
+            endCutScene.StartEndCutScene();
+            GetComponent<SpriteRenderer>().sprite = openSprite;
+        }
+
         if (isPlayerInArea && playerScript.inventory.ContainsKey("Treasure key") && Input.GetKeyUp(KeyCode.F))
         {
+            isEnd = true;
             InventoryLogic.UseItem(playerScript.inventory["Treasure key"]);
             AudioSource.PlayClipAtPoint(openedChestSound, transform.position);
             GetComponent<SpriteRenderer>().sprite = openSprite;
             Invoke(nameof(EndGame), 1);
+            playerScript.levelComplete = 10;
+            playerScript.SaveSave();
         }
 
         hint.isOn = playerScript.inventory.ContainsKey("Treasure key");

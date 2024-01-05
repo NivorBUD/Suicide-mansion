@@ -29,6 +29,26 @@ public class Shield : MonoBehaviour
 
     void Update()
     {
+        if (playerScript.levelComplete >= 8 && !isUsed)
+        {
+            if (playerScript.levelComplete == 8)
+            {
+                playerScript.ghostScript.mission = "Выйти на веранду";
+                playerScript.ghostScript.ChangeDialog(dialog);
+                playerScript.ghostScript.Show();
+                pantaloonsCollider.enabled = true;
+                ropeCollider.enabled = true;
+                StartCoroutine(OpenDoor());
+            }
+            else
+            {
+                terraceDoor.Open();
+            }
+            isUsed = true;
+            trigger.gameObject.SetActive(false);
+            deathopediaImage.ChangeSprite();
+        }
+
         if (!isUsed && trigger.isTriggered && Input.GetKeyDown(KeyCode.F))
         {
             isUsed = true;
@@ -41,11 +61,22 @@ public class Shield : MonoBehaviour
         }
     }
 
+    IEnumerator OpenDoor()
+    {
+        while (!playerScript.ghostScript.isDialog)
+            yield return null;
+
+        while (playerScript.ghostScript.isDialog)
+            yield return null;
+
+        terraceDoor.Open();
+    }
+
     public void StartDeath()
     {   
         AudioSource.PlayClipAtPoint(ElectroDeathSound, transform.position);
         blackOut.SetActive(false);
-        PlayElectricShockSound(); // ���� ����� ����� �� 3 �������
+        PlayElectricShockSound();
         mainCamera.ZoomIn(2);
         mainCamera.ChangeAim(player.transform);
 
@@ -59,15 +90,17 @@ public class Shield : MonoBehaviour
 
         deathopediaImage.ChangeSprite();
         playerScript.Death();
+        playerScript.levelComplete = 8;
+        playerScript.ghostScript.mission = "Выйти на веранду";
+        playerScript.ghostScript.ChangeDialog(dialog);
         terraceDoor.Open();
         pantaloonsCollider.enabled = true;
         ropeCollider.enabled = true;
+        playerScript.ChangePointerAim(terraceDoor.gameObject.transform);
+        playerScript.SaveSave();
         yield return new WaitForSeconds(2);
 
-        playerScript.ghostScript.ChangeDialog(dialog);
-        playerScript.ghostScript.ChangeAimToPlayer();
         playerScript.ghostScript.Show();
-        playerScript.ghostScript.mission = "Выйти на веранду";
         yield return new WaitForSeconds(2);
 
         blackOut.SetActive(true);

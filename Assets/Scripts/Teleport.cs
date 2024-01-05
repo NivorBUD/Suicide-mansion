@@ -14,6 +14,7 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        InventoryLogic.canGetItems = false;
         playerScript.gameObject.transform.position = tpPlace.transform.position;
         playerScript.ChangeMission("Выслушать привидение");
         Invoke(nameof(ShowGhost), 2);

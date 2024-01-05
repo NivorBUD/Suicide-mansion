@@ -7,6 +7,7 @@ public class FallDeath : MonoBehaviour
     private bool isTriggered = false;
 
     private GameObject player;
+    private Hero playerScript;
     private Vector3 teleportPosition = new (59.39f, -2.7f, 0);
     private string[] dialog;
     private Ghost ghostScript;
@@ -14,6 +15,7 @@ public class FallDeath : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<Hero>();
         ghostScript = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
         dialog = new string[]{"Деревянный пол в ванной?", "Это провал… Да какой огромный!", 
             "Ты видишь? Растения оплели дверь!", "Нужно от них избавиться",
@@ -23,8 +25,10 @@ public class FallDeath : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == player && !isTriggered)
+        if (collision.gameObject == player && !isTriggered && playerScript.levelComplete == 4)
         {
+            ghostScript.ChangeDialog(dialog);
+            ghostScript.mission = "Смешать в котле химикаты и вылить на растения";
             isTriggered = true;
             player.SetActive(false);
             player.GetComponent<Hero>().StopPointerAiming();
@@ -37,9 +41,11 @@ public class FallDeath : MonoBehaviour
     {
         player.transform.position = teleportPosition;
         player.SetActive(true);
-        player.GetComponent<Hero>().ChangePointerAim(CaF2.transform);
+        playerScript.ChangePointerAim(CaF2.transform);
+        playerScript.levelComplete = 5;
         ghostScript.ChangeDialog(dialog);
-        ghostScript.Show();
         ghostScript.mission = "Смешать в котле химикаты и вылить на растения";
+        playerScript.SaveSave();
+        ghostScript.Show();
     }
 }

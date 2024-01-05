@@ -10,7 +10,7 @@ public class DoorBreak : MonoBehaviour
     [SerializeField] private GameObject blackOut;
     [SerializeField] private Axe axe;
     public AudioClip doorBreakSound; // The sound clip for breaking the door
-    private bool hasTriggered;
+    private bool isBreak;
     private ConstantForce2D force;
     private Rigidbody2D rb;
     private CameraController cameraController;
@@ -26,21 +26,17 @@ public class DoorBreak : MonoBehaviour
             "Жаль, с семейкой не повезло…", "И с лабиринтом…" };
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-            hasTriggered = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-            hasTriggered = false;
-    }
-
     private void Update()
     {
-        if (hasTriggered && playerScript.inventory.ContainsKey("Axe") && Input.GetKeyUp(KeyCode.F))
+        if (playerScript.levelComplete >= 7 && !isBreak)
+        {
+            transform.localPosition = new Vector3(-4.13f, -5.667f, -0.7f);
+            transform.localRotation = Quaternion.Euler(0, 0, 179.8f);
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            rb.simulated = false;
+        }
+
+        if (trigger.isTriggered && playerScript.inventory.ContainsKey("Axe") && Input.GetKeyUp(KeyCode.F))
         {
             if (doorBreakSound != null)
             {
@@ -52,6 +48,7 @@ public class DoorBreak : MonoBehaviour
 
     private IEnumerator BreakDoor()
     {
+        isBreak = true;
         playerScript.isCutScene = true;
         playerScript.TurnLeft();
         cameraController.ChangeAim(playerScript.gameObject.transform);

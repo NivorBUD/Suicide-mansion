@@ -57,6 +57,9 @@ public class Piano : MonoBehaviour
                 ShowGhost();
         }
 
+        if (!isEnd && transform.localPosition.x < -11 && rb.velocity.x == 0)
+            EndDeath();
+
         if (playerScript.levelComplete >= 2)
             return;
 
@@ -88,11 +91,7 @@ public class Piano : MonoBehaviour
             Invoke(nameof(ShowGhost), 2.5f);
             playerScript.SaveSave();
             Invoke(nameof(TurnOnBlackOut), 3.5f);
-
         }
-
-        if (!isEnd && transform.localPosition.x < -11 && rb.velocity.x == 0)
-            EndDeath();
     }
 
     private void PlayBreakPianoSound()

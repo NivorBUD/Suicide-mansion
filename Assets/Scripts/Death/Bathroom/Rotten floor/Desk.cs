@@ -9,16 +9,29 @@ public class Desk : MonoBehaviour
 
     private ConstantForce2D force;
     private bool needToMove, needToDrop;
+    private Hero playerScript;
     
 
     void Start()
     {
         force = gameObject.GetComponent<ConstantForce2D>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
     }
 
     void Update()
     {
+        if (playerScript.levelComplete >= 7 && !isInstall)
+        {
+            transform.localPosition = new Vector3(-0.168f, -3.66f, 0);
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            transform.localScale = new Vector3(8.85f, 0.15f, 1f);
+            GetComponent<BoxCollider2D>().enabled = true;
+            rb.simulated = true;
+            rb.bodyType = RigidbodyType2D.Static;
+            isInstall = true;
+        }
+
         if (!isReady && needToMove)
         {
             transform.position = Vector3.MoveTowards(transform.position, holdingPlace.transform.position, Time.deltaTime);

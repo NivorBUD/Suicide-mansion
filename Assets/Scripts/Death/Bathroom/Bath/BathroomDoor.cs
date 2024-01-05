@@ -16,6 +16,12 @@ public class BathroomDoor : MonoBehaviour
 
     private void Update()
     {
+        if (playerScript.levelComplete >= 5 && !openedDoor.activeSelf)
+        {
+            openedDoor.SetActive(true);
+            gameObject.SetActive(false);
+        }
+
         if (trig.isPlayerInArea && Input.GetKeyUp(KeyCode.F) && playerScript.inventory.ContainsKey("Bathroom key"))
         {
             InventoryLogic.UseItem(playerScript.inventory["Bathroom key"]);

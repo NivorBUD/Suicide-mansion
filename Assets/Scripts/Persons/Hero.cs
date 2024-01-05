@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using YG;
@@ -8,13 +9,13 @@ using YG;
 public class Hero : MonoBehaviour
 {
     public int levelComplete; // 1 - пройдена смерть в подвале, 2 - от рояля, 3 - от люстры, 4 - от мэри,
-                              // 5 - от растения, 6 - от утопленя, 7 - на чердаке, 8 - от молнии,
-                              // 9 - игра пройдена
+                              // 5 - от падения, 6 - от растения, 7 - от утопленя, 8 - на чердаке, 9 - от молнии,
+                              // 10 - игра пройдена
 
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
     [SerializeField] private ParticleSystem respawnPoof;
-    [SerializeField] private TextMeshProUGUI missionText, levelText;
+    [SerializeField] private TextMeshProUGUI missionText;
     [SerializeField] GameObject ghost, getPlace, holdingPlace;
     [SerializeField] CyanCircle cyanCircle;
     [SerializeField] private GameObject piano, bathKey, bathBomb, acid, flamethrower, key, candle, board, treasureKey;
@@ -38,7 +39,6 @@ public class Hero : MonoBehaviour
 
     private void Start()
     {
-
         InitilizeInventoryObjects();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -47,21 +47,13 @@ public class Hero : MonoBehaviour
         mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();
         ghost = GameObject.FindWithTag("Ghost");
         ghostScript = ghost.GetComponent<Ghost>();
+        ghostScript.Start();
         standardSprite = sprite.sprite;
         canPause = true;
         ChangeMission("Войти в дом");
 
         if (!YandexGame.savesData.isFirstSession)
-        {
-            if (YandexGame.savesData.needToLoadSave)
-            {
-                YandexGame.ResetSaveProgress();
-                YandexGame.savesData.needToLoadSave = false;
-            }
-                
             LoadSave();
-        }
-            
     }
 
     private void InitilizeInventoryObjects()
@@ -70,7 +62,7 @@ public class Hero : MonoBehaviour
         inventoryObjects["Screwdriver"] = GameObject.FindWithTag("Screwdriver");
         inventoryObjects["Marker"] = GameObject.FindWithTag("Marker");
         inventoryObjects["Slingshot"] = GameObject.FindWithTag("Slingshot");
-        inventoryObjects["Bathroom Key"] = bathKey;
+        inventoryObjects["Bathroom key"] = bathKey;
         inventoryObjects["Pantaloons"] = GameObject.FindWithTag("Pantaloons");
         inventoryObjects["Rope"] = GameObject.FindWithTag("Rope");
         inventoryObjects["Bath bomb"] = bathBomb;
@@ -89,7 +81,7 @@ public class Hero : MonoBehaviour
         inventoryObjectsIndex["Screwdriver"] = 1;
         inventoryObjectsIndex["Marker"] = 2;
         inventoryObjectsIndex["Slingshot"] = 3;
-        inventoryObjectsIndex["Bathroom Key"] = 4;
+        inventoryObjectsIndex["Bathroom key"] = 4;
         inventoryObjectsIndex["Pantaloons"] = 5;
         inventoryObjectsIndex["Rope"] = 6;
         inventoryObjectsIndex["Bath bomb"] = 7;
@@ -107,22 +99,20 @@ public class Hero : MonoBehaviour
 
     public void LoadSave()
     {
-        
         var data = YandexGame.savesData;
         transform.position = new Vector3(data.playerPos[0], data.playerPos[1], 0);
         mainCamera.TPToPlayer();
         pointerAim = new Vector3(data.playerHintDirection[0], data.playerHintDirection[1]);
 
         ghostScript.ChangeDialog(data.ghostDialog);
-        ghostScript.phraseIndex = data.ghostPhraseIndex;
         ghostScript.canChangePhraseByButton = data.ghostCanChangePhraseByButton;
+        ghostScript.phraseIndex = data.ghostPhraseIndex;
+        missionText.text = data.mission;
 
         levelComplete = data.levelComplete;
         LadderInteraction.canUseLadders = data.canUseLadders;
         InventoryLogic.canGetItems = data.canGetItems;
         ChangeMission(data.mission);
-
-        levelText.text = levelComplete.ToString();
 
         if (data.inventoryItems[0] != null && data.inventoryItems[0] != "")
             AddToInventory(inventoryObjects[data.inventoryItems[0]]);
@@ -143,28 +133,35 @@ public class Hero : MonoBehaviour
 
         if (levelComplete == 1)
         {
-            levelText.text = "1 load";
-            ghostScript.gameObject.SetActive(true);
-            ghostScript.isDialog = true;
+            ghost.SetActive(true);
+            ghostScript.ChangeDialog(data.ghostDialog);
+            ghostScript.canChangePhraseByButton = data.ghostCanChangePhraseByButton;
             ghostScript.transform.position = new Vector3(data.ghostPos[0], data.ghostPos[1], data.ghostPos[2]);
             ghostScript.sprite.color = new Color(255, 255, 255, 1);
             ghostScript.phraseIndex = data.ghostPhraseIndex;
             ghostScript.StartDialog();
             ghostScript.ChangeAimToPlayer();
-            levelText.text = "1 load complete";
-            mainCamera.ChangeAim(ghost.transform);
+            ghostScript.isDialog = false;
+            isCutScene = false;
         }
-        else if (levelComplete == 3)
+        else if (levelComplete == 4)
         {
-
+            GameObject.FindWithTag("Mirror").GetComponent<MirrorDeath>().SpawnMary();
+        }
+        else if (levelComplete == 5)
+        {
+            ghostScript.ChangeDialog(new string[]{"Деревянный пол в ванной?", "Это провал… Да какой огромный!",
+            "Ты видишь? Растения оплели дверь!", "Нужно от них избавиться",
+            "Тут есть пара склянок с химикатами", "Смешай их в котле", "Ничего сложного, правда?",
+            "Ты же встречал вид <I>лианиус резняриус</I>", "Если так не выйдет, то...", "Попробуй что-то другое"});
+            ghostScript.Show();
+            ghostScript.mission = "Смешать в котле химикаты и вылить на растения";
         }
     }
 
     public void SaveSave()
     {
         YandexGame.savesData.isFirstSession = false;
-
-        //YandexGame.savesData.needToLoadSave = true;
         YandexGame.savesData.playerPos = new float[] { transform.position.x, transform.position.y, 0 };
         YandexGame.savesData.playerHintDirection = new float[] { pointerAim.x, pointerAim.y, 0 };
         YandexGame.savesData.levelComplete = levelComplete;
@@ -201,7 +198,6 @@ public class Hero : MonoBehaviour
 
         YandexGame.SaveProgress();
         YandexGame.SaveLocal();
-        YandexGame.SaveCloud();
     }
 
     private void Run()
@@ -260,11 +256,10 @@ public class Hero : MonoBehaviour
     {
         inventory[InventoryObject.name] = InventoryObject;
         cyanCircle.previousUseTime = Time.time;
+        YandexGame.savesData.isUsedInventoryItems[inventoryObjectsIndex[InventoryObject.name]] = true;
         if (InventoryObject.name == "Shovel")
             return;
         StopPointerAiming();
-        //SaveSave();
-        YandexGame.savesData.isUsedInventoryItems[inventoryObjectsIndex[InventoryObject.name]] = true;
     }
 
     public void DelFromInventory([SerializeField] GameObject InventoryObject)
@@ -275,6 +270,17 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        if (levelComplete == 1)
+            ghostScript.isDialog = false;
+
+        if (levelComplete == 5 && ghostScript.GetDialog() != null && ghostScript.GetDialog().Length != 10)
+        {
+            ghostScript.ChangeDialog(new string[]{"Деревянный пол в ванной?", "Это провал… Да какой огромный!",
+            "Ты видишь? Растения оплели дверь!", "Нужно от них избавиться",
+            "Тут есть пара склянок с химикатами", "Смешай их в котле", "Ничего сложного, правда?",
+            "Ты же встречал вид <I>лианиус резняриус</I>", "Если так не выйдет, то...", "Попробуй что-то другое"});
+        }
+
         if (isPause)
             return;
 

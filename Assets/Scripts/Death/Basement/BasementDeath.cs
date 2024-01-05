@@ -31,7 +31,8 @@ public class BasementDeath : MonoBehaviour
     }
 
     public void StartDeath()
-    {   
+    {
+        speed = 0;
         playerScript.canPause = false;
         ghostScript.isDialog = false;
         blackOut.SetActive(false);
@@ -170,6 +171,8 @@ public class BasementDeath : MonoBehaviour
         {
             playerScript.canPause = true;
             ghostScript.canChangePhraseByButton = true;
+            ghostScript.isDialog = false;
+            playerScript.isCutScene = false;
 
             while (ghostScript.phraseIndex < 24)
                 yield return new WaitForSeconds(0.1f);

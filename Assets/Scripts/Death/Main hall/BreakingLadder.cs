@@ -14,7 +14,7 @@ public class BreakingLadder : MonoBehaviour
 
     private GameObject player;
     private Hero playerScript;
-    private bool isStart;
+    private bool isStart, isRepair;
     private bool isEnd = false;
     private bool needToSetAngularVelocity;
     private CameraController cameraController;
@@ -33,6 +33,12 @@ public class BreakingLadder : MonoBehaviour
 
     void Update()
     {
+        if (playerScript.levelComplete >= 8 && !isRepair)
+        {
+            isRepair = true;
+            breakTrigger.gameObject.SetActive(false);
+        }
+
         if (breakTrigger.isTriggered)
             Break();
 
@@ -124,6 +130,7 @@ public class BreakingLadder : MonoBehaviour
 
     private void RepairStairs()
     {
+        isRepair = true;
         InventoryLogic.UseItem(playerScript.inventory["Screws"]);
         InventoryLogic.UseItem(playerScript.inventory["Screwdriver"]);
         GetComponent<SpriteRenderer>().sprite = fixedLadder;

@@ -9,7 +9,6 @@ public class ChandelierDeath : MonoBehaviour
     public AudioClip startDeathSound;
 
     private ChandelierInteraction chandelierInteraction;
-    private static bool isShoot = false;
     private static bool isPlayerInShootPlace = false;
     private static Hero playerScript;
 
@@ -21,7 +20,7 @@ public class ChandelierDeath : MonoBehaviour
 
     public bool ReadyToDeath()
     {
-        return !isShoot && isPlayerInShootPlace && playerScript.inventory.ContainsKey("Key") && 
+        return isPlayerInShootPlace && playerScript.inventory.ContainsKey("Key") && 
             playerScript.inventory.ContainsKey("Slingshot");
     }
 
@@ -58,7 +57,6 @@ public class ChandelierDeath : MonoBehaviour
         while (!playerScript.isReadyToShot)
             yield return new WaitForSeconds(0.1f);
 
-        isShoot = true;
         bullet.transform.position = playerScript.bulletPlace.position;
         bullet.GetComponent<Bullet>().isStart = true;
         playerScript.StopSlingshot();

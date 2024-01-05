@@ -19,6 +19,7 @@ public class BathDeath : MonoBehaviour
     private Vector3 respawnPlace;
     private string[] dialog;
     private ButtonHint hint;
+    private bool isEnd;
 
     public bool ReadyToDeath()
     {
@@ -45,6 +46,20 @@ public class BathDeath : MonoBehaviour
 
     void Update()
     {
+        if (playerScript.levelComplete > 7 && !isEnd)
+        {
+            downPosAtticLadder.GetComponent<BoxCollider2D>().enabled = true;
+            isEnd = true;
+            deathopediaImage.ChangeSprite();
+        }
+
+        if (playerScript.levelComplete == 7 && !isEnd)
+        {
+            StartCoroutine(DialogAfterDeath());
+            bath.ChangeSprite();
+            ghostSon.GetComponent<SpriteRenderer>().flipX = true;
+        }
+
         if (ReadyToDeath() && Input.GetKeyDown(KeyCode.F))
         {
             StartDeath();
@@ -94,10 +109,21 @@ public class BathDeath : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        deathopediaImage.ChangeSprite();
+        
+        playerScript.levelComplete = 7;
         playerScript.Death();
         ghostSonScript.StopDrawn();
         player.transform.position = respawnPlace;
+        playerScript.SaveSave();
+        isEnd = true;
+
+        StartCoroutine(DialogAfterDeath());
+    }
+
+    IEnumerator DialogAfterDeath()
+    {
+        isEnd = true;
+        deathopediaImage.ChangeSprite();
         ghostScript = playerScript.ghostScript;
         dialog = new string[] {"Опять ты за своё?!", "Выходи, не прячься!", "Сколько можно?!",
             "Тебе уже как никак 163 года!", "Прости его, любит он поиграть…", "<I>До смерти</I>", "Выйди на веранду, отдышись",

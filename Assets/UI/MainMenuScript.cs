@@ -11,6 +11,18 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
+    public void StartNewGame()
+    {
+        YandexGame.FullscreenShow();
+        YandexGame.ResetSaveProgress();
+        YandexGame.savesData = new SavesYG();
+        InventoryLogic.canGetItems = true;
+        YandexGame.SaveProgress();
+        YandexGame.SaveLocal();
+
+        SceneManager.LoadScene("GameScene");
+    }
+
     public void QuitGame()
     {
         #if UNITY_EDITOR
