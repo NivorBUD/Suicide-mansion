@@ -64,7 +64,6 @@ public class MirrorDeath : MonoBehaviour
             playerScript.levelComplete = 4;
             playerScript.DeadlyScare();
             playerScript.ChangePointerAim(mary.GetComponent<Mary>().bathroomKey.transform);
-            playerScript.SaveSave();
         }
 
         playerScript.ChangePointerAim(mary.GetComponent<Mary>().bathroomKey.transform);

@@ -15,6 +15,12 @@ public class MainMenuController : MonoBehaviour
         playerScript.isPause = true;
         menuCanvas.SetActive(true);
         gameCanvas.SetActive(false);
+        if (YandexGame.savesData.isStartNewGame)
+        {
+            menuCanvas.SetActive(false);
+            gameCanvas.SetActive(true);
+            playerScript.isPause = false;
+        }
     }
 
     public void StartGame()
@@ -33,6 +39,7 @@ public class MainMenuController : MonoBehaviour
         InventoryLogic.canGetItems = true;
         YandexGame.SaveProgress();
         YandexGame.SaveLocal();
+        YandexGame.savesData.isStartNewGame = true;
 
         SceneManager.UnloadScene("GameScene");
         SceneManager.LoadScene("GameScene");

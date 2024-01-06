@@ -1,6 +1,6 @@
 {
-  "idSave": 1,
-  "isFirstSession": true,
+  "idSave": 5,
+  "isFirstSession": false,
   "language": "ru",
   "promptDone": false,
   "money": 1,
@@ -10,25 +10,30 @@
     true,
     false
   ],
+  "isStartNewGame": false,
   "playerPos": [
-    -14.94,
-    -3.14,
+    13.4801664,
+    -3.11414719,
     0.0
   ],
   "playerHintDirection": [
-    0.0,
-    0.0,
+    15.952,
+    -3.671,
     0.0
   ],
-  "canUseLadders": false,
+  "canUseLadders": true,
   "canGetItems": false,
-  "levelComplete": 0,
+  "levelComplete": 4,
   "inventoryItems": [
-    null,
-    null
+    "",
+    ""
   ],
-  "mission": "Войти в дом",
+  "mission": "Найти маркер и свечу для призыва Мэри",
   "isUsedInventoryItems": [
+    true,
+    false,
+    true,
+    true,
     false,
     false,
     false,
@@ -38,12 +43,8 @@
     false,
     false,
     false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
+    true,
+    true,
     false,
     false,
     false
@@ -68,53 +69,25 @@
     false,
     false
   ],
-  "ghostDialog": [
-    "У-у-у-у-у!",
-    "Зря ты очутился в этом доме!",
-    "Приготовься к своей погибели!",
-    "Злостный... доставщик пиццы?",
-    "Прошу меня извинить, сейчас я...",
-    "Как же это остановить...",
-    "Не та кнопка...",
-    "А может та?",
-    "А, вот!",
-    "Упс... Извини",
-    "Так-так-так, как же там было… ",
-    "Воскресни, несчастный, приди в этот мир!",
-    "Абракадабра симсалабим!",
-    "Ух ты, вот и пригодились бабушкины заклинания!",
-    "Итак, Доставщик…",
-    "Ты, наверное, хочешь выбраться отсюда?",
-    "Что ж, я тебя отпущу…",
-    "Как только ты выполнишь все мои задания",
-    "Моё родовое поместье пришло в запустение",
-    "И ты должен привести его в порядок",
-    "Ты согласен?",
-    "Не отвечай, я знаю, что да!",
-    "Итак, нужно расчистить проход на второй этаж",
-    "Убери кучу хлама на лестнице",
-    "Подбери лопату с помощью кнопки F",
-    "Теперь подойди к мусору на лестнице",
-    "Используй F чтобы применить предмет"
-  ],
+  "ghostDialog": null,
   "ghostPos": [
-    0.0,
-    0.0,
-    0.0
+    90.78183,
+    9.263238,
+    -4.5
   ],
   "isGhostDialog": false,
-  "ghostPhraseIndex": 0,
-  "ghostCanChangePhraseByButton": false,
+  "ghostPhraseIndex": 14,
+  "ghostCanChangePhraseByButton": true,
   "isMaryActive": false,
   "maryPhraseIndex": 0,
   "pianoPos": [
-    0.0,
-    0.0,
-    0.0
+    27.4159565,
+    -2.653782,
+    2.0
   ],
   "chandelierPos": [
-    0.0,
-    0.0,
-    0.0
+    44.6297,
+    -3.20849,
+    0.726
   ]
 }

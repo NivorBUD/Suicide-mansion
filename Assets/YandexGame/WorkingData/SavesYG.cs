@@ -17,6 +17,8 @@ namespace YG
         public bool[] openLevels = new bool[3];
 
         // Ваши сохранения
+        public bool isStartNewGame = false;
+        
         public float[] playerPos = new float[3] { -14.94f, -3.14f, 0f};
         public float[] playerHintDirection = new float[3];
         public bool canUseLadders;

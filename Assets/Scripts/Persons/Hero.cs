@@ -357,7 +357,10 @@ public class Hero : MonoBehaviour
         {
             State = States.scare;
             if (sprite.sprite.name == "Player Scaried 9")
+            {
                 Death();
+                SaveSave();
+            }
         }
         else if (isAcid)
         {
