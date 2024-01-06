@@ -5,10 +5,24 @@ using YG;
 
 public class MainMenuController : MonoBehaviour
 {
+    [SerializeField] GameObject menuCanvas, gameCanvas;
+
+    private Hero playerScript;
+
+    private void Start()
+    {
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Hero>();
+        playerScript.isPause = true;
+        menuCanvas.SetActive(true);
+        gameCanvas.SetActive(false);
+    }
+
     public void StartGame()
     {
         YandexGame.FullscreenShow();
-        SceneManager.LoadScene("GameScene");
+        menuCanvas.SetActive(false);
+        gameCanvas.SetActive(true);
+        playerScript.isPause = false;
     }
 
     public void StartNewGame()
@@ -20,16 +34,12 @@ public class MainMenuController : MonoBehaviour
         YandexGame.SaveProgress();
         YandexGame.SaveLocal();
 
+        SceneManager.UnloadScene("GameScene");
         SceneManager.LoadScene("GameScene");
-    }
 
-    public void QuitGame()
-    {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-        Application.Quit();
-        #endif
+        menuCanvas.SetActive(false);
+        gameCanvas.SetActive(true);
+        playerScript.isPause = false;
     }
 }
 

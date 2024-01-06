@@ -11,6 +11,7 @@ public class PauseLogic : MonoBehaviour
     [SerializeField] private GameObject missionWindow, dethopediaWindow, pauseMenu, mainRedCircle, onPauseRedCircle;
     [SerializeField] private Button navigationButton;
     [SerializeField] private Image navigationButtonImage;
+    [SerializeField] GameObject menuCanvas, gameCanvas;
 
     private Hero playerScript;
     private bool isMission;
@@ -25,6 +26,9 @@ public class PauseLogic : MonoBehaviour
 
     void Update()
     {
+        if (!playerScript.isPause && pauseMenu.activeSelf)
+            pauseMenu.SetActive(false);
+
         onPauseRedCircle.SetActive(mainRedCircle.activeSelf && isMission);
 
         navigationButton.gameObject.SetActive(!playerScript.isCutScene && playerScript.levelComplete >= 1);
@@ -75,7 +79,8 @@ public class PauseLogic : MonoBehaviour
 
     public void Quit()
     {
-        SceneManager.LoadScene("MainMenu");
+        menuCanvas.SetActive(true);
+        gameCanvas.SetActive(false);
     }
 
     public void TurnOnNavigation()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using TMPro;
@@ -15,7 +16,7 @@ public class Hero : MonoBehaviour
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float speed = 3f;
     [SerializeField] private ParticleSystem respawnPoof;
-    [SerializeField] private TextMeshProUGUI missionText;
+    [SerializeField] private TextMeshProUGUI missionText, saveText;
     [SerializeField] GameObject ghost, getPlace, holdingPlace;
     [SerializeField] private GameObject piano, bathKey, bathBomb, acid, flamethrower, key, candle, board, treasureKey;
     public GameObject bullet;
@@ -30,7 +31,7 @@ public class Hero : MonoBehaviour
     public Dictionary<string, int> inventoryObjectsIndex = new();
 
     private Vector3 liftPos, pointerAim;
-    private bool isLift, isScared, isUppingHands, isAcid, isSit, isSlingshot;
+    private bool isLift, isScared, isUppingHands, isAcid, isSit, isSlingshot, needToShowSaveText;
     private Animator anim;
     private SpriteRenderer sprite;
     private CameraController mainCamera;
@@ -197,6 +198,20 @@ public class Hero : MonoBehaviour
 
         YandexGame.SaveProgress();
         YandexGame.SaveLocal();
+
+        needToShowSaveText = true;
+    }
+
+    IEnumerator ShowSaveText()
+    {
+        saveText.color = new Color(255, 255, 255, 1);
+        yield return new WaitForSeconds(1.5f);
+
+        while (saveText.color.a > 0)
+        {
+            saveText.color = new Color(255, 255, 255, saveText.color.a - 0.01f);
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 
     private void Run()
@@ -267,6 +282,12 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        if (needToShowSaveText && gameObject.activeSelf)
+        {
+            needToShowSaveText = false;
+            StartCoroutine(ShowSaveText());
+        }
+
         if (levelComplete == 1)
             ghostScript.isDialog = false;
 

@@ -5,7 +5,7 @@ using UnityEngine.U2D;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    [SerializeField] GameObject LeverPlatform;
+    [SerializeField] GameObject LeverPlatform, wall;
     private SpriteRenderer sprite;
     private bool IsHeroInArea = false;
 
@@ -37,6 +37,7 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (IsHeroInArea && Input.GetKeyDown(KeyCode.F))
         {
+            wall.SetActive(true);
             PlayRingSound();
             Invoke(nameof(Teleport), 1.5f); // Delayed teleportation after 1.1 seconds
         }
@@ -45,6 +46,7 @@ public class NewBehaviourScript : MonoBehaviour
     private void Teleport()
     {
         LeverPlatform.GetComponent<BoxCollider2D>().enabled = false;
+        wall.SetActive(false);
     }
 
     private void PlayRingSound()
