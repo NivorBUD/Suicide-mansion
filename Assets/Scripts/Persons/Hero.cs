@@ -17,7 +17,6 @@ public class Hero : MonoBehaviour
     [SerializeField] private ParticleSystem respawnPoof;
     [SerializeField] private TextMeshProUGUI missionText;
     [SerializeField] GameObject ghost, getPlace, holdingPlace;
-    [SerializeField] CyanCircle cyanCircle;
     [SerializeField] private GameObject piano, bathKey, bathBomb, acid, flamethrower, key, candle, board, treasureKey;
     public GameObject bullet;
     public Rigidbody2D rb;
@@ -255,7 +254,6 @@ public class Hero : MonoBehaviour
     public void AddToInventory([SerializeField] GameObject InventoryObject)
     {
         inventory[InventoryObject.name] = InventoryObject;
-        cyanCircle.previousUseTime = Time.time;
         YandexGame.savesData.isUsedInventoryItems[inventoryObjectsIndex[InventoryObject.name]] = true;
         if (InventoryObject.name == "Shovel")
             return;
@@ -265,7 +263,6 @@ public class Hero : MonoBehaviour
     public void DelFromInventory([SerializeField] GameObject InventoryObject)
     {
         inventory.Remove(InventoryObject.name);
-        cyanCircle.previousUseTime = Time.time;
     }
 
     void Update()
@@ -317,9 +314,6 @@ public class Hero : MonoBehaviour
 
         getPlace.transform.localPosition = new Vector3((sprite.flipX ? 1 : -1) * Math.Abs(getPlace.transform.localPosition.x), getPlace.transform.localPosition.y, getPlace.transform.localPosition.z);
         holdingPlace.transform.localPosition = new Vector3((sprite.flipX ? -1 : 1) * Math.Abs(holdingPlace.transform.localPosition.x), holdingPlace.transform.localPosition.y, holdingPlace.transform.localPosition.z);
-
-        if (isCutScene || pointer.activeSelf || ghostScript.isDialog)
-            cyanCircle.previousUseTime = Time.time;
     }
 
     public void ChangeMission(string mission)

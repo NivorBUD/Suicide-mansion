@@ -26,6 +26,8 @@ public class PauseLogic : MonoBehaviour
     void Update()
     {
         onPauseRedCircle.SetActive(mainRedCircle.activeSelf && isMission);
+
+        navigationButton.gameObject.SetActive(!playerScript.isCutScene && playerScript.levelComplete >= 1);
         navigationButtonImage.color = playerScript.pointer.activeSelf ? new Color32(63, 208, 200, 128) : new Color32(63, 208, 200, 255);
         navigationButton.enabled = !playerScript.pointer.activeSelf;
     }
@@ -73,12 +75,6 @@ public class PauseLogic : MonoBehaviour
 
     public void Quit()
     {
-        YandexGame.ResetSaveProgress();
-        YandexGame.savesData = new SavesYG();
-        InventoryLogic.canGetItems = true;
-        YandexGame.SaveProgress();
-        YandexGame.SaveLocal();
-
         SceneManager.LoadScene("MainMenu");
     }
 

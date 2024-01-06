@@ -1677,7 +1677,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041F\u0435\u0440\u0435\u0437\u0430\u043F\u0443\u0441\u043A"
+  m_text: "\u041C\u0435\u043D\u044E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 21e10a05eda6a6d4088accdfa8ce1639, type: 2}
   m_sharedMaterial: {fileID: 6759905119947055605, guid: 21e10a05eda6a6d4088accdfa8ce1639, type: 2}
@@ -6456,7 +6456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &129773599
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6471,13 +6471,13 @@ RectTransform:
   m_Children:
   - {fileID: 1129399923}
   - {fileID: 220587099}
-  m_Father: {fileID: 548895982}
+  m_Father: {fileID: 1376795325}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 195, y: -172.6}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -15, y: 15}
   m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 1, y: 0}
 --- !u!114 &129773600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9640,98 +9640,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &213543436
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 213543437}
-  - component: {fileID: 213543440}
-  - component: {fileID: 213543439}
-  - component: {fileID: 213543438}
-  m_Layer: 5
-  m_Name: Cyan circle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &213543437
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213543436}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.12458613, y: 0.12458613, z: 0.12458613}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 853855346}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -20.8, y: 20.8}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &213543438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213543436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95dc4c37568574b42bc02c14bcbefdb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redCircle: {fileID: 573683946}
-  navigationButton: {fileID: 129773598}
-  previousUseTime: 0
-  image: {fileID: 213543439}
---- !u!114 &213543439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213543436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b6e0ea987f4357e45a66fb2b0df4d779, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &213543440
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213543436}
-  m_CullTransparentMesh: 1
 --- !u!1 &216848455
 GameObject:
   m_ObjectHideFlags: 0
@@ -27120,7 +27028,6 @@ RectTransform:
   - {fileID: 1170556432}
   - {fileID: 1087852620}
   - {fileID: 647363809}
-  - {fileID: 129773599}
   m_Father: {fileID: 337569865}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -44931,7 +44838,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 573683947}
-  - {fileID: 213543437}
   m_Father: {fileID: 1376795325}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -133025,7 +132931,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5210793, y: 1.0334347}
+  m_Offset: {x: 1.0951998, y: 1.0334347}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -133036,7 +132942,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.9467149, y: 3.066868}
+  m_Size: {x: 0.79847383, y: 3.066868}
   m_EdgeRadius: 0
 --- !u!4 &1887671144
 Transform:
@@ -151416,6 +151322,9 @@ PrefabInstance:
       addedObject: {fileID: 1253144503}
     - targetCorrespondingSourceObject: {fileID: 4618950779568862617, guid: 335b10466c51f1d4e9f3a9b7b5dabea5, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 129773599}
+    - targetCorrespondingSourceObject: {fileID: 4618950779568862617, guid: 335b10466c51f1d4e9f3a9b7b5dabea5, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 853855346}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 335b10466c51f1d4e9f3a9b7b5dabea5, type: 3}
@@ -151635,7 +151544,7 @@ PrefabInstance:
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: cyanCircle
       value: 
-      objectReference: {fileID: 213543438}
+      objectReference: {fileID: 0}
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: playerInfo
       value: 
@@ -151659,7 +151568,7 @@ PrefabInstance:
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: yellowCircle
       value: 
-      objectReference: {fileID: 213543438}
+      objectReference: {fileID: 0}
     - target: {fileID: 6668038821952169389, guid: 24088928fd5bcf04eb418de95d31c553, type: 3}
       propertyPath: ghostDialogInfo
       value: 
