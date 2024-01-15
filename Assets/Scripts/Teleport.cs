@@ -17,6 +17,7 @@ public class Teleport : MonoBehaviour
         InventoryLogic.canGetItems = false;
         playerScript.gameObject.transform.position = tpPlace.transform.position;
         playerScript.ChangeMission("Выслушать привидение");
+        LadderInteraction.canUseLadders = false;
         Invoke(nameof(ShowGhost), 2);
     }
 

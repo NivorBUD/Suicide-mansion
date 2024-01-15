@@ -21,7 +21,7 @@ namespace YG
         
         public float[] playerPos = new float[3] { -14.94f, -3.14f, 0f};
         public float[] playerHintDirection = new float[3];
-        public bool canUseLadders;
+        public bool canUseLadders = false;
         public bool canGetItems;
         public int levelComplete; // 1 - пройдена смерть в подвале, 2 - от рояля, 3 - от люстры, 4 - от мэри,
                                   // 5 - от падения, 6 - от растения, 7 - от утопленя, 8 - на чердаке, 9 - от молнии,
